@@ -1,3 +1,1 @@
-Testing how to push a commit. 
-
-This commit adds a new file ("Hello.txt").
+Hello
