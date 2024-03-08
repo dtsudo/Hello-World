@@ -18431,9 +18431,19 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             GetNextFrameHelper: function (displayProcessing, soundOutput, musicProcessing) {
                 var isDoneLoadingImages = displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$LoadImages();
 
+				if (!window.isDoneLoadingImagesCheck) {
+					window.isDoneLoadingImagesCheck = true;
+					window.debugPrint("trying to load images");
+				}
+				
                 if (!isDoneLoadingImages) {
                     return null;
                 }
+				
+				if (!window.successfullyLoadedImages) {
+					window.successfullyLoadedImages = true;
+					window.debugPrint("successfully loaded images");
+				}
 
                 var isDoneLoadingSounds = soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$LoadSounds();
 
