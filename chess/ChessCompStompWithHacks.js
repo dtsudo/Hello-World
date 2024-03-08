@@ -5639,6 +5639,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 GetFirstFrame: function (globalState) {
+					window.debugPrint("In ChessCompStompWithHacksLibrary.GameInitialization");
                     var versionInfo = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo();
 
                     if (Bridge.referenceEquals(versionInfo.Version, "1.03")) {
@@ -5646,7 +5647,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     } else {
                         throw new System.Exception();
                     }
-
                     var frame = new ChessCompStompWithHacksLibrary.InitialLoadingScreenFrame(globalState);
                     return frame;
                 }
