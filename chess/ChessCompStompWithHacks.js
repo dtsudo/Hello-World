@@ -5653,7 +5653,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 GetFirstFrame: function (globalState) {
-					window.debugPrint("In ChessCompStompWithHacksLibrary.GameInitialization 111");
+					window.debugPrint("In ChessCompStompWithHacksLibrary.GameInitialization 2222");
                     var versionInfo = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo();
 
                     if (Bridge.referenceEquals(versionInfo.Version, "1.03")) {
@@ -16868,7 +16868,74 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.desiredSoundVolume = ChessCompStompWithHacksLibrary.GlobalState.DEFAULT_VOLUME;
                 this.currentSoundVolume = this.desiredSoundVolume;
                 this.elapsedMicrosPerFrame = elapsedMicrosPerFrame;
-                eval("\r\n\t\t\t\twindow.BridgeSoundOutputJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tvar soundDictionary = {};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar numberOfAudioObjectsLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadSounds = function (soundNames) {\r\n\t\t\t\t\t\tvar soundNamesArray = soundNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar numberOfAudioObjects = soundNamesArray.length * 4;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < soundNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar soundName = soundNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (soundDictionary[soundName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tsoundDictionary[soundName] = [];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();\r\n\t\t\t\t\t\t\tfor (var j = 0; j < 4; j++) {\r\n\t\t\t\t\t\t\t\tvar audio = new Audio(soundPath);\r\n\t\t\t\t\t\t\t\taudio.addEventListener('canplaythrough', function () {\r\n\t\t\t\t\t\t\t\t\tnumberOfAudioObjectsLoaded++;\r\n\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tsoundDictionary[soundName].push(audio);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn numberOfAudioObjects === numberOfAudioObjectsLoaded;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar playSound = function (soundName, volume) {\r\n\t\t\t\t\t\tvar sound = soundDictionary[soundName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (volume > 1.0)\r\n\t\t\t\t\t\t\tvolume = 1.0;\r\n\t\t\t\t\t\tif (volume < 0.0)\r\n\t\t\t\t\t\t\tvolume = 0.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar audio = sound[0];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < sound.length; i++) {\r\n\t\t\t\t\t\t\tif (i === sound.length - 1)\r\n\t\t\t\t\t\t\t\tsound[i] = audio;\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\tsound[i] = sound[i+1];\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\taudio.volume = volume;\r\n\t\t\t\t\t\taudio.play();\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadSounds: loadSounds,\r\n\t\t\t\t\t\tplaySound: playSound\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+
+				window.BridgeSoundOutputJavascript = ((function () {
+					'use strict';
+						
+					var soundDictionary = {};
+					
+					var numberOfAudioObjectsLoaded = 0;
+					
+					var loadSounds = function (soundNames) {
+						
+						window.debugPrintOnce("calling loadSounds for the first time", "callingloadSoundsforthefirsttime");
+						
+						var soundNamesArray = soundNames.split(',');
+						
+						var numberOfAudioObjects = soundNamesArray.length * 4;
+						
+						for (var i = 0; i < soundNamesArray.length; i++) {
+							var soundName = soundNamesArray[i];
+							
+							if (soundDictionary[soundName])
+								continue;
+							
+							soundDictionary[soundName] = [];
+							window.debugPrint("fetching sound for: " + soundName);
+							
+							var soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();
+							for (var j = 0; j < 4; j++) {
+								var audio = new Audio(soundPath);
+								audio.addEventListener('canplaythrough', function () {
+									window.debugPrint("canplaythrough++");
+									numberOfAudioObjectsLoaded++;
+								});
+								
+								soundDictionary[soundName].push(audio);
+							}
+						}
+						
+						return numberOfAudioObjects === numberOfAudioObjectsLoaded;
+					};
+					
+					var playSound = function (soundName, volume) {
+						var sound = soundDictionary[soundName];
+						
+						if (volume > 1.0)
+							volume = 1.0;
+						if (volume < 0.0)
+							volume = 0.0;
+						
+						var audio = sound[0];
+						
+						for (var i = 0; i < sound.length; i++) {
+							if (i === sound.length - 1)
+								sound[i] = audio;
+							else
+								sound[i] = sound[i+1];
+						}
+						
+						audio.volume = volume;
+						audio.play();
+					};
+					
+					return {
+						loadSounds: loadSounds,
+						playSound: playSound
+					};
+				})());
+				
+				
             }
         },
         methods: {

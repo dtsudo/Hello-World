@@ -17,6 +17,13 @@
 			newDiv.append(str);
 			div.append(newDiv);
 		};
+		
+		window.debugPrintOnce = function (str, k) {
+			if (!window[k]) {
+				window[k] = true;
+				window.debugPrint(str);
+			}
+		};
 	</script>
 	
 </head>
