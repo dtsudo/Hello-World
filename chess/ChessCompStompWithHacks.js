@@ -5653,7 +5653,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 GetFirstFrame: function (globalState) {
-					window.debugPrint("In ChessCompStompWithHacksLibrary.GameInitialization");
+					window.debugPrint("In ChessCompStompWithHacksLibrary.GameInitialization 111");
                     var versionInfo = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo();
 
                     if (Bridge.referenceEquals(versionInfo.Version, "1.03")) {
@@ -18464,16 +18464,32 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 if (!isDoneLoadingSounds) {
                     return null;
                 }
+				
+				if (!window.successfullyLoadedSound) {
+					window.successfullyLoadedSound = true;
+					window.debugPrint("successfully loaded sounds");
+				}
 
                 var isDoneLoadingMusic = musicProcessing.DTLibrary$IMusicProcessing$LoadMusic();
 
                 if (!isDoneLoadingMusic) {
                     return null;
                 }
+				
+				if (!window.successfullyLoadedMusic) {
+					window.successfullyLoadedMusic = true;
+					window.debugPrint("successfully loaded music");
+				}
+
 
                 var sessionState = new ChessCompStompWithHacksLibrary.SessionState(this.globalState.Timer);
 
                 this.globalState.LoadSessionState(sessionState);
+				
+				if (!window.successfullyLoadedSessionState) {
+					window.successfullyLoadedSessionState = true;
+					window.debugPrint("successfully loaded sessionState");
+				}
 
                 var soundVolume = this.globalState.LoadSoundVolume();
                 if (System.Nullable.hasValue(soundVolume)) {
