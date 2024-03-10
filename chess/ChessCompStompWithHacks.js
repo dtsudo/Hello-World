@@ -347,11 +347,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
 
-                    if (buildType === DTLibrary.BuildType.WebEmbedded || buildType === DTLibrary.BuildType.Electron) {
+                    if (buildType === DTLibrary.BuildType.WebEmbedded || buildType === DTLibrary.BuildType.Electron || true) {
                         ChessCompStompWithHacks.GameInitializer.RemoveMarginOnBody();
                     }
 
-                    if (buildType === DTLibrary.BuildType.Electron) {
+                    if (buildType === DTLibrary.BuildType.Electron || true) {
                         ChessCompStompWithHacks.GameInitializer.AddResizeCanvasLogic();
                     }
 
