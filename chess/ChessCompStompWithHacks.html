@@ -10,25 +10,8 @@
 	<script src="ChessCompStompWithHacks.js"></script>
 	<script src="ChessCompStompWithHacks.meta.js"></script>
 
-	<script>
-		window.debugPrint = function (str) {
-			let div = document.getElementById("debugDiv");
-			let newDiv = document.createElement("div");
-			newDiv.append(str);
-			div.append(newDiv);
-		};
-		
-		window.debugPrintOnce = function (str, k) {
-			if (!window[k]) {
-				window[k] = true;
-				window.debugPrint(str);
-			}
-		};
-	</script>
-	
 </head>
 <body style="overflow:hidden;">
-	<div id="debugDiv"></div>
 	<div>
 		<span id="fpsLabel"></span><span id="fps"></span>
 	</div>

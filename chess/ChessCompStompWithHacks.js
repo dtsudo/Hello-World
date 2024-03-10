@@ -364,23 +364,17 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         logger = new DTLibrary.EmptyLogger();
                     }
 
-                    var globalState = new ChessCompStompWithHacksLibrary.GlobalState(fps, new DTLibrary.DTRandom(), new DTLibrary.GuidGenerator("94197619109494365160"), logger, new DTLibrary.SimpleTimer(), new ChessCompStompWithHacks.BridgeFileIO(), buildType, debugMode, false, null);
+                    var globalState = new ChessCompStompWithHacksLibrary.GlobalState(fps, new DTLibrary.DTRandom(), new DTLibrary.GuidGenerator("94197619109494365160"), logger, new DTLibrary.SimpleTimer(), new ChessCompStompWithHacks.BridgeFileIO(), buildType, true, false, null);
 
                     ChessCompStompWithHacks.GameInitializer.frame = ChessCompStompWithHacksLibrary.GameInitialization.GetFirstFrame(globalState);
 
-					window.debugPrint("About to initialize bridgeKeyboard and bridgeMouse");
-					
                     ChessCompStompWithHacks.GameInitializer.bridgeKeyboard = new ChessCompStompWithHacks.BridgeKeyboard(buildType === DTLibrary.BuildType.WebEmbedded || buildType === DTLibrary.BuildType.Electron);
                     ChessCompStompWithHacks.GameInitializer.bridgeMouse = new ChessCompStompWithHacks.BridgeMouse();
 
-					window.debugPrint("About to initialize display, soundOutput, and music");
-					
                     ChessCompStompWithHacks.GameInitializer.display = new ChessCompStompWithHacks.BridgeDisplay();
                     ChessCompStompWithHacks.GameInitializer.soundOutput = new ChessCompStompWithHacks.BridgeSoundOutput(globalState.ElapsedMicrosPerFrame);
                     ChessCompStompWithHacks.GameInitializer.music = new ChessCompStompWithHacks.BridgeMusic(stopWaitingEvenIfMusicHasNotLoaded);
 
-					window.debugPrint("About to initialize previousKeyboard and previousMouse");
-					
                     ChessCompStompWithHacks.GameInitializer.previousKeyboard = new DTLibrary.EmptyKeyboard();
                     ChessCompStompWithHacks.GameInitializer.previousMouse = new DTLibrary.EmptyMouse();
 
@@ -399,7 +393,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     eval("window.BridgeCompletedAchievements.push('" + (achievement || "") + "');");
                 },
                 ComputeAndRenderNextFrame: function () {
-					try {
                     var $t;
                     var currentKeyboard = new DTLibrary.CopiedKeyboard(ChessCompStompWithHacks.GameInitializer.bridgeKeyboard);
                     var currentMouse = new DTLibrary.CopiedMouse(ChessCompStompWithHacks.GameInitializer.bridgeMouse);
@@ -452,9 +445,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     ChessCompStompWithHacks.GameInitializer.previousKeyboard = currentKeyboard;
                     ChessCompStompWithHacks.GameInitializer.previousMouse = currentMouse;
-					} catch (err) {
-						window.debugPrint("ERR IN ComputeAndRenderNextFrame: " + err);
-					}
                 }
             }
         }
@@ -471,11 +461,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     eval("\n\t\t\t\twindow.FpsDisplayJavascript = ((function () {\n\t\t\t\t\t'use strict';\n\t\t\t\t\t\n\t\t\t\t\tvar numberOfFrames = 0;\n\t\t\t\t\tvar hasAddedFpsLabel = false;\n\t\t\t\t\tvar startTimeMillis = Date.now();\n\t\t\t\t\tvar fpsNode = null;\n\t\t\t\t\t\n\t\t\t\t\tvar frameComputedAndRendered = function () {\n\t\t\t\t\t\tnumberOfFrames++;\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\tvar displayFps = function () {\n\t\t\t\t\t\tif (!hasAddedFpsLabel) {\n\t\t\t\t\t\t\tvar fpsLabelNode = document.getElementById('fpsLabel');\n\t\t\t\t\t\t\tif (fpsLabelNode !== null) {\n\t\t\t\t\t\t\t\tfpsLabelNode.textContent = 'FPS: ';\n\t\t\t\t\t\t\t\thasAddedFpsLabel = true;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\tvar currentTimeMillis = Date.now();\n\t\t\t\t\t\tif (currentTimeMillis - startTimeMillis > 2000) {\n\t\t\t\t\t\t\tvar actualFps = numberOfFrames / 2;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tif (fpsNode === null)\n\t\t\t\t\t\t\t\tfpsNode = document.getElementById('fps');\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tif (fpsNode !== null)\n\t\t\t\t\t\t\t\tfpsNode.textContent = actualFps.toString();\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tnumberOfFrames = 0;\n\t\t\t\t\t\t\tstartTimeMillis = currentTimeMillis;\n\t\t\t\t\t\t}\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\treturn {\n\t\t\t\t\t\tframeComputedAndRendered: frameComputedAndRendered,\n\t\t\t\t\t\tdisplayFps: displayFps\n\t\t\t\t\t};\n\t\t\t\t})());\n\t\t\t");
                 },
                 Initialize: function () {
-					try {
-                    eval("\n\t\t\t\t((function () {\n\t\t\t\t\t'use strict';\n\t\t\t\t\t\n\t\t\t\t\tvar isEmbeddedVersion = false;\n\t\t\t\t\t\n\t\t\t\t\tvar stopWaitingEvenIfMusicHasNotLoaded = true;\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\tvar isElectronVersion = !isEmbeddedVersion\n\t\t\t\t\t\t&& (window.navigator.userAgent.indexOf('Electron') >= 0 || window.navigator.userAgent.indexOf('electron') >= 0);\n\t\t\t\t\t\n\t\t\t\t\tvar defaultFps = window.navigator.userAgent.indexOf('Gecko/') >= 0\n\t\t\t\t\t\t? 30\n\t\t\t\t\t\t: 60;\n\t\t\t\t\t\n\t\t\t\t\tvar urlParams = (new URL(document.location)).searchParams;\n\t\t\t\t\t\n\t\t\t\t\tvar showFps = urlParams.get('showfps') !== null\n\t\t\t\t\t\t? (urlParams.get('showfps') === 'true')\n\t\t\t\t\t\t: false;\n\t\t\t\t\tvar fps = urlParams.get('fps') !== null\n\t\t\t\t\t\t? parseInt(urlParams.get('fps'), 10)\n\t\t\t\t\t\t: defaultFps;\n\t\t\t\t\tvar debugMode = urlParams.get('debugmode') !== null\n\t\t\t\t\t\t? (urlParams.get('debugmode') === 'true')\n\t\t\t\t\t\t: false;\n\t\t\t\t\t\n\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.Start(fps, isEmbeddedVersion, isElectronVersion, stopWaitingEvenIfMusicHasNotLoaded, debugMode);\n\t\t\t\t\t\n\t\t\t\t\tvar computeAndRenderNextFrame;\n\t\t\t\t\t\n\t\t\t\t\tvar nextTimeToAct = Date.now() + (1000.0 / fps);\n\t\t\t\t\t\n\t\t\t\t\tvar hasProcessedExtraTime = false;\n\t\t\t\t\t\n\t\t\t\t\tcomputeAndRenderNextFrame = function () {\n\t\t\t\t\t\tvar now = Date.now();\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (nextTimeToAct > now) {\n\t\t\t\t\t\t\tif (!hasProcessedExtraTime) {\n\t\t\t\t\t\t\t\tvar extraTime = Math.round(nextTimeToAct - now);\n\t\t\t\t\t\t\t\tif (extraTime > 0)\n\t\t\t\t\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.ProcessExtraTime(extraTime);\n\t\t\t\t\t\t\t\thasProcessedExtraTime = true;\n\t\t\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 5);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\thasProcessedExtraTime = false;\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (nextTimeToAct < now - 5.0*(1000.0 / fps))\n\t\t\t\t\t\t\tnextTimeToAct = now - 5.0*(1000.0 / fps);\n\t\t\t\t\t\t\n\t\t\t\t\t\tnextTimeToAct = nextTimeToAct + (1000.0 / fps);\n\t\t\t\t\t\t\n\t\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.ComputeAndRenderNextFrame();\n\t\t\t\t\t\twindow.FpsDisplayJavascript.frameComputedAndRendered();\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (showFps)\n\t\t\t\t\t\t\twindow.FpsDisplayJavascript.displayFps();\n\t\t\t\t\t\t\n\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t})());\n\t\t\t");
-					} catch (err) {
-						window.debugPrint("ERR: " + err);
-					}
+                    eval("\n\t\t\t\t((function () {\n\t\t\t\t\t'use strict';\n\t\t\t\t\t\n\t\t\t\t\tvar isEmbeddedVersion = false;\n\t\t\t\t\t\n\t\t\t\t\tvar stopWaitingEvenIfMusicHasNotLoaded = false;\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\tvar isElectronVersion = !isEmbeddedVersion\n\t\t\t\t\t\t&& (window.navigator.userAgent.indexOf('Electron') >= 0 || window.navigator.userAgent.indexOf('electron') >= 0);\n\t\t\t\t\t\n\t\t\t\t\tvar defaultFps = window.navigator.userAgent.indexOf('Gecko/') >= 0\n\t\t\t\t\t\t? 30\n\t\t\t\t\t\t: 60;\n\t\t\t\t\t\n\t\t\t\t\tvar urlParams = (new URL(document.location)).searchParams;\n\t\t\t\t\t\n\t\t\t\t\tvar showFps = urlParams.get('showfps') !== null\n\t\t\t\t\t\t? (urlParams.get('showfps') === 'true')\n\t\t\t\t\t\t: false;\n\t\t\t\t\tvar fps = urlParams.get('fps') !== null\n\t\t\t\t\t\t? parseInt(urlParams.get('fps'), 10)\n\t\t\t\t\t\t: defaultFps;\n\t\t\t\t\tvar debugMode = urlParams.get('debugmode') !== null\n\t\t\t\t\t\t? (urlParams.get('debugmode') === 'true')\n\t\t\t\t\t\t: false;\n\t\t\t\t\t\n\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.Start(fps, isEmbeddedVersion, isElectronVersion, stopWaitingEvenIfMusicHasNotLoaded, debugMode);\n\t\t\t\t\t\n\t\t\t\t\tvar computeAndRenderNextFrame;\n\t\t\t\t\t\n\t\t\t\t\tvar nextTimeToAct = Date.now() + (1000.0 / fps);\n\t\t\t\t\t\n\t\t\t\t\tvar hasProcessedExtraTime = false;\n\t\t\t\t\t\n\t\t\t\t\tcomputeAndRenderNextFrame = function () {\n\t\t\t\t\t\tvar now = Date.now();\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (nextTimeToAct > now) {\n\t\t\t\t\t\t\tif (!hasProcessedExtraTime) {\n\t\t\t\t\t\t\t\tvar extraTime = Math.round(nextTimeToAct - now);\n\t\t\t\t\t\t\t\tif (extraTime > 0)\n\t\t\t\t\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.ProcessExtraTime(extraTime);\n\t\t\t\t\t\t\t\thasProcessedExtraTime = true;\n\t\t\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 5);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\thasProcessedExtraTime = false;\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (nextTimeToAct < now - 5.0*(1000.0 / fps))\n\t\t\t\t\t\t\tnextTimeToAct = now - 5.0*(1000.0 / fps);\n\t\t\t\t\t\t\n\t\t\t\t\t\tnextTimeToAct = nextTimeToAct + (1000.0 / fps);\n\t\t\t\t\t\t\n\t\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.ComputeAndRenderNextFrame();\n\t\t\t\t\t\twindow.FpsDisplayJavascript.frameComputedAndRendered();\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (showFps)\n\t\t\t\t\t\t\twindow.FpsDisplayJavascript.displayFps();\n\t\t\t\t\t\t\n\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t})());\n\t\t\t");
                 }
             }
         }
@@ -5653,7 +5639,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 GetFirstFrame: function (globalState) {
-					window.debugPrint("In ChessCompStompWithHacksLibrary.GameInitialization 3333");
                     var versionInfo = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo();
 
                     if (Bridge.referenceEquals(versionInfo.Version, "1.03")) {
@@ -5661,6 +5646,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     } else {
                         throw new System.Exception();
                     }
+
                     var frame = new ChessCompStompWithHacksLibrary.InitialLoadingScreenFrame(globalState);
                     return frame;
                 }
@@ -12002,7 +11988,102 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function () {
                 this.$initialize();
-                eval("\r\n\t\t\t\twindow.BridgeMouseJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseXPosition = -50;\r\n\t\t\t\t\tvar mouseYPosition = -50;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseMoveHandler = function (e) {\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasCssWidth = canvas.offsetWidth;\r\n\t\t\t\t\t\tvar canvasCssHeight = canvas.offsetHeight;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar xPosition = (e.pageX !== null && e.pageX !== undefined ? e.pageX : e.clientX) - canvas.offsetLeft;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasXScaling = canvasCssWidth / canvas.width;\r\n\t\t\t\t\t\tif (canvasXScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasXScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\txPosition = Math.round(xPosition / canvasXScaling);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition < -5)\r\n\t\t\t\t\t\t\txPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition > canvas.width + 5)\r\n\t\t\t\t\t\t\txPosition = canvas.width + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar yPosition = (e.pageY !== null && e.pageY !== undefined ? e.pageY : e.clientY) - canvas.offsetTop;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasYScaling = canvasCssHeight / canvas.height;\r\n\t\t\t\t\t\tif (canvasYScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasYScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tyPosition = Math.round(yPosition / canvasYScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition < -5)\r\n\t\t\t\t\t\t\tyPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition > canvas.height + 5)\r\n\t\t\t\t\t\t\tyPosition = canvas.height + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tmouseXPosition = xPosition;\r\n\t\t\t\t\t\tmouseYPosition = canvas.height - yPosition - 1;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar isLeftMouseButtonPressed = false;\r\n\t\t\t\t\tvar isRightMouseButtonPressed = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar checkMouseButtonHandler = function (e) {\r\n\t\t\t\t\t\tif ((e.buttons & 1) === 1)\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = false;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif ((e.buttons & 2) === 2)\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = false;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar disableContextMenu;\r\n\t\t\t\t\tdisableContextMenu = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\t\tsetTimeout(disableContextMenu, 50);\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });\r\n\t\t\t\t\t};\r\n\t\t\t\t\tdisableContextMenu();\r\n\t\t\t\t\t\r\n\t\t\t\t\tdocument.addEventListener('mousemove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); }, false);\r\n\t\t\t\t\tdocument.addEventListener('mousedown', function (e) { checkMouseButtonHandler(e); }, false);\r\n\t\t\t\t\tdocument.addEventListener('mouseup', function (e) { checkMouseButtonHandler(e); }, false);\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed; },\r\n\t\t\t\t\t\tisRightMouseButtonPressed: function () { return isRightMouseButtonPressed; },\r\n\t\t\t\t\t\tgetMouseX: function () { return Math.round(mouseXPosition); },\r\n\t\t\t\t\t\tgetMouseY: function () { return Math.round(mouseYPosition); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                
+				window.BridgeMouseJavascript = ((function () {
+					'use strict';
+					
+					var mouseXPosition = -50;
+					var mouseYPosition = -50;
+					
+					var canvas = null;
+					
+					var mouseMoveHandler = function (e) {
+					
+						if (canvas === null) {
+							canvas = document.getElementById('bridgeCanvas');
+							
+							if (canvas === null)
+								return;
+						}
+						
+						var canvasCssWidth = canvas.offsetWidth;
+						var canvasCssHeight = canvas.offsetHeight;
+						
+						var xPosition = (e.pageX !== null && e.pageX !== undefined ? e.pageX : e.clientX) - canvas.offsetLeft;
+						
+						var canvasXScaling = canvasCssWidth / canvas.width;
+						if (canvasXScaling < 0.001)
+							canvasXScaling = 0.001;
+						
+						xPosition = Math.round(xPosition / canvasXScaling);
+									
+						if (xPosition < -5)
+							xPosition = -5;
+						
+						if (xPosition > canvas.width + 5)
+							xPosition = canvas.width + 5;
+						
+						var yPosition = (e.pageY !== null && e.pageY !== undefined ? e.pageY : e.clientY) - canvas.offsetTop;
+						
+						var canvasYScaling = canvasCssHeight / canvas.height;
+						if (canvasYScaling < 0.001)
+							canvasYScaling = 0.001;
+						
+						yPosition = Math.round(yPosition / canvasYScaling);
+						
+						if (yPosition < -5)
+							yPosition = -5;
+						
+						if (yPosition > canvas.height + 5)
+							yPosition = canvas.height + 5;
+						
+						mouseXPosition = xPosition;
+						mouseYPosition = canvas.height - yPosition - 1;
+					};
+					
+					var isLeftMouseButtonPressed = false;
+					var isRightMouseButtonPressed = false;
+					
+					var checkMouseButtonHandler = function (e) {
+						if ((e.buttons & 1) === 1)
+							isLeftMouseButtonPressed = true;
+						else
+							isLeftMouseButtonPressed = false;
+						
+						if ((e.buttons & 2) === 2)
+							isRightMouseButtonPressed = true;
+						else
+							isRightMouseButtonPressed = false;
+					};
+										
+					var disableContextMenu;
+					disableContextMenu = function () {
+						if (canvas === null) {
+							canvas = document.getElementById('bridgeCanvas');
+							
+							if (canvas === null) {
+								setTimeout(disableContextMenu, 50);
+								return;
+							}
+						}
+						
+						canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+					};
+					disableContextMenu();
+					
+					document.addEventListener('pointermove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
+					document.addEventListener('pointerdown', function (e) { checkMouseButtonHandler(e); });
+					document.addEventListener('pointerup', function (e) { checkMouseButtonHandler(e); });
+					document.addEventListener('pointercancel', function (e) { checkMouseButtonHandler(e); });
+					
+					return {
+						isLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed; },
+						isRightMouseButtonPressed: function () { return isRightMouseButtonPressed; },
+						getMouseX: function () { return Math.round(mouseXPosition); },
+						getMouseY: function () { return Math.round(mouseYPosition); }
+					};
+				})());
+			
             }
         },
         methods: {
@@ -16779,6 +16860,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function (stopWaitingEvenIfMusicHasNotLoaded) {
                 this.$initialize();
+                stopWaitingEvenIfMusicHasNotLoaded = true;
                 this.currentGameMusic = null;
                 this.currentVolume = 0;
 
@@ -16868,75 +16950,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.desiredSoundVolume = ChessCompStompWithHacksLibrary.GlobalState.DEFAULT_VOLUME;
                 this.currentSoundVolume = this.desiredSoundVolume;
                 this.elapsedMicrosPerFrame = elapsedMicrosPerFrame;
-
-				window.BridgeSoundOutputJavascript = ((function () {
-					'use strict';
-						
-					var soundDictionary = {};
-					
-					var numberOfAudioObjectsLoaded = 0;
-					
-					var loadSounds = function (soundNames) {
-						
-						window.debugPrintOnce("calling loadSounds for the first time", "callingloadSoundsforthefirsttime");
-						
-						var soundNamesArray = soundNames.split(',');
-						
-						var numberOfAudioObjects = soundNamesArray.length * 4;
-						
-						for (var i = 0; i < soundNamesArray.length; i++) {
-							var soundName = soundNamesArray[i];
-							
-							if (soundDictionary[soundName])
-								continue;
-							
-							soundDictionary[soundName] = [];
-							window.debugPrint("fetching sound for: " + soundName);
-							
-							var soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();
-							for (var j = 0; j < 4; j++) {
-								var audio = new Audio(soundPath);
-								audio.addEventListener('canplaythrough', function () {
-									window.debugPrint("canplaythrough++");
-									numberOfAudioObjectsLoaded++;
-								});
-								
-								soundDictionary[soundName].push(audio);
-							}
-						}
-						
-						//return numberOfAudioObjects === numberOfAudioObjectsLoaded;
-						return true;
-					};
-					
-					var playSound = function (soundName, volume) {
-						var sound = soundDictionary[soundName];
-						
-						if (volume > 1.0)
-							volume = 1.0;
-						if (volume < 0.0)
-							volume = 0.0;
-						
-						var audio = sound[0];
-						
-						for (var i = 0; i < sound.length; i++) {
-							if (i === sound.length - 1)
-								sound[i] = audio;
-							else
-								sound[i] = sound[i+1];
-						}
-						
-						audio.volume = volume;
-						audio.play();
-					};
-					
-					return {
-						loadSounds: loadSounds,
-						playSound: playSound
-					};
-				})());
-				
-				
+                eval("\r\n\t\t\t\twindow.BridgeSoundOutputJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tvar soundDictionary = {};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar numberOfAudioObjectsLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadSounds = function (soundNames) {\r\n\t\t\t\t\t\tvar soundNamesArray = soundNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar numberOfAudioObjects = soundNamesArray.length * 4;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < soundNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar soundName = soundNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (soundDictionary[soundName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tsoundDictionary[soundName] = [];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();\r\n\t\t\t\t\t\t\tfor (var j = 0; j < 4; j++) {\r\n\t\t\t\t\t\t\t\tvar audio = new Audio(soundPath);\r\n\t\t\t\t\t\t\t\taudio.addEventListener('canplaythrough', function () {\r\n\t\t\t\t\t\t\t\t\tnumberOfAudioObjectsLoaded++;\r\n\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tsoundDictionary[soundName].push(audio);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t//return numberOfAudioObjects === numberOfAudioObjectsLoaded;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar playSound = function (soundName, volume) {\r\n\t\t\t\t\t\tvar sound = soundDictionary[soundName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (volume > 1.0)\r\n\t\t\t\t\t\t\tvolume = 1.0;\r\n\t\t\t\t\t\tif (volume < 0.0)\r\n\t\t\t\t\t\t\tvolume = 0.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar audio = sound[0];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < sound.length; i++) {\r\n\t\t\t\t\t\t\tif (i === sound.length - 1)\r\n\t\t\t\t\t\t\t\tsound[i] = audio;\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\tsound[i] = sound[i+1];\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\taudio.volume = volume;\r\n\t\t\t\t\t\taudio.play();\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadSounds: loadSounds,\r\n\t\t\t\t\t\tplaySound: playSound\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
             }
         },
         methods: {
@@ -18513,51 +18527,25 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             GetNextFrameHelper: function (displayProcessing, soundOutput, musicProcessing) {
                 var isDoneLoadingImages = displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$LoadImages();
 
-				if (!window.isDoneLoadingImagesCheck) {
-					window.isDoneLoadingImagesCheck = true;
-					window.debugPrint("trying to load images");
-				}
-				
                 if (!isDoneLoadingImages) {
                     return null;
                 }
-				
-				if (!window.successfullyLoadedImages) {
-					window.successfullyLoadedImages = true;
-					window.debugPrint("successfully loaded images");
-				}
 
                 var isDoneLoadingSounds = soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$LoadSounds();
 
                 if (!isDoneLoadingSounds) {
                     return null;
                 }
-				
-				if (!window.successfullyLoadedSound) {
-					window.successfullyLoadedSound = true;
-					window.debugPrint("successfully loaded sounds");
-				}
 
                 var isDoneLoadingMusic = musicProcessing.DTLibrary$IMusicProcessing$LoadMusic();
 
                 if (!isDoneLoadingMusic) {
                     return null;
                 }
-				
-				if (!window.successfullyLoadedMusic) {
-					window.successfullyLoadedMusic = true;
-					window.debugPrint("successfully loaded music");
-				}
-
 
                 var sessionState = new ChessCompStompWithHacksLibrary.SessionState(this.globalState.Timer);
 
                 this.globalState.LoadSessionState(sessionState);
-				
-				if (!window.successfullyLoadedSessionState) {
-					window.successfullyLoadedSessionState = true;
-					window.debugPrint("successfully loaded sessionState");
-				}
 
                 var soundVolume = this.globalState.LoadSoundVolume();
                 if (System.Nullable.hasValue(soundVolume)) {
