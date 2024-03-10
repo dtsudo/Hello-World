@@ -12072,9 +12072,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 					disableContextMenu();
 					
 					document.addEventListener('pointermove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
-					document.addEventListener('pointerdown', function (e) { checkMouseButtonHandler(e); });
-					document.addEventListener('pointerup', function (e) { checkMouseButtonHandler(e); });
-					document.addEventListener('pointercancel', function (e) { checkMouseButtonHandler(e); });
+					document.addEventListener('pointerdown', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
+					document.addEventListener('pointerup', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
+					document.addEventListener('pointercancel', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
 					
 					return {
 						isLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed; },
