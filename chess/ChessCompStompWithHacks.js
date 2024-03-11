@@ -5030,9 +5030,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return 107 <= mouseX && mouseX <= 460 && ((height - 265) | 0) <= mouseY && mouseY <= ((((height - 265) | 0) + 32) | 0);
                 },
-                GetDesktopVersionText: function () {
-                    return "Design and coding by dtsudo (https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nThe game is written in C# and uses the MonoGame framework.\nMonoGame is licensed under the Microsoft Public License.";
-                },
                 GetWebStandAloneVersionText: function () {
                     return "Design and coding by dtsudo (https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nThe source code is written in C#.\n\nBridge.NET is used to transpile the C# source code into javascript.\nBridge.NET is licensed under Apache License 2.0.\n(https://github.com/bridgedotnet/Bridge)";
                 },
@@ -5077,8 +5074,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 320) | 0), 400, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View Bridge.NET license text", 11, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
                 } else if (buildType === DTLibrary.BuildType.WebEmbedded) {
                     this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(170, ((height - 145) | 0), 235, 20, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View Bridge.NET license text", 5, 3, ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt);
-                } else if (buildType === DTLibrary.BuildType.Desktop) {
-                    this.viewLicenseButton = null;
                 } else {
                     throw new System.Exception();
                 }
@@ -5086,12 +5081,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         },
         methods: {
             ProcessFrame: function (mouseInput, previousMouseInput, soundOutput) {
-                var clickedButton;
-                if (this.viewLicenseButton != null) {
-                    clickedButton = this.viewLicenseButton.ProcessFrame(mouseInput, previousMouseInput);
-                } else {
-                    clickedButton = false;
-                }
+                var clickedButton = this.viewLicenseButton.ProcessFrame(mouseInput, previousMouseInput);
 
                 if (this.buildType === DTLibrary.BuildType.WebEmbedded) {
                     this.isHoverOverGitHubUrl = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.IsHoverOverGitHubUrl(mouseInput, this.height);
@@ -5113,35 +5103,29 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 return new ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.Result(clickedButton, clickUrl);
             },
             Render: function (displayOutput) {
-                if (this.buildType === DTLibrary.BuildType.Desktop) {
-                    var text = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetDesktopVersionText();
+                if (this.buildType === DTLibrary.BuildType.WebStandAlone) {
+                    var text = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetWebStandAloneVersionText();
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
-                } else if (this.buildType === DTLibrary.BuildType.WebStandAlone) {
-                    var text1 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetWebStandAloneVersionText();
+                } else if (this.buildType === DTLibrary.BuildType.WebEmbedded) {
+                    var text1 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetWebEmbeddedVersionText();
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text1, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
-                } else if (this.buildType === DTLibrary.BuildType.WebEmbedded) {
-                    var text2 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetWebEmbeddedVersionText();
-
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text2, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((((this.height - 10) | 0) - 226) | 0), "GitHub:", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(109, ((((this.height - 10) | 0) - 226) | 0), "https://github.com/dtsudo", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, this.isHoverOverGitHubUrl ? new DTLibrary.DTColor.ctor(0, 0, 255) : DTLibrary.DTColor.Black());
                 } else if (this.buildType === DTLibrary.BuildType.Electron) {
-                    var text3 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetElectronVersionText();
+                    var text2 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetElectronVersionText();
 
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text3, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text2, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((((this.height - 10) | 0) - 370) | 0), "https://github.com/electron/electron/blob/69586684484c05a0078e3b916239186a5c3d749a/LICENSE", ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
                 } else {
                     throw new System.Exception();
                 }
 
-                if (this.viewLicenseButton != null) {
-                    this.viewLicenseButton.Render(displayOutput);
-                }
+                this.viewLicenseButton.Render(displayOutput);
             }
         }
     });
@@ -6542,21 +6526,21 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 GetSoundFilename: function (sound) {
                     switch (sound) {
                         case ChessCompStompWithHacksLibrary.GameSound.PlayerMove: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL16.ogg", "Kenney/jingles_STEEL16.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL16.ogg", "Kenney/jingles_STEEL16.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.AIMove: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL00.ogg", "Kenney/jingles_STEEL00.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL00.ogg", "Kenney/jingles_STEEL00.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.Win: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL10.ogg", "Kenney/jingles_STEEL10.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL10.ogg", "Kenney/jingles_STEEL10.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.StalemateOrDefeat: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL14.ogg", "Kenney/jingles_STEEL14.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/jingles_STEEL14.ogg", "Kenney/jingles_STEEL14.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.NukeLaunch: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/rumble3.ogg", "Kenney/rumble3.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/rumble3.ogg", "Kenney/rumble3.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.NukeExplosion: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/rumble1.ogg", "Kenney/rumble1.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/rumble1.ogg", "Kenney/rumble1.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.Click: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/click3_Modified.ogg", "Kenney/click3_Modified.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/click3_Modified.ogg", "Kenney/click3_Modified.flac");
                         case ChessCompStompWithHacksLibrary.GameSound.Woosh: 
-                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/woosh2_Modified.ogg", "Kenney/woosh2_Modified.wav");
+                            return new ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo("Kenney/woosh2_Modified.ogg", "Kenney/woosh2_Modified.flac");
                         default: 
                             throw new System.Exception();
                     }
@@ -6590,14 +6574,14 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     Bridge.define("ChessCompStompWithHacksLibrary.GameSoundUtil.SoundFilenameInfo", {
         $kind: "nested class",
         fields: {
-            DefaultFilename: null,
-            WavFilename: null
+            OggFilename: null,
+            FlacFilename: null
         },
         ctors: {
-            ctor: function (defaultFilename, wavFilename) {
+            ctor: function (oggFilename, flacFilename) {
                 this.$initialize();
-                this.DefaultFilename = defaultFilename;
-                this.WavFilename = wavFilename;
+                this.OggFilename = oggFilename;
+                this.FlacFilename = flacFilename;
             }
         }
     });
@@ -10279,10 +10263,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         $kind: "enum",
         statics: {
             fields: {
-                Desktop: 0,
-                WebStandAlone: 1,
-                WebEmbedded: 2,
-                Electron: 3
+                WebStandAlone: 0,
+                WebEmbedded: 1,
+                Electron: 2
             }
         }
     });
@@ -16950,13 +16933,92 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.desiredSoundVolume = ChessCompStompWithHacksLibrary.GlobalState.DEFAULT_VOLUME;
                 this.currentSoundVolume = this.desiredSoundVolume;
                 this.elapsedMicrosPerFrame = elapsedMicrosPerFrame;
-                eval("\r\n\t\t\t\twindow.BridgeSoundOutputJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tvar soundDictionary = {};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar numberOfAudioObjectsLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadSounds = function (soundNames) {\r\n\t\t\t\t\t\tvar soundNamesArray = soundNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar numberOfAudioObjects = soundNamesArray.length * 4;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < soundNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar soundName = soundNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (soundDictionary[soundName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tsoundDictionary[soundName] = [];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();\r\n\t\t\t\t\t\t\tfor (var j = 0; j < 4; j++) {\r\n\t\t\t\t\t\t\t\tvar audio = new Audio(soundPath);\r\n\t\t\t\t\t\t\t\taudio.addEventListener('canplaythrough', function () {\r\n\t\t\t\t\t\t\t\t\tnumberOfAudioObjectsLoaded++;\r\n\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tsoundDictionary[soundName].push(audio);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t//return numberOfAudioObjects === numberOfAudioObjectsLoaded;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar playSound = function (soundName, volume) {\r\n\t\t\t\t\t\tvar sound = soundDictionary[soundName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (volume > 1.0)\r\n\t\t\t\t\t\t\tvolume = 1.0;\r\n\t\t\t\t\t\tif (volume < 0.0)\r\n\t\t\t\t\t\t\tvolume = 0.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar audio = sound[0];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < sound.length; i++) {\r\n\t\t\t\t\t\t\tif (i === sound.length - 1)\r\n\t\t\t\t\t\t\t\tsound[i] = audio;\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\tsound[i] = sound[i+1];\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\taudio.volume = volume;\r\n\t\t\t\t\t\taudio.play();\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadSounds: loadSounds,\r\n\t\t\t\t\t\tplaySound: playSound\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                
+				window.BridgeSoundOutputJavascript = ((function () {
+					'use strict';
+						
+					let soundDictionary = {};
+					
+					let numberOfAudioObjectsLoaded = 0;
+					
+					let loadSounds = function (oggSoundNames, flacSoundNames) {
+						let oggSoundNamesArray = oggSoundNames.split(',');
+						let flacSoundNamesArray = flacSoundNames.split(',');
+						
+						let numberOfAudioObjects = oggSoundNamesArray.length * 4;
+						
+						for (let i = 0; i < oggSoundNamesArray.length; i++) {
+							let soundName = oggSoundNamesArray[i];
+							let flacSoundName = flacSoundNamesArray[i];
+							
+							if (soundDictionary[soundName])
+								continue;
+							
+							soundDictionary[soundName] = [];
+							
+							let soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();
+							for (let j = 0; j < 4; j++) {
+								let hasAudioLoadingSucceeded = false;
+								let audio = new Audio(soundPath);
+								audio.addEventListener('canplaythrough', function () {
+									hasAudioLoadingSucceeded = true;
+									numberOfAudioObjectsLoaded++;
+								});
+
+								let checkForError;
+								checkForError = function () {
+									if (hasAudioLoadingSucceeded)
+										return;
+									if (audio.error !== null) {
+										audio.src = 'Data/Sound/' + flacSoundName + '?doNotCache=' + Date.now().toString();
+										return;
+									}
+
+									setTimeout(checkForError, 50 /* arbitrary */);
+								};
+								setTimeout(checkForError, 0);
+
+								soundDictionary[soundName].push(audio);
+							}
+						}
+						
+						return numberOfAudioObjects === numberOfAudioObjectsLoaded;
+					};
+					
+					var playSound = function (soundName, volume) {
+						var sound = soundDictionary[soundName];
+						
+						if (volume > 1.0)
+							volume = 1.0;
+						if (volume < 0.0)
+							volume = 0.0;
+						
+						var audio = sound[0];
+						
+						for (var i = 0; i < sound.length; i++) {
+							if (i === sound.length - 1)
+								sound[i] = audio;
+							else
+								sound[i] = sound[i+1];
+						}
+						
+						audio.volume = volume;
+						audio.play();
+					};
+					
+					return {
+						loadSounds: loadSounds,
+						playSound: playSound
+					};
+				})());
+			
             }
         },
         methods: {
             LoadSounds: function () {
                 var $t;
-                var soundNames = "";
+                var oggSoundNames = "";
+                var flacSoundNames = "";
                 var isFirst = true;
                 $t = Bridge.getEnumerator(System.Enum.getValues(ChessCompStompWithHacksLibrary.GameSound));
                 try {
@@ -16965,11 +17027,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         if (isFirst) {
                             isFirst = false;
                         } else {
-                            soundNames = (soundNames || "") + ",";
+                            oggSoundNames = (oggSoundNames || "") + ",";
+                            flacSoundNames = (flacSoundNames || "") + ",";
                         }
 
-                        var soundFilename = ChessCompStompWithHacksLibrary.GameSoundUtil.GetSoundFilename(gameSound).DefaultFilename;
-                        soundNames = (soundNames || "") + (soundFilename || "");
+                        var oggSoundFilename = ChessCompStompWithHacksLibrary.GameSoundUtil.GetSoundFilename(gameSound).OggFilename;
+                        oggSoundNames = (oggSoundNames || "") + (oggSoundFilename || "");
+
+                        var flacSoundFilename = ChessCompStompWithHacksLibrary.GameSoundUtil.GetSoundFilename(gameSound).FlacFilename;
+                        flacSoundNames = (flacSoundNames || "") + (flacSoundFilename || "");
                     }
                 } finally {
                     if (Bridge.is($t, System.IDisposable)) {
@@ -16977,11 +17043,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                if (Bridge.referenceEquals(soundNames, "")) {
+                if (Bridge.referenceEquals(oggSoundNames, "")) {
                     return true;
                 }
 
-                var result = eval("window.BridgeSoundOutputJavascript.loadSounds('" + (soundNames || "") + "')");
+                var result = eval("window.BridgeSoundOutputJavascript.loadSounds('" + (oggSoundNames || "") + "', '" + (flacSoundNames || "") + "')");
 
                 return result;
             },
@@ -17034,7 +17100,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 }
 
                 if (finalVolume > 0.0) {
-                    var soundFilename = ChessCompStompWithHacksLibrary.GameSoundUtil.GetSoundFilename(sound).DefaultFilename;
+                    var soundFilename = ChessCompStompWithHacksLibrary.GameSoundUtil.GetSoundFilename(sound).OggFilename;
                     window.BridgeSoundOutputJavascript.playSound(soundFilename, finalVolume);
                 }
             },
@@ -19128,6 +19194,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
                 var red = new DTLibrary.DTColor.ctor(255, 0, 0);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(51, 590, 836, 60, red, false);
@@ -19201,6 +19269,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
                 var red = new DTLibrary.DTColor.ctor(255, 0, 0);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(53, 483, 895, 162, red, false);
@@ -19274,6 +19344,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(50, 650, "1) Test keyboard\n2) Test mouse\n3) Test font\n4) Test sound\n5) Test music", ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
             },
             RenderMusic: function (musicOutput) {
@@ -19356,6 +19428,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this.x - 5) | 0), ((this.y - 5) | 0), 11, 11, DTLibrary.DTColor.Black(), true);
             },
             RenderMusic: function (musicOutput) {
@@ -19428,6 +19502,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
                 var dtColor;
 
                 switch (this.color) {
@@ -19532,7 +19608,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(128, 128, 128), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 if (this.volumePicker != null) {
                     this.volumePicker.Render(displayOutput);
@@ -19613,7 +19689,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(128, 128, 128), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 if (this.volumePicker != null) {
                     this.volumePicker.Render(displayOutput);
@@ -19633,7 +19709,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             volumePicker: null,
             startButton: null,
             continueButton: null,
-            quitButton: null,
             clearDataButton: null,
             creditsButton: null,
             versionString: null
@@ -19661,8 +19736,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.startButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
 
                 this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
-
-                this.quitButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 230, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Quit", 46, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
 
                 this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
 
@@ -19704,14 +19777,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
                         soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
                         return new ChessCompStompWithHacksLibrary.IntroScreenFrame(this.globalState, this.sessionState);
-                    }
-                }
-
-                if (this.globalState.BuildType === DTLibrary.BuildType.Desktop) {
-                    var clickedQuitButton = this.quitButton.ProcessFrame(mouseInput, previousMouseInput);
-                    if (clickedQuitButton) {
-                        this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
-                        return null;
                     }
                 }
 
@@ -19758,10 +19823,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.continueButton.Render(displayOutput);
                 } else {
                     this.startButton.Render(displayOutput);
-                }
-
-                if (this.globalState.BuildType === DTLibrary.BuildType.Desktop) {
-                    this.quitButton.Render(displayOutput);
                 }
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(958, 55, "v" + (this.versionString || ""), ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt, DTLibrary.DTColor.Black());
