@@ -16956,7 +16956,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 							
 							soundDictionary[soundName] = [];
 							
-							let soundPath = 'Data/Sound/' + soundName + '?doNotCache=' + Date.now().toString();
+							let soundPath = 'Data/Sound/' + flacSoundName + '?doNotCache=' + Date.now().toString();
 							for (let j = 0; j < 4; j++) {
 								let hasAudioLoadingSucceeded = false;
 								let audio = new Audio(soundPath);
