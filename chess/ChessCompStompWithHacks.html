@@ -9,24 +9,9 @@
 	<script src="bridge.meta.js"></script>
 	<script src="ChessCompStompWithHacks.js"></script>
 	<script src="ChessCompStompWithHacks.meta.js"></script>
-	<script>
-		window.d = function (str) {
-			let elem = document.createElement("div");
-			elem.append(str);
-			document.getElementById("dtsudo").append(elem);
-		};
-		
-		window.strCaching = {};
-		window.e = function (str) {
-			if (window.strCaching[str])
-				return;
-			window.strCaching[str] = true;
-			window.d(str);
-		};
-	</script>
+
 </head>
 <body style="overflow:hidden;">
-	<div id="dtsudo"></div>
 	<div>
 		<span id="fpsLabel"></span><span id="fps"></span>
 	</div>
