@@ -6472,15 +6472,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 GetMusicFilename: function (music) {
                     switch (music) {
                         case ChessCompStompWithHacksLibrary.GameMusic.TitleScreen: 
-                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/TitleScreen.ogg", "JuhaniJunkala/TitleScreen.wav");
+                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/TitleScreen.ogg", "JuhaniJunkala/TitleScreen.flac");
                         case ChessCompStompWithHacksLibrary.GameMusic.Level1: 
-                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Level1.ogg", "JuhaniJunkala/Level1.wav");
+                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Level1.ogg", "JuhaniJunkala/Level1.flac");
                         case ChessCompStompWithHacksLibrary.GameMusic.Level2: 
-                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Level2.ogg", "JuhaniJunkala/Level2.wav");
+                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Level2.ogg", "JuhaniJunkala/Level2.flac");
                         case ChessCompStompWithHacksLibrary.GameMusic.Level3: 
-                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Level3.ogg", "JuhaniJunkala/Level3.wav");
+                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Level3.ogg", "JuhaniJunkala/Level3.flac");
                         case ChessCompStompWithHacksLibrary.GameMusic.Ending: 
-                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Ending.ogg", "JuhaniJunkala/Ending.wav");
+                            return new ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo("JuhaniJunkala/Ending.ogg", "JuhaniJunkala/Ending.flac");
                         default: 
                             throw new System.Exception();
                     }
@@ -6508,14 +6508,14 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     Bridge.define("ChessCompStompWithHacksLibrary.GameMusicUtil.MusicFilenameInfo", {
         $kind: "nested class",
         fields: {
-            DefaultFilename: null,
-            WavFilename: null
+            OggFilename: null,
+            FlacFilename: null
         },
         ctors: {
-            ctor: function (defaultFilename, wavFilename) {
+            ctor: function (oggFilename, flacFilename) {
                 this.$initialize();
-                this.DefaultFilename = defaultFilename;
-                this.WavFilename = wavFilename;
+                this.OggFilename = oggFilename;
+                this.FlacFilename = flacFilename;
             }
         }
     });
@@ -16843,17 +16843,17 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function (stopWaitingEvenIfMusicHasNotLoaded) {
                 this.$initialize();
-                stopWaitingEvenIfMusicHasNotLoaded = true;
                 this.currentGameMusic = null;
                 this.currentVolume = 0;
 
-                eval("\r\n\t\t\t\twindow.BridgeMusicJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tvar musicDictionary = {};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar stopWaitingEvenIfMusicHasNotLoaded = " + ((stopWaitingEvenIfMusicHasNotLoaded ? "true" : "false") || "") + ";\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar numberOfAudioObjectsLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar stopWaiting = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (stopWaitingEvenIfMusicHasNotLoaded)\r\n\t\t\t\t\t\tsetTimeout(function () { stopWaiting = true; }, 2000);\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadMusic = function (musicNames) {\r\n\t\t\t\t\t\tvar musicNamesArray = musicNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar numberOfAudioObjects = musicNamesArray.length;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < musicNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar musicName = musicNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (musicDictionary[musicName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar musicPath = 'Data/Music/' + musicName + '?doNotCache=' + Date.now().toString();\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar audio = new Audio(musicPath);\r\n\t\t\t\t\t\t\taudio.addEventListener('canplaythrough', function () {\r\n\t\t\t\t\t\t\t\tnumberOfAudioObjectsLoaded++;\r\n\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\taudio.loop = true;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tmusicDictionary[musicName] = audio;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (stopWaiting)\r\n\t\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn numberOfAudioObjects === numberOfAudioObjectsLoaded;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar musicCounter = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar playMusic = function (musicName, volume) {\r\n\t\t\t\t\t\tmusicCounter++;\r\n\t\t\t\t\t\tvar currentMusicCounter = musicCounter;\r\n\t\t\t\t\t\tvar music = musicDictionary[musicName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (volume > 1.0)\r\n\t\t\t\t\t\t\tvolume = 1.0;\r\n\t\t\t\t\t\tif (volume < 0.0)\r\n\t\t\t\t\t\t\tvolume = 0.0;\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var m in musicDictionary) {\r\n\t\t\t\t\t\t\tvar audio = musicDictionary[m];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (audio === music) {\r\n\t\t\t\t\t\t\t\taudio.volume = volume;\r\n\t\t\t\t\t\t\t\tvar audioPromise = audio.play();\r\n\t\t\t\t\t\t\t\tif (audioPromise) {\r\n\t\t\t\t\t\t\t\t\taudioPromise.then(\r\n\t\t\t\t\t\t\t\t\t\tfunction () {},\r\n\t\t\t\t\t\t\t\t\t\tfunction () {\r\n\t\t\t\t\t\t\t\t\t\t\tsetTimeout(function () {\r\n\t\t\t\t\t\t\t\t\t\t\t\tif (currentMusicCounter === musicCounter)\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tplayMusic(musicName, volume);\r\n\t\t\t\t\t\t\t\t\t\t\t}, 50);\r\n\t\t\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\taudio.pause();\r\n\t\t\t\t\t\t\t\taudio.currentTime = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar stopMusic = function () {\r\n\t\t\t\t\t\tmusicCounter++;\r\n\t\t\t\t\t\tfor (var musicName in musicDictionary) {\r\n\t\t\t\t\t\t\tvar audio = musicDictionary[musicName];\r\n\t\t\t\t\t\t\taudio.pause();\r\n\t\t\t\t\t\t\taudio.currentTime = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadMusic: loadMusic,\r\n\t\t\t\t\t\tplayMusic: playMusic,\r\n\t\t\t\t\t\tstopMusic: stopMusic\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                eval("\r\n\t\t\t\twindow.BridgeMusicJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tlet musicDictionary = {};\r\n\t\t\t\t\t\r\n\t\t\t\t\tlet stopWaitingEvenIfMusicHasNotLoaded = " + ((stopWaitingEvenIfMusicHasNotLoaded ? "true" : "false") || "") + ";\r\n\t\t\t\t\t\r\n\t\t\t\t\tlet numberOfAudioObjectsLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tlet stopWaiting = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (stopWaitingEvenIfMusicHasNotLoaded)\r\n\t\t\t\t\t\tsetTimeout(function () { stopWaiting = true; }, 2000);\r\n\t\t\t\t\t\r\n\t\t\t\t\tlet loadMusic = function (oggMusicNames, flacMusicNames) {\r\n\t\t\t\t\t\tlet oggMusicNamesArray = oggMusicNames.split(',');\r\n\t\t\t\t\t\tlet flacMusicNamesArray = flacMusicNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet numberOfAudioObjects = oggMusicNamesArray.length;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (let i = 0; i < oggMusicNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tlet musicName = oggMusicNamesArray[i];\r\n\t\t\t\t\t\t\tlet flacMusicName = flacMusicNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (musicDictionary[musicName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet musicPath = 'Data/Music/' + musicName + '?doNotCache=' + Date.now().toString();\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet hasAudioLoadingSucceeded = false;\r\n\t\t\t\t\t\t\tlet audio = new Audio();\r\n\t\t\t\t\t\t\taudio.addEventListener('canplaythrough', function () {\r\n\t\t\t\t\t\t\t\thasAudioLoadingSucceeded = true;\r\n\t\t\t\t\t\t\t\tnumberOfAudioObjectsLoaded++;\r\n\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\taudio.src = musicPath;\r\n\t\t\t\t\t\t\taudio.load();\r\n\t\t\t\t\t\t\taudio.loop = true;\r\n\r\n\t\t\t\t\t\t\tlet checkForError;\r\n\t\t\t\t\t\t\tcheckForError = function () {\r\n\t\t\t\t\t\t\t\tif (hasAudioLoadingSucceeded)\r\n\t\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t\tif (audio.error !== null) {\r\n\t\t\t\t\t\t\t\t\taudio.src = 'Data/Music/' + flacMusicName + '?doNotCache=' + Date.now().toString();\r\n\t\t\t\t\t\t\t\t\taudio.load();\r\n\t\t\t\t\t\t\t\t\taudio.loop = true;\r\n\t\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\t\t\tsetTimeout(checkForError, 50 /* arbitrary */);\r\n\t\t\t\t\t\t\t};\r\n\t\t\t\t\t\t\tsetTimeout(checkForError, 0);\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tmusicDictionary[musicName] = audio;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (stopWaiting)\r\n\t\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn numberOfAudioObjects === numberOfAudioObjectsLoaded;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar musicCounter = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar playMusic = function (musicName, volume) {\r\n\t\t\t\t\t\tmusicCounter++;\r\n\t\t\t\t\t\tvar currentMusicCounter = musicCounter;\r\n\t\t\t\t\t\tvar music = musicDictionary[musicName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (volume > 1.0)\r\n\t\t\t\t\t\t\tvolume = 1.0;\r\n\t\t\t\t\t\tif (volume < 0.0)\r\n\t\t\t\t\t\t\tvolume = 0.0;\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var m in musicDictionary) {\r\n\t\t\t\t\t\t\tvar audio = musicDictionary[m];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (audio === music) {\r\n\t\t\t\t\t\t\t\taudio.volume = volume;\r\n\t\t\t\t\t\t\t\tvar audioPromise = audio.play();\r\n\t\t\t\t\t\t\t\tif (audioPromise) {\r\n\t\t\t\t\t\t\t\t\taudioPromise.then(\r\n\t\t\t\t\t\t\t\t\t\tfunction () {},\r\n\t\t\t\t\t\t\t\t\t\tfunction () {\r\n\t\t\t\t\t\t\t\t\t\t\tsetTimeout(function () {\r\n\t\t\t\t\t\t\t\t\t\t\t\tif (currentMusicCounter === musicCounter)\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tplayMusic(musicName, volume);\r\n\t\t\t\t\t\t\t\t\t\t\t}, 50);\r\n\t\t\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\taudio.pause();\r\n\t\t\t\t\t\t\t\taudio.currentTime = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar stopMusic = function () {\r\n\t\t\t\t\t\tmusicCounter++;\r\n\t\t\t\t\t\tfor (var musicName in musicDictionary) {\r\n\t\t\t\t\t\t\tvar audio = musicDictionary[musicName];\r\n\t\t\t\t\t\t\taudio.pause();\r\n\t\t\t\t\t\t\taudio.currentTime = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadMusic: loadMusic,\r\n\t\t\t\t\t\tplayMusic: playMusic,\r\n\t\t\t\t\t\tstopMusic: stopMusic\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
             }
         },
         methods: {
             LoadMusic: function () {
                 var $t;
-                var musicNames = "";
+                var oggMusicNames = "";
+                var flacMusicNames = "";
                 var isFirst = true;
                 $t = Bridge.getEnumerator(System.Enum.getValues(ChessCompStompWithHacksLibrary.GameMusic));
                 try {
@@ -16862,9 +16862,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         if (isFirst) {
                             isFirst = false;
                         } else {
-                            musicNames = (musicNames || "") + ",";
+                            oggMusicNames = (oggMusicNames || "") + ",";
+                            flacMusicNames = (flacMusicNames || "") + ",";
                         }
-                        musicNames = (musicNames || "") + (ChessCompStompWithHacksLibrary.GameMusicUtil.GetMusicFilename(gameMusic).DefaultFilename || "");
+                        oggMusicNames = (oggMusicNames || "") + (ChessCompStompWithHacksLibrary.GameMusicUtil.GetMusicFilename(gameMusic).OggFilename || "");
+                        flacMusicNames = (flacMusicNames || "") + (ChessCompStompWithHacksLibrary.GameMusicUtil.GetMusicFilename(gameMusic).FlacFilename || "");
                     }
                 } finally {
                     if (Bridge.is($t, System.IDisposable)) {
@@ -16872,11 +16874,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                if (Bridge.referenceEquals(musicNames, "")) {
+                if (Bridge.referenceEquals(oggMusicNames, "")) {
                     return true;
                 }
 
-                var result = eval("window.BridgeMusicJavascript.loadMusic('" + (musicNames || "") + "')");
+                var result = eval("window.BridgeMusicJavascript.loadMusic('" + (oggMusicNames || "") + "', '" + (flacMusicNames || "") + "')");
 
                 return result;
             },
@@ -16896,7 +16898,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     finalVolume = 0.0;
                 }
 
-                window.BridgeMusicJavascript.playMusic(ChessCompStompWithHacksLibrary.GameMusicUtil.GetMusicFilename(music).DefaultFilename, finalVolume);
+                window.BridgeMusicJavascript.playMusic(ChessCompStompWithHacksLibrary.GameMusicUtil.GetMusicFilename(music).OggFilename, finalVolume);
             },
             StopMusic: function () {
                 if (this.currentGameMusic == null) {
