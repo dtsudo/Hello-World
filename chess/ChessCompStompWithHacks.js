@@ -16942,6 +16942,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 					let numberOfAudioObjectsLoaded = 0;
 					
 					let loadSounds = function (oggSoundNames, flacSoundNames) {
+						window.e("loading sounds");
 						let oggSoundNamesArray = oggSoundNames.split(',');
 						let flacSoundNamesArray = flacSoundNames.split(',');
 						
@@ -16961,6 +16962,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 								let hasAudioLoadingSucceeded = false;
 								let audio = new Audio(soundPath);
 								audio.addEventListener('canplaythrough', function () {
+									window.e("finished loading: " + soundPath + " " + j);
 									hasAudioLoadingSucceeded = true;
 									numberOfAudioObjectsLoaded++;
 								});
@@ -16970,6 +16972,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 									if (hasAudioLoadingSucceeded)
 										return;
 									if (audio.error !== null) {
+										window.e("RAN INTO ERROR LOADING: " + soundPath + " " + j);
 										audio.src = 'Data/Sound/' + flacSoundName + '?doNotCache=' + Date.now().toString();
 										return;
 									}
