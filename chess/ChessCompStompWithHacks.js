@@ -267,7 +267,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             methods: {
                 InitializeDisplayTypeHandlingJavascript: function (isWebStandalone) {
-                    eval("\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet isWebStandalone = " + ((isWebStandalone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches && false;\r\n\r\n\t\t\t\t\t\tif (window.d !== undefined)\r\n\t\t\t\t\t\t\tisDesktop = window.d;\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(5, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight; // sic\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(5, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif (isDesktop && !isWebStandalone || !isDesktop) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = canvas.width + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = canvas.height + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return currentCanvasWidth; },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return currentCanvasHeight; }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                    eval("\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet isWebStandalone = " + ((isWebStandalone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches && false;\r\n\r\n\t\t\t\t\t\tif (window.d !== undefined)\r\n\t\t\t\t\t\t\tisDesktop = window.d;\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(Math.round(defaultHeight * 1.6), Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight; // sic\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(Math.round(defaultHeight * 1.6), Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif (isDesktop && !isWebStandalone || !isDesktop) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = canvas.width + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = canvas.height + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return currentCanvasWidth; },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return currentCanvasHeight; }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
                 },
                 InitializeClearCanvasJavascript: function () {
                     
@@ -414,7 +414,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
 
-                    ChessCompStompWithHacks.GameInitializer.InitializeDisplayTypeHandlingJavascript(buildType === DTLibrary.BuildType.WebStandAlone && false);
+                    ChessCompStompWithHacks.GameInitializer.InitializeDisplayTypeHandlingJavascript(buildType === DTLibrary.BuildType.WebStandAlone);
 
                     if (buildType === DTLibrary.BuildType.WebEmbedded || buildType === DTLibrary.BuildType.Electron) {
                     }
@@ -3987,10 +3987,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             font: 0,
             isHover: false,
             isClicked: false,
+            isMobileDisplayType: false,
             previousMouseInput: null
         },
         ctors: {
-            ctor: function (x, y, width, height, backgroundColor, hoverColor, clickColor, text, textXOffset, textYOffset, font) {
+            ctor: function (x, y, width, height, backgroundColor, hoverColor, clickColor, text, textXOffset, textYOffset, font, isMobileDisplayType) {
+                if (isMobileDisplayType === void 0) { isMobileDisplayType = false; }
+
                 this.$initialize();
                 this.x = x;
                 this.y = y;
@@ -4008,9 +4011,17 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.isClicked = false;
 
                 this.previousMouseInput = null;
+
+                this.isMobileDisplayType = isMobileDisplayType;
             }
         },
         methods: {
+            SetX: function (x) {
+                this.x = x;
+            },
+            SetY: function (y) {
+                this.y = y;
+            },
             IsHover: function (mouseInput) {
                 var mouseX = mouseInput.DTLibrary$IMouse$GetX();
                 var mouseY = mouseInput.DTLibrary$IMouse$GetY();
@@ -4055,7 +4066,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 return false;
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.x, this.y, ((this.width - 1) | 0), ((this.height - 1) | 0), this.isClicked ? this.clickColor : (this.isHover ? this.hoverColor : this.backgroundColor), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.x, this.y, ((this.width - 1) | 0), ((this.height - 1) | 0), this.isClicked ? this.clickColor : ((this.isHover && !this.isMobileDisplayType) ? this.hoverColor : this.backgroundColor), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.x, this.y, this.width, this.height, DTLibrary.DTColor.Black(), false);
 
@@ -5162,9 +5173,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.isHoverOverGitHubUrl = false;
 
                 if (buildType === DTLibrary.BuildType.WebStandAlone || buildType === DTLibrary.BuildType.Electron) {
-                    this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 320) | 0), 400, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View Bridge.NET license text", 11, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                    this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 320) | 0), 400, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View Bridge.NET license text", 11, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
                 } else if (buildType === DTLibrary.BuildType.WebEmbedded) {
-                    this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(170, ((height - 145) | 0), 235, 20, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View Bridge.NET license text", 5, 3, ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt);
+                    this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(170, ((height - 145) | 0), 235, 20, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View Bridge.NET license text", 5, 3, ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt, false);
                 } else {
                     throw new System.Exception();
                 }
@@ -5259,7 +5270,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.height = height;
 
-                this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 203) | 0), 250, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View license text", 10, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 203) | 0), 250, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View license text", 10, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -5313,7 +5324,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.height = height;
 
-                this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 147) | 0), 250, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View license text", 10, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.viewLicenseButton = new ChessCompStompWithHacksLibrary.Button(10, ((height - 147) | 0), 250, 50, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "View license text", 10, 11, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -5448,7 +5459,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.previousMouseInput = null;
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(350, 37, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "OK", 57, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(350, 37, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "OK", 57, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -7164,7 +7175,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.allowResearchingHacks = allowResearchingHacks;
 
-                this.resetHacksButton = new ChessCompStompWithHacksLibrary.Button(8, 70, 170, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset hacks", 18, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.resetHacksButton = new ChessCompStompWithHacksLibrary.Button(8, 70, 170, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset hacks", 18, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
                 this.hackDisplays = new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplay)).ctor();
 
@@ -10230,7 +10241,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.previousMouseInput = null;
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((width - 150) | 0)), 2)) | 0), 55, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "Continue", 14, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((width - 150) | 0)), 2)) | 0), 55, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(colorTheme), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(colorTheme), "Continue", 14, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
                 this.objectiveDisplayUtil = new ChessCompStompWithHacksLibrary.ObjectiveDisplayUtil();
 
@@ -17498,7 +17509,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 var buttonWidth = 150;
 
-                this.confirmButton = new ChessCompStompWithHacksLibrary.Button(((ChessCompStompWithHacksLibrary.AIMessageFrame.PANEL_X + ((Bridge.Int.div((((ChessCompStompWithHacksLibrary.AIMessageFrame.PANEL_WIDTH - buttonWidth) | 0)), 2)) | 0)) | 0), 270, buttonWidth, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "OK", 57, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.confirmButton = new ChessCompStompWithHacksLibrary.Button(((ChessCompStompWithHacksLibrary.AIMessageFrame.PANEL_X + ((Bridge.Int.div((((ChessCompStompWithHacksLibrary.AIMessageFrame.PANEL_WIDTH - buttonWidth) | 0)), 2)) | 0)) | 0), 270, buttonWidth, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "OK", 57, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -17595,11 +17606,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
 
-                this.resignButton = new ChessCompStompWithHacksLibrary.Button(869, 100, 100, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Resign", 14, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.resignButton = new ChessCompStompWithHacksLibrary.Button(869, 100, 100, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Resign", 14, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
-                this.viewObjectivesButton = new ChessCompStompWithHacksLibrary.Button(770, 30, 199, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "View objectives", 16, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.viewObjectivesButton = new ChessCompStompWithHacksLibrary.Button(770, 30, 199, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "View objectives", 16, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
-                this.viewHacksButton = new ChessCompStompWithHacksLibrary.Button(621, 30, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "View hacks", 16, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.viewHacksButton = new ChessCompStompWithHacksLibrary.Button(621, 30, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "View hacks", 16, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
             }
         },
         methods: {
@@ -18218,9 +18229,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var buttonWidth = 150;
                 var buttonHeight = 40;
 
-                this.confirmButton = new ChessCompStompWithHacksLibrary.Button(340, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Yes", 47, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.confirmButton = new ChessCompStompWithHacksLibrary.Button(340, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Yes", 47, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.cancelButton = new ChessCompStompWithHacksLibrary.Button(510, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "No", 55, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.cancelButton = new ChessCompStompWithHacksLibrary.Button(510, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "No", 55, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -18327,7 +18338,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(439, 569, 96, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Sound, "Sound"));
                 this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(535, 569, 90, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Music, "Music"));
 
-                this.backButton = new ChessCompStompWithHacksLibrary.Button(780, 20, 200, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 67, 28, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.backButton = new ChessCompStompWithHacksLibrary.Button(780, 20, 200, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 67, 28, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
                 this.clickUrl = null;
             }
@@ -18662,7 +18673,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(700, 50, 200, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 40, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(700, 50, 200, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 40, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
                 this.numberOfHacksResearchedInPreviousFrame = sessionState.GetResearchedHacks().Count;
             }
@@ -18890,7 +18901,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.elapsedTimeMicros = 0;
 
                 var buttonWidth = 150;
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Begin", 38, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Begin", 38, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -19014,13 +19025,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
 
-                this.backToHackSelectionFrameButton = new ChessCompStompWithHacksLibrary.Button(62, 70, 100, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 22, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.backToHackSelectionFrameButton = new ChessCompStompWithHacksLibrary.Button(62, 70, 100, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 22, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
-                this.startNextGameButton_finalBattleNotUnlocked = new ChessCompStompWithHacksLibrary.Button(300, 50, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start next round", 84, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.startNextGameButton_finalBattleNotUnlocked = new ChessCompStompWithHacksLibrary.Button(300, 50, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start next round", 84, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.startFinalBattleButton = new ChessCompStompWithHacksLibrary.Button(300, 80, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start the Final Battle!", 46, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.startFinalBattleButton = new ChessCompStompWithHacksLibrary.Button(300, 80, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start the Final Battle!", 46, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.startNonFinalBattleButton_finalBattleNotComplete = new ChessCompStompWithHacksLibrary.Button(300, 50, 400, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start a regular game", 83, 7, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.startNonFinalBattleButton_finalBattleNotComplete = new ChessCompStompWithHacksLibrary.Button(300, 50, 400, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start a regular game", 83, 7, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
                 this.aiHackLevelSelectionButton = new ChessCompStompWithHacksLibrary.AIHackLevelSelectionButton(300, 50, 400, 31, "Start a regular game", 83, 7, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, sessionState.WillPlayerBeWhiteNextGame(), new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(sessionState.GetResearchedHacks()));
             }
@@ -19163,9 +19174,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var buttonWidth = 150;
                 var buttonHeight = 40;
 
-                this.confirmButton = new ChessCompStompWithHacksLibrary.Button(340, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Yes", 47, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.confirmButton = new ChessCompStompWithHacksLibrary.Button(340, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Yes", 47, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.cancelButton = new ChessCompStompWithHacksLibrary.Button(510, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "No", 55, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.cancelButton = new ChessCompStompWithHacksLibrary.Button(510, 295, buttonWidth, buttonHeight, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "No", 55, 8, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -19291,9 +19302,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.panelY = showPausedText ? ChessCompStompWithHacksLibrary.SettingsMenuFrame.PANEL_Y_WITH_PAUSE : ChessCompStompWithHacksLibrary.SettingsMenuFrame.PANEL_Y_WITHOUT_PAUSE;
                 this.panelHeight = showPausedText ? ChessCompStompWithHacksLibrary.SettingsMenuFrame.PANEL_HEIGHT_WITH_PAUSE : ChessCompStompWithHacksLibrary.SettingsMenuFrame.PANEL_HEIGHT_WITHOUT_PAUSE;
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(380, ((this.panelY + 80) | 0), ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_WIDTH, ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_HEIGHT, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 76, 12, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(380, ((this.panelY + 80) | 0), ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_WIDTH, ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_HEIGHT, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 76, 12, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, false);
 
-                this.backToTitleScreenButton = new ChessCompStompWithHacksLibrary.Button(380, ((this.panelY + 20) | 0), ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_WIDTH, ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_HEIGHT, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Return to title screen", 11, 12, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt);
+                this.backToTitleScreenButton = new ChessCompStompWithHacksLibrary.Button(380, ((this.panelY + 20) | 0), ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_WIDTH, ChessCompStompWithHacksLibrary.SettingsMenuFrame.BUTTON_HEIGHT, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Return to title screen", 11, 12, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, false);
             }
         },
         methods: {
@@ -19995,19 +20006,19 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.versionString = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo().Version;
 
-                this.startButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.startButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
-                this.creditsButton = new ChessCompStompWithHacksLibrary.Button(895, 5, 100, 35, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Credits", 13, 10, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt);
+                this.creditsButton = new ChessCompStompWithHacksLibrary.Button(895, 5, 100, 35, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Credits", 13, 10, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, false);
             }
         },
         methods: {
             ProcessDisplayType: function (displayType, displayProcessing) {
                 if (displayType !== DTLibrary.DisplayType.Desktop) {
-                    return new ChessCompStompWithHacksLibrary.TitleScreenMobileFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.TitleScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
                 }
 
                 return this;
@@ -20131,26 +20142,39 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "RenderMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$RenderMusic"
         ],
         ctors: {
-            ctor: function (globalState, sessionState) {
+            ctor: function (globalState, sessionState, display) {
                 this.$initialize();
                 this.globalState = globalState;
                 this.sessionState = sessionState;
                 this.volumePicker = null;
 
-                var buttonWidth = 150;
-
                 this.versionString = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo().Version;
 
-                this.startButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.startButton = new ChessCompStompWithHacksLibrary.Button(425, 300, 400, 200, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, true);
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(425, 300, 400, 200, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, true);
 
-                this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt);
+                this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 80, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, true);
 
-                this.creditsButton = new ChessCompStompWithHacksLibrary.Button(895, 5, 100, 35, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Credits", 13, 10, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt);
+                this.creditsButton = new ChessCompStompWithHacksLibrary.Button(895, 5, 100, 80, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Credits", 13, 10, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, true);
+
+                this.UpdateButtonPositions(display);
             }
         },
         methods: {
+            UpdateButtonPositions: function (display) {
+                this.startButton.SetX(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 400) | 0)), 2)) | 0));
+                this.startButton.SetY(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() - 200) | 0)), 2)) | 0));
+
+                this.continueButton.SetX(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 400) | 0)), 2)) | 0));
+                this.continueButton.SetY(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() - 200) | 0)), 2)) | 0));
+
+
+                this.clearDataButton.SetX(160);
+                this.clearDataButton.SetY(10);
+
+                this.creditsButton.SetX(((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 105) | 0));
+            },
             ProcessDisplayType: function (displayType, displayProcessing) {
                 if (displayType === DTLibrary.DisplayType.Desktop) {
                     return new ChessCompStompWithHacksLibrary.TitleScreenFrame(this.globalState, this.sessionState);
@@ -20166,6 +20190,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             ProcessExtraTime: function (milliseconds) { },
             GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
+                this.UpdateButtonPositions(displayProcessing);
+
                 if (this.volumePicker == null) {
                     this.volumePicker = new ChessCompStompWithHacksLibrary.SoundAndMusicVolumePicker(0, 0, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume(), this.globalState.MusicVolume, this.globalState.ElapsedMicrosPerFrame);
                 }
@@ -20228,7 +20254,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             Render: function (displayOutput) {
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(182, 510, "Chess Comp Stomp With Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((Bridge.Int.div(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), 2)) | 0) - 325) | 0), ((((Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), 3), 4)) | 0) + 32) | 0), "Chess Comp Stomp With Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
 
                 if (this.sessionState.HasStarted) {
                     this.clearDataButton.Render(displayOutput);
@@ -20240,7 +20266,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.startButton.Render(displayOutput);
                 }
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(958, 55, "v" + (this.versionString || ""), ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt, DTLibrary.DTColor.Black());
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth() - 52) | 0), 105, "v" + (this.versionString || ""), ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
 
                 this.creditsButton.Render(displayOutput);
 
@@ -20283,7 +20309,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
 
-                this.backToGameButton = new ChessCompStompWithHacksLibrary.Button(300, 55, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back to game", 113, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.backToGameButton = new ChessCompStompWithHacksLibrary.Button(300, 55, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back to game", 113, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -20377,7 +20403,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.scrollableTextDisplay = new ChessCompStompWithHacksLibrary.ScrollableTextDisplay(23, 123, 952, 554, 16, 34, ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt, DTLibrary.DTColor.Black(), text);
 
-                this.backButton = new ChessCompStompWithHacksLibrary.Button(400, 50, 200, 60, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 67, 16, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.backButton = new ChessCompStompWithHacksLibrary.Button(400, 50, 200, 60, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 67, 16, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -20461,7 +20487,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
 
-                this.backToGameButton = new ChessCompStompWithHacksLibrary.Button(300, 55, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back to game", 113, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt);
+                this.backToGameButton = new ChessCompStompWithHacksLibrary.Button(300, 55, 400, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back to game", 113, 27, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
