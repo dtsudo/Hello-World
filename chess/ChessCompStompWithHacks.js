@@ -30,7 +30,92 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.$initialize();
                 this.canvasWidthAndHeightInfo = canvasWidthAndHeightInfo;
 
-                eval("\r\n\t\t\t\twindow.BridgeDisplayFontJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar fontDictionary = {};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar fontFamilyCount = 0;\r\n\t\t\t\t\tvar numberOfFontObjectsLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar finishedLoading = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadFonts = function (fontNames) {\r\n\t\t\t\t\t\tvar fontNamesArray = fontNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar numberOfFontObjects = fontNamesArray.length;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < fontNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar fontName = fontNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (fontDictionary[fontName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar fontFamilyName = 'DTFontFamily' + fontFamilyCount;\r\n\t\t\t\t\t\t\tfontFamilyCount++;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar font = new FontFace(fontFamilyName, 'url(Data/Font/' + fontName + ')');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tfontDictionary[fontName] = {\r\n\t\t\t\t\t\t\t\tfont: font,\r\n\t\t\t\t\t\t\t\tfontFamilyName: fontFamilyName\r\n\t\t\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tfont.load().then((function (f) {\r\n\t\t\t\t\t\t\t\treturn function () {\r\n\t\t\t\t\t\t\t\t\tdocument.fonts.add(f);\r\n\t\t\t\t\t\t\t\t\tnumberOfFontObjectsLoaded++;\r\n\t\t\t\t\t\t\t\t};\r\n\t\t\t\t\t\t\t})(font));\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfinishedLoading = numberOfFontObjects === numberOfFontObjectsLoaded;\r\n\t\t\t\t\t\treturn finishedLoading;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tvar drawText = function (x, y, str, fontName, javascriptFontSize, lineHeight, red, green, blue, alpha) {\r\n\t\t\t\t\t\tif (context === null) {\r\n\t\t\t\t\t\t\tvar canvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlineHeight = parseFloat(lineHeight);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.textBaseline = 'top';\r\n\t\t\t\t\t\tcontext.fillStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';\r\n\t\t\t\t\t\tcontext.strokeStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';\r\n\t\t\t\t\t\tcontext.font = javascriptFontSize + 'px \"' + fontDictionary[fontName].fontFamilyName + '\"';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar strArray = str.split('\\n');\r\n\t\t\t\t\t\tvar lineY = y;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < strArray.length; i++) {\r\n\t\t\t\t\t\t\tcontext.fillText(strArray[i], x, Math.round(lineY));\r\n\t\t\t\t\t\t\tlineY += lineHeight;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tvar tryDrawText = function (x, y, str, fontName, javascriptFontSize, lineHeight, red, green, blue, alpha) {\r\n\t\t\t\t\t\tif (!finishedLoading)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tdrawText(x, y, str, fontName, javascriptFontSize, lineHeight, red, green, blue, alpha);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadFonts: loadFonts,\r\n\t\t\t\t\t\tdrawText: drawText,\r\n\t\t\t\t\t\ttryDrawText: tryDrawText\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                
+				window.BridgeDisplayFontJavascript = ((function () {
+					'use strict';
+					
+					var fontDictionary = {};
+					
+					var context = null;
+					
+					var fontFamilyCount = 0;
+					var numberOfFontObjectsLoaded = 0;
+					
+					var finishedLoading = false;
+					
+					var loadFonts = function (fontNames) {
+						var fontNamesArray = fontNames.split(',');
+						
+						var numberOfFontObjects = fontNamesArray.length;
+						
+						for (var i = 0; i < fontNamesArray.length; i++) {
+							var fontName = fontNamesArray[i];
+							
+							if (fontDictionary[fontName])
+								continue;
+							
+							var fontFamilyName = 'DTFontFamily' + fontFamilyCount;
+							fontFamilyCount++;
+							
+							var font = new FontFace(fontFamilyName, 'url(Data/Font/' + fontName + ')');
+							
+							fontDictionary[fontName] = {
+								font: font,
+								fontFamilyName: fontFamilyName
+							};
+							
+							font.load().then((function (f) {
+								return function () {
+									document.fonts.add(f);
+									numberOfFontObjectsLoaded++;
+								};
+							})(font));
+						}
+						
+						finishedLoading = numberOfFontObjects === numberOfFontObjectsLoaded;
+						return finishedLoading;
+					};
+						
+					var drawText = function (x, y, str, fontName, javascriptFontSize, lineHeight, red, green, blue, alpha) {
+						if (context === null) {
+							var canvas = document.getElementById('bridgeCanvas');
+							
+							if (canvas === null)
+								return;
+							
+							context = canvas.getContext('2d', { alpha: false });
+						}
+						
+						lineHeight = parseFloat(lineHeight);
+						
+						context.textBaseline = 'top';
+						context.fillStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';
+						context.strokeStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';
+						context.font = javascriptFontSize + 'px "' + fontDictionary[fontName].fontFamilyName + '"';
+						
+						var strArray = str.split('\n');
+						var lineY = y;
+						
+						for (var i = 0; i < strArray.length; i++) {
+							context.fillText(strArray[i], x, Math.round(lineY));
+							lineY += lineHeight;
+						}
+					};
+						
+					var tryDrawText = function (x, y, str, fontName, javascriptFontSize, lineHeight, red, green, blue, alpha) {
+						if (!finishedLoading)
+							return;
+						
+						drawText(x, y, str, fontName, javascriptFontSize, lineHeight, red, green, blue, alpha);
+					};
+						
+					return {
+						loadFonts: loadFonts,
+						drawText: drawText,
+						tryDrawText: tryDrawText
+					};
+				})());
+			
             }
         },
         methods: {
@@ -109,13 +194,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             heightDictionary: null
         },
         ctors: {
-            ctor: function (canvasWidthAndHeightInfo) {
+            ctor: function (canvasWidthAndHeightInfo, canvasScalingFactor) {
                 this.$initialize();
                 this.canvasWidthAndHeightInfo = canvasWidthAndHeightInfo;
 
                 this.widthDictionary = new (System.Collections.Generic.Dictionary$2(ChessCompStompWithHacksLibrary.GameImage,System.Int32))();
                 this.heightDictionary = new (System.Collections.Generic.Dictionary$2(ChessCompStompWithHacksLibrary.GameImage,System.Int32))();
-                eval("\r\n\t\t\t\twindow.BridgeDisplayImagesJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar imgDict = {};\r\n\t\t\t\t\tvar widthDict = {};\r\n\t\t\t\t\tvar heightDict = {};\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\tvar radianConversion = 1.0 / 128.0 * (2.0 * Math.PI / 360.0);\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar numberOfImagesLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadImages = function (imageNames) {\r\n\t\t\t\t\t\tvar imageNamesArray = imageNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar count = 0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < imageNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar imageName = imageNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (imgDict[imageName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar imgPath = 'Data/Images/' + imageName;\r\n\t\t\t\t\t\t\tvar img = new Image();\r\n\t\t\t\t\t\t\timg.addEventListener('load', (function (a, b) {\r\n\t\t\t\t\t\t\t\treturn function () {\r\n\t\t\t\t\t\t\t\t\tnumberOfImagesLoaded++;\r\n\t\t\t\t\t\t\t\t\twidthDict[a] = b.naturalWidth;\r\n\t\t\t\t\t\t\t\t\theightDict[a] = b.naturalHeight;\r\n\t\t\t\t\t\t\t\t};\r\n\t\t\t\t\t\t\t})(imageName, img));\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\timg.src = imgPath;\r\n\t\t\t\t\t\t\timgDict[imageName] = img;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcount++;\r\n\t\t\t\t\t\t\tif (count === 15) // arbitrary\r\n\t\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn numberOfImagesLoaded === imageNamesArray.length;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar drawImageRotatedClockwise = function (imageName, x, y, degreesScaled, scalingFactorScaled) {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas !== null)\r\n\t\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar img = imgDict[imageName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (degreesScaled === 0 && scalingFactorScaled === 128) {\r\n\t\t\t\t\t\t\tcontext.drawImage(img, x, y);\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar scalingFactor = scalingFactorScaled / 128.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.translate(x, y);\r\n\t\t\t\t\t\tcontext.scale(scalingFactor, scalingFactor);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (degreesScaled !== 0) {\r\n\t\t\t\t\t\t\tcontext.translate(img.width / 2, img.height / 2);\r\n\t\t\t\t\t\t\tcontext.rotate(degreesScaled * radianConversion);\r\n\t\t\t\t\t\t\tcontext.translate(-img.width / 2, -img.height / 2);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.drawImage(img, 0, 0);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet ratio = 1;\r\n\t\t\t\t\t\tcontext.setTransform(ratio, 0, 0, ratio, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar drawImageRotatedClockwise2 = function (imageName, imageX, imageY, imageWidth, imageHeight, x, y, degreesScaled, scalingFactorScaled) {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas !== null)\r\n\t\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar img = imgDict[imageName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar scalingFactor = scalingFactorScaled / 128.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.translate(x, y);\r\n\t\t\t\t\t\tcontext.scale(scalingFactor, scalingFactor);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (degreesScaled !== 0) {\r\n\t\t\t\t\t\t\tcontext.translate(imageWidth / 2, imageHeight / 2);\r\n\t\t\t\t\t\t\tcontext.rotate(degreesScaled * radianConversion);\r\n\t\t\t\t\t\t\tcontext.translate(-imageWidth / 2, -imageHeight / 2);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.drawImage(img, imageX, imageY, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet ratio = 1;\r\n\t\t\t\t\t\tcontext.setTransform(ratio, 0, 0, ratio, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar getWidth = function (imageName) {\r\n\t\t\t\t\t\treturn widthDict[imageName];\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar getHeight = function (imageName) {\r\n\t\t\t\t\t\treturn heightDict[imageName];\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadImages: loadImages,\r\n\t\t\t\t\t\tdrawImageRotatedClockwise: drawImageRotatedClockwise,\r\n\t\t\t\t\t\tdrawImageRotatedClockwise2: drawImageRotatedClockwise2,\r\n\t\t\t\t\t\tgetWidth: getWidth,\r\n\t\t\t\t\t\tgetHeight: getHeight\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                eval("\r\n\t\t\t\twindow.BridgeDisplayImagesJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar imgDict = {};\r\n\t\t\t\t\tvar widthDict = {};\r\n\t\t\t\t\tvar heightDict = {};\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\tvar radianConversion = 1.0 / 128.0 * (2.0 * Math.PI / 360.0);\r\n\t\t\t\t\tvar canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\r\n\t\t\t\t\tvar numberOfImagesLoaded = 0;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar loadImages = function (imageNames) {\r\n\t\t\t\t\t\tvar imageNamesArray = imageNames.split(',');\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar count = 0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < imageNamesArray.length; i++) {\r\n\t\t\t\t\t\t\tvar imageName = imageNamesArray[i];\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (imgDict[imageName])\r\n\t\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tvar imgPath = 'Data/Images/' + imageName;\r\n\t\t\t\t\t\t\tvar img = new Image();\r\n\t\t\t\t\t\t\timg.addEventListener('load', (function (a, b) {\r\n\t\t\t\t\t\t\t\treturn function () {\r\n\t\t\t\t\t\t\t\t\tnumberOfImagesLoaded++;\r\n\t\t\t\t\t\t\t\t\twidthDict[a] = b.naturalWidth;\r\n\t\t\t\t\t\t\t\t\theightDict[a] = b.naturalHeight;\r\n\t\t\t\t\t\t\t\t};\r\n\t\t\t\t\t\t\t})(imageName, img));\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\timg.src = imgPath;\r\n\t\t\t\t\t\t\timgDict[imageName] = img;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcount++;\r\n\t\t\t\t\t\t\tif (count === 15) // arbitrary\r\n\t\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn numberOfImagesLoaded === imageNamesArray.length;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar drawImageRotatedClockwise = function (imageName, x, y, degreesScaled, scalingFactorScaled) {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas !== null)\r\n\t\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar img = imgDict[imageName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (degreesScaled === 0 && scalingFactorScaled === 128) {\r\n\t\t\t\t\t\t\tcontext.drawImage(img, x, y);\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar scalingFactor = scalingFactorScaled / 128.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.translate(x, y);\r\n\t\t\t\t\t\tcontext.scale(scalingFactor, scalingFactor);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (degreesScaled !== 0) {\r\n\t\t\t\t\t\t\tcontext.translate(img.width / 2, img.height / 2);\r\n\t\t\t\t\t\t\tcontext.rotate(degreesScaled * radianConversion);\r\n\t\t\t\t\t\t\tcontext.translate(-img.width / 2, -img.height / 2);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.drawImage(img, 0, 0);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar drawImageRotatedClockwise2 = function (imageName, imageX, imageY, imageWidth, imageHeight, x, y, degreesScaled, scalingFactorScaled) {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas !== null)\r\n\t\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar img = imgDict[imageName];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar scalingFactor = scalingFactorScaled / 128.0;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.translate(x, y);\r\n\t\t\t\t\t\tcontext.scale(scalingFactor, scalingFactor);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (degreesScaled !== 0) {\r\n\t\t\t\t\t\t\tcontext.translate(imageWidth / 2, imageHeight / 2);\r\n\t\t\t\t\t\t\tcontext.rotate(degreesScaled * radianConversion);\r\n\t\t\t\t\t\t\tcontext.translate(-imageWidth / 2, -imageHeight / 2);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.drawImage(img, imageX, imageY, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar getWidth = function (imageName) {\r\n\t\t\t\t\t\treturn widthDict[imageName];\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar getHeight = function (imageName) {\r\n\t\t\t\t\t\treturn heightDict[imageName];\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tloadImages: loadImages,\r\n\t\t\t\t\t\tdrawImageRotatedClockwise: drawImageRotatedClockwise,\r\n\t\t\t\t\t\tdrawImageRotatedClockwise2: drawImageRotatedClockwise2,\r\n\t\t\t\t\t\tgetWidth: getWidth,\r\n\t\t\t\t\t\tgetHeight: getHeight\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
             }
         },
         methods: {
@@ -202,7 +287,36 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.$initialize();
                 this.canvasWidthAndHeightInfo = canvasWidthAndHeightInfo;
 
-                eval("\r\n\t\t\t\twindow.BridgeDisplayRectangleJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar drawRectangle = function (x, y, width, height, red, green, blue, alpha, fill) {\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\t\t\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\t\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.fillStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';\r\n\t\t\t\t\t\tcontext.strokeStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (fill)\r\n\t\t\t\t\t\t\tcontext.fillRect(x, y, width, height);\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tcontext.strokeRect(x, y, width, height);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tdrawRectangle: drawRectangle\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                
+				window.BridgeDisplayRectangleJavascript = ((function () {
+					'use strict';
+					
+					var canvas = null;
+					var context = null;
+							
+					var drawRectangle = function (x, y, width, height, red, green, blue, alpha, fill) {
+								
+						if (canvas === null) {
+							canvas = document.getElementById('bridgeCanvas');		
+							if (canvas === null)
+								return;	
+							context = canvas.getContext('2d', { alpha: false });
+						}
+						
+						context.fillStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';
+						context.strokeStyle = 'rgba(' + red.toString() + ', ' + green.toString() + ', ' + blue.toString() + ', ' + (alpha / 255).toString() + ')';
+						
+						if (fill)
+							context.fillRect(x, y, width, height);
+						else
+							context.strokeRect(x, y, width, height);
+					};
+										
+					return {
+						drawRectangle: drawRectangle
+					};
+				})());
+			
             }
         },
         methods: {
@@ -258,6 +372,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 soundOutput: null,
                 music: null,
                 canvasWidthAndHeightInfo: null,
+                canvasScalingFactor: 0,
                 displayLogger: null,
                 shouldRenderDisplayLogger: false,
                 completedAchievements: null,
@@ -266,39 +381,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 clickUrl: null
             },
             methods: {
-                InitializeDisplayTypeHandlingJavascript: function (isWebStandalone) {
-                    eval("\r\n\r\n\t\t\t\tdocument.addEventListener('keydown', function (e) {\r\n\t\t\t\t\tif (e.key === 'd') {\r\n\t\t\t\t\t\tif (window.d === undefined)\r\n\t\t\t\t\t\t\twindow.d = false;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.d = !window.d;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (e.key === 'f') {\r\n\t\t\t\t\t\tif (window.f === undefined)\r\n\t\t\t\t\t\t\twindow.f = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.f = !window.f;\r\n\t\t\t\t\t}\r\n\t\t\t\t}, false);\r\n\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet ratio = 1;\r\n\r\n\t\t\t\t\tlet isWebStandalone = " + ((isWebStandalone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = ratio * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = ratio * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches;\r\n\r\n\t\t\t\t\t\tif (window.d !== undefined)\r\n\t\t\t\t\t\t\tisDesktop = window.d;\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(defaultWidth, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight; // sic\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(defaultWidth, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif ((isDesktop && !isWebStandalone || !isDesktop) && !window.f) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = canvas.width + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = canvas.height + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return Math.floor(currentCanvasWidth / ratio); },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return Math.floor(currentCanvasHeight / ratio); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                InitializeDisplayTypeHandlingJavascript: function (isWebStandalone, canvasScalingFactor) {
+                    eval("\r\n\r\n\t\t\t\tdocument.addEventListener('keydown', function (e) {\r\n\t\t\t\t\tif (e.key === 'd') {\r\n\t\t\t\t\t\tif (window.d === undefined)\r\n\t\t\t\t\t\t\twindow.d = false;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.d = !window.d;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (e.key === 'f') {\r\n\t\t\t\t\t\tif (window.f === undefined)\r\n\t\t\t\t\t\t\twindow.f = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.f = !window.f;\r\n\t\t\t\t\t}\r\n\t\t\t\t}, false);\r\n\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet context = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\r\n\t\t\t\t\tlet isWebStandalone = " + ((isWebStandalone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches;\r\n\r\n\t\t\t\t\t\tif (window.d !== undefined)\r\n\t\t\t\t\t\t\tisDesktop = window.d;\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(defaultWidth, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight; // sic\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(defaultWidth, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif ((isDesktop && !isWebStandalone || !isDesktop) && !window.f) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = Math.floor(canvas.width / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = Math.floor(canvas.height / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\t\t\t\t\thandleDisplayTypeChanges();\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return Math.floor(currentCanvasWidth / canvasScalingFactor); },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return Math.floor(currentCanvasHeight / canvasScalingFactor); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
                 },
-                InitializeClearCanvasJavascript: function () {
-                    
-				window.BridgeClearCanvasJavascript = ((function () {
-					'use strict';
-					
-					var canvas = null;
-					var context = null;
-								
-					var clearCanvas = function () {
-						if (canvas === null) {
-							canvas = document.getElementById('bridgeCanvas');
-							if (canvas === null)
-								return;	
-							context = canvas.getContext('2d', { alpha: false });
-						}
-						
-						context.clearRect(0, 0, canvas.width, canvas.height);
-						let ratio = 1;
-						context.setTransform(ratio, 0, 0, ratio, 0, 0);
-					};
-					
-					return {
-						clearCanvas: clearCanvas
-					};
-				})());
-			
+                InitializeClearCanvasJavascript: function (canvasScalingFactor) {
+                    eval("\r\n\t\t\t\twindow.BridgeClearCanvasJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar clearCanvas = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\t\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.clearRect(0, 0, canvas.width, canvas.height);\r\n\t\t\t\t\t\tlet canvasScalingFactor = " + canvasScalingFactor + ";\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tclearCanvas: clearCanvas\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
                 },
-                ClearCanvas: function () {
+                ClearCanvas: function (canvasScalingFactor) {
                     if (!ChessCompStompWithHacks.GameInitializer.hasInitializedClearCanvasJavascript) {
-                        ChessCompStompWithHacks.GameInitializer.InitializeClearCanvasJavascript();
+                        ChessCompStompWithHacks.GameInitializer.InitializeClearCanvasJavascript(canvasScalingFactor);
                         ChessCompStompWithHacks.GameInitializer.hasInitializedClearCanvasJavascript = true;
                     }
 
@@ -391,7 +482,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 				})());
 			
                 },
-                Start: function (fps, isEmbeddedVersion, isElectronVersion, stopWaitingEvenIfMusicHasNotLoaded, debugMode) {
+                Start: function (fps, isEmbeddedVersion, isElectronVersion, canvasScalingFactor, stopWaitingEvenIfMusicHasNotLoaded, debugMode) {
+                    ChessCompStompWithHacks.GameInitializer.canvasScalingFactor = canvasScalingFactor;
+
                     ChessCompStompWithHacks.GameInitializer.hasInitializedClearCanvasJavascript = false;
 
                     ChessCompStompWithHacks.GameInitializer.shouldRenderDisplayLogger = true;
@@ -416,7 +509,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
 
-                    ChessCompStompWithHacks.GameInitializer.InitializeDisplayTypeHandlingJavascript(buildType === DTLibrary.BuildType.WebStandAlone);
+                    ChessCompStompWithHacks.GameInitializer.InitializeDisplayTypeHandlingJavascript(buildType === DTLibrary.BuildType.WebStandAlone, canvasScalingFactor);
 
                     if (buildType === DTLibrary.BuildType.WebEmbedded || buildType === DTLibrary.BuildType.Electron) {
                     }
@@ -440,16 +533,16 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     ChessCompStompWithHacks.GameInitializer.frame = ChessCompStompWithHacksLibrary.GameInitialization.GetFirstFrame(globalState);
 
                     ChessCompStompWithHacks.GameInitializer.bridgeKeyboard = new ChessCompStompWithHacks.BridgeKeyboard(buildType === DTLibrary.BuildType.WebEmbedded || buildType === DTLibrary.BuildType.Electron);
-                    ChessCompStompWithHacks.GameInitializer.bridgeMouse = new ChessCompStompWithHacks.BridgeMouse();
+                    ChessCompStompWithHacks.GameInitializer.bridgeMouse = new ChessCompStompWithHacks.BridgeMouse(canvasScalingFactor);
 
-                    ChessCompStompWithHacks.GameInitializer.display = new ChessCompStompWithHacks.BridgeDisplay(ChessCompStompWithHacks.GameInitializer.canvasWidthAndHeightInfo);
+                    ChessCompStompWithHacks.GameInitializer.display = new ChessCompStompWithHacks.BridgeDisplay(ChessCompStompWithHacks.GameInitializer.canvasWidthAndHeightInfo, canvasScalingFactor);
                     ChessCompStompWithHacks.GameInitializer.soundOutput = new ChessCompStompWithHacks.BridgeSoundOutput(globalState.ElapsedMicrosPerFrame);
                     ChessCompStompWithHacks.GameInitializer.music = new ChessCompStompWithHacks.BridgeMusic(stopWaitingEvenIfMusicHasNotLoaded);
 
                     ChessCompStompWithHacks.GameInitializer.previousKeyboard = new DTLibrary.EmptyKeyboard();
                     ChessCompStompWithHacks.GameInitializer.previousMouse = new DTLibrary.EmptyMouse();
 
-                    ChessCompStompWithHacks.GameInitializer.ClearCanvas();
+                    ChessCompStompWithHacks.GameInitializer.ClearCanvas(canvasScalingFactor);
                     ChessCompStompWithHacks.GameInitializer.frame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render(ChessCompStompWithHacks.GameInitializer.display);
                     ChessCompStompWithHacks.GameInitializer.frame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$RenderMusic(ChessCompStompWithHacks.GameInitializer.music);
                     if (ChessCompStompWithHacks.GameInitializer.displayLogger != null && ChessCompStompWithHacks.GameInitializer.shouldRenderDisplayLogger) {
@@ -493,7 +586,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     ChessCompStompWithHacks.GameInitializer.frame = ChessCompStompWithHacks.GameInitializer.frame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetNextFrame(currentKeyboard, currentMouse, ChessCompStompWithHacks.GameInitializer.previousKeyboard, ChessCompStompWithHacks.GameInitializer.previousMouse, ChessCompStompWithHacks.GameInitializer.display, ChessCompStompWithHacks.GameInitializer.soundOutput, ChessCompStompWithHacks.GameInitializer.music);
                     ChessCompStompWithHacks.GameInitializer.frame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic();
                     ChessCompStompWithHacks.GameInitializer.soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$ProcessFrame();
-                    ChessCompStompWithHacks.GameInitializer.ClearCanvas();
+                    ChessCompStompWithHacks.GameInitializer.ClearCanvas(ChessCompStompWithHacks.GameInitializer.canvasScalingFactor);
                     ChessCompStompWithHacks.GameInitializer.frame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render(ChessCompStompWithHacks.GameInitializer.display);
                     ChessCompStompWithHacks.GameInitializer.frame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$RenderMusic(ChessCompStompWithHacks.GameInitializer.music);
 
@@ -551,10 +644,123 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 AddFpsDisplayJavascript: function () {
-                    eval("\n\t\t\t\twindow.FpsDisplayJavascript = ((function () {\n\t\t\t\t\t'use strict';\n\t\t\t\t\t\n\t\t\t\t\tvar numberOfFrames = 0;\n\t\t\t\t\tvar hasAddedFpsLabel = false;\n\t\t\t\t\tvar startTimeMillis = Date.now();\n\t\t\t\t\tvar fpsNode = null;\n\t\t\t\t\t\n\t\t\t\t\tvar frameComputedAndRendered = function () {\n\t\t\t\t\t\tnumberOfFrames++;\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\tvar displayFps = function () {\n\t\t\t\t\t\tif (!hasAddedFpsLabel) {\n\t\t\t\t\t\t\tvar fpsLabelNode = document.getElementById('fpsLabel');\n\t\t\t\t\t\t\tif (fpsLabelNode !== null) {\n\t\t\t\t\t\t\t\tfpsLabelNode.textContent = 'FPS: ';\n\t\t\t\t\t\t\t\thasAddedFpsLabel = true;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\tvar currentTimeMillis = Date.now();\n\t\t\t\t\t\tif (currentTimeMillis - startTimeMillis > 2000) {\n\t\t\t\t\t\t\tvar actualFps = numberOfFrames / 2;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tif (fpsNode === null)\n\t\t\t\t\t\t\t\tfpsNode = document.getElementById('fps');\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tif (fpsNode !== null)\n\t\t\t\t\t\t\t\tfpsNode.textContent = actualFps.toString();\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tnumberOfFrames = 0;\n\t\t\t\t\t\t\tstartTimeMillis = currentTimeMillis;\n\t\t\t\t\t\t}\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\treturn {\n\t\t\t\t\t\tframeComputedAndRendered: frameComputedAndRendered,\n\t\t\t\t\t\tdisplayFps: displayFps\n\t\t\t\t\t};\n\t\t\t\t})());\n\t\t\t");
+                    
+				window.FpsDisplayJavascript = ((function () {
+					'use strict';
+					
+					var numberOfFrames = 0;
+					var hasAddedFpsLabel = false;
+					var startTimeMillis = Date.now();
+					var fpsNode = null;
+					
+					var frameComputedAndRendered = function () {
+						numberOfFrames++;
+					};
+					
+					var displayFps = function () {
+						if (!hasAddedFpsLabel) {
+							var fpsLabelNode = document.getElementById('fpsLabel');
+							if (fpsLabelNode !== null) {
+								fpsLabelNode.textContent = 'FPS: ';
+								hasAddedFpsLabel = true;
+							}
+						}
+						
+						var currentTimeMillis = Date.now();
+						if (currentTimeMillis - startTimeMillis > 2000) {
+							var actualFps = numberOfFrames / 2;
+							
+							if (fpsNode === null)
+								fpsNode = document.getElementById('fps');
+							
+							if (fpsNode !== null)
+								fpsNode.textContent = actualFps.toString();
+							
+							numberOfFrames = 0;
+							startTimeMillis = currentTimeMillis;
+						}
+					};
+					
+					return {
+						frameComputedAndRendered: frameComputedAndRendered,
+						displayFps: displayFps
+					};
+				})());
+			
                 },
                 Initialize: function () {
-                    eval("\n\t\t\t\t((function () {\n\t\t\t\t\t'use strict';\n\t\t\t\t\t\n\t\t\t\t\tvar isEmbeddedVersion = false;\n\t\t\t\t\t\n\t\t\t\t\tvar stopWaitingEvenIfMusicHasNotLoaded = true;\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\tvar isElectronVersion = !isEmbeddedVersion\n\t\t\t\t\t\t&& (window.navigator.userAgent.indexOf('Electron') >= 0 || window.navigator.userAgent.indexOf('electron') >= 0);\n\t\t\t\t\t\n\t\t\t\t\tvar defaultFps = window.navigator.userAgent.indexOf('Gecko/') >= 0\n\t\t\t\t\t\t? 30\n\t\t\t\t\t\t: 60;\n\t\t\t\t\t\n\t\t\t\t\tvar urlParams = (new URL(document.location)).searchParams;\n\t\t\t\t\t\n\t\t\t\t\tvar showFps = urlParams.get('showfps') !== null\n\t\t\t\t\t\t? (urlParams.get('showfps') === 'true')\n\t\t\t\t\t\t: false;\n\t\t\t\t\tvar fps = urlParams.get('fps') !== null\n\t\t\t\t\t\t? parseInt(urlParams.get('fps'), 10)\n\t\t\t\t\t\t: defaultFps;\n\t\t\t\t\tvar debugMode = urlParams.get('debugmode') !== null\n\t\t\t\t\t\t? (urlParams.get('debugmode') === 'true')\n\t\t\t\t\t\t: false;\n\t\t\t\t\t\n\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.Start(fps, isEmbeddedVersion, isElectronVersion, stopWaitingEvenIfMusicHasNotLoaded, debugMode);\n\t\t\t\t\t\n\t\t\t\t\tvar computeAndRenderNextFrame;\n\t\t\t\t\t\n\t\t\t\t\tvar nextTimeToAct = Date.now() + (1000.0 / fps);\n\t\t\t\t\t\n\t\t\t\t\tvar hasProcessedExtraTime = false;\n\t\t\t\t\t\n\t\t\t\t\tcomputeAndRenderNextFrame = function () {\n\t\t\t\t\t\tvar now = Date.now();\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (nextTimeToAct > now) {\n\t\t\t\t\t\t\tif (!hasProcessedExtraTime) {\n\t\t\t\t\t\t\t\tvar extraTime = Math.round(nextTimeToAct - now);\n\t\t\t\t\t\t\t\tif (extraTime > 0)\n\t\t\t\t\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.ProcessExtraTime(extraTime);\n\t\t\t\t\t\t\t\thasProcessedExtraTime = true;\n\t\t\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 5);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\thasProcessedExtraTime = false;\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (nextTimeToAct < now - 5.0*(1000.0 / fps))\n\t\t\t\t\t\t\tnextTimeToAct = now - 5.0*(1000.0 / fps);\n\t\t\t\t\t\t\n\t\t\t\t\t\tnextTimeToAct = nextTimeToAct + (1000.0 / fps);\n\t\t\t\t\t\t\n\t\t\t\t\t\twindow.ChessCompStompWithHacks.GameInitializer.ComputeAndRenderNextFrame();\n\t\t\t\t\t\twindow.FpsDisplayJavascript.frameComputedAndRendered();\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (showFps)\n\t\t\t\t\t\t\twindow.FpsDisplayJavascript.displayFps();\n\t\t\t\t\t\t\n\t\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t\t};\n\t\t\t\t\t\n\t\t\t\t\tsetTimeout(computeAndRenderNextFrame, 0);\n\t\t\t\t})());\n\t\t\t");
+                    
+				((function () {
+					'use strict';
+					
+					var isEmbeddedVersion = false;
+					
+					var stopWaitingEvenIfMusicHasNotLoaded = true;
+
+					var canvasScalingFactor = 2;
+										
+					var isElectronVersion = !isEmbeddedVersion
+						&& (window.navigator.userAgent.indexOf('Electron') >= 0 || window.navigator.userAgent.indexOf('electron') >= 0);
+					
+					var defaultFps = window.navigator.userAgent.indexOf('Gecko/') >= 0
+						? 30
+						: 60;
+					
+					var urlParams = (new URL(document.location)).searchParams;
+					
+					var showFps = urlParams.get('showfps') !== null
+						? (urlParams.get('showfps') === 'true')
+						: false;
+					var fps = urlParams.get('fps') !== null
+						? parseInt(urlParams.get('fps'), 10)
+						: defaultFps;
+					var debugMode = urlParams.get('debugmode') !== null
+						? (urlParams.get('debugmode') === 'true')
+						: false;
+					
+					window.ChessCompStompWithHacks.GameInitializer.Start(fps, isEmbeddedVersion, isElectronVersion, canvasScalingFactor, stopWaitingEvenIfMusicHasNotLoaded, debugMode);
+					
+					var computeAndRenderNextFrame;
+					
+					var nextTimeToAct = Date.now() + (1000.0 / fps);
+					
+					var hasProcessedExtraTime = false;
+					
+					computeAndRenderNextFrame = function () {
+						var now = Date.now();
+						
+						if (nextTimeToAct > now) {
+							if (!hasProcessedExtraTime) {
+								var extraTime = Math.round(nextTimeToAct - now);
+								if (extraTime > 0)
+									window.ChessCompStompWithHacks.GameInitializer.ProcessExtraTime(extraTime);
+								hasProcessedExtraTime = true;
+								setTimeout(computeAndRenderNextFrame, 0);
+							} else {
+								setTimeout(computeAndRenderNextFrame, 5);
+							}
+							return;
+						}
+						
+						hasProcessedExtraTime = false;
+						
+						if (nextTimeToAct < now - 5.0*(1000.0 / fps))
+							nextTimeToAct = now - 5.0*(1000.0 / fps);
+						
+						nextTimeToAct = nextTimeToAct + (1000.0 / fps);
+						
+						window.ChessCompStompWithHacks.GameInitializer.ComputeAndRenderNextFrame();
+						window.FpsDisplayJavascript.frameComputedAndRendered();
+						
+						if (showFps)
+							window.FpsDisplayJavascript.displayFps();
+						
+						setTimeout(computeAndRenderNextFrame, 0);
+					};
+					
+					setTimeout(computeAndRenderNextFrame, 0);
+				})());
+			
                 }
             }
         }
@@ -8221,7 +8427,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImage.MusicOff, this._xPos, this._yPos, 0, Bridge.Int.mul(128, this._scalingFactor));
                 }
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this._xPos + Bridge.Int.mul(50, this._scalingFactor)) | 0), ((this._yPos + Bridge.Int.mul(10, this._scalingFactor)) | 0), ((Bridge.Int.mul(100, this._scalingFactor) + 1) | 0), ((Bridge.Int.mul(30, this._scalingFactor) + 1) | 0), DTLibrary.DTColor.Black(), false);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this._xPos + Bridge.Int.mul(50, this._scalingFactor)) | 0), ((this._yPos + Bridge.Int.mul(10, this._scalingFactor)) | 0), Bridge.Int.mul(100, this._scalingFactor), ((Bridge.Int.mul(30, this._scalingFactor) + 1) | 0), DTLibrary.DTColor.Black(), false);
 
                 if (this._currentVolume > 0) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this._xPos + Bridge.Int.mul(50, this._scalingFactor)) | 0), ((this._yPos + Bridge.Int.mul(10, this._scalingFactor)) | 0), Bridge.Int.mul(this._currentVolume, this._scalingFactor), ((Bridge.Int.mul(30, this._scalingFactor) + 1) | 0), DTLibrary.DTColor.Black(), true);
@@ -10183,7 +10389,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImage.SoundOff, this._xPos, this._yPos, 0, Bridge.Int.mul(128, this._scalingFactor));
                 }
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this._xPos + Bridge.Int.mul(50, this._scalingFactor)) | 0), ((this._yPos + Bridge.Int.mul(10, this._scalingFactor)) | 0), ((Bridge.Int.mul(100, this._scalingFactor) + 1) | 0), ((Bridge.Int.mul(30, this._scalingFactor) + 1) | 0), DTLibrary.DTColor.Black(), false);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this._xPos + Bridge.Int.mul(50, this._scalingFactor)) | 0), ((this._yPos + Bridge.Int.mul(10, this._scalingFactor)) | 0), Bridge.Int.mul(100, this._scalingFactor), ((Bridge.Int.mul(30, this._scalingFactor) + 1) | 0), DTLibrary.DTColor.Black(), false);
 
                 if (this._currentVolume > 0) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this._xPos + Bridge.Int.mul(50, this._scalingFactor)) | 0), ((this._yPos + Bridge.Int.mul(10, this._scalingFactor)) | 0), Bridge.Int.mul(this._currentVolume, this._scalingFactor), ((Bridge.Int.mul(30, this._scalingFactor) + 1) | 0), DTLibrary.DTColor.Black(), true);
@@ -11943,7 +12149,43 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function () {
                 this.$initialize();
-                eval("\r\n\t\t\t\twindow.BridgeFileIOJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar persistData = function (fileName, base64String) {\r\n\t\t\t\t\t\ttry {\r\n\t\t\t\t\t\t\tlocalStorage.setItem(fileName, base64String);\r\n\t\t\t\t\t\t} catch (error) {\r\n\t\t\t\t\t\t\t// do nothing\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar fetchData = function (fileName) {\r\n\t\t\t\t\t\ttry {\r\n\t\t\t\t\t\t\tvar value = localStorage.getItem(fileName);\r\n\t\t\t\t\t\t\treturn value;\r\n\t\t\t\t\t\t} catch (error) {\r\n\t\t\t\t\t\t\treturn null;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar hasData = function (fileName) {\r\n\t\t\t\t\t\ttry {\r\n\t\t\t\t\t\t\tvar value = localStorage.getItem(fileName);\r\n\t\t\t\t\t\t\treturn value !== null;\r\n\t\t\t\t\t\t} catch (error) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tpersistData: persistData,\r\n\t\t\t\t\t\tfetchData: fetchData,\r\n\t\t\t\t\t\thasData: hasData\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                
+				window.BridgeFileIOJavascript = ((function () {
+					'use strict';
+					
+					var persistData = function (fileName, base64String) {
+						try {
+							localStorage.setItem(fileName, base64String);
+						} catch (error) {
+							// do nothing
+						}
+					};
+										
+					var fetchData = function (fileName) {
+						try {
+							var value = localStorage.getItem(fileName);
+							return value;
+						} catch (error) {
+							return null;
+						}
+					};
+					
+					var hasData = function (fileName) {
+						try {
+							var value = localStorage.getItem(fileName);
+							return value !== null;
+						} catch (error) {
+							return false;
+						}
+					};
+										
+					return {
+						persistData: persistData,
+						fetchData: fetchData,
+						hasData: hasData
+					};
+				})());
+			
             }
         },
         methods: {
@@ -12183,105 +12425,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "IsRightMouseButtonPressed", "DTLibrary$IMouse$IsRightMouseButtonPressed"
         ],
         ctors: {
-            ctor: function () {
+            ctor: function (canvasScalingFactor) {
                 this.$initialize();
-                
-				window.BridgeMouseJavascript = ((function () {
-					'use strict';
-					
-					var mouseXPosition = -50;
-					var mouseYPosition = -50;
-					
-					var canvas = null;
-					
-					var mouseMoveHandler = function (e) {
-					
-						if (canvas === null) {
-							canvas = document.getElementById('bridgeCanvas');
-							
-							if (canvas === null)
-								return;
-						}
-						
-						var canvasCssWidth = canvas.offsetWidth;
-						var canvasCssHeight = canvas.offsetHeight;
-						
-						var xPosition = (e.pageX !== null && e.pageX !== undefined ? e.pageX : e.clientX) - canvas.offsetLeft;
-						
-						var canvasXScaling = canvasCssWidth / canvas.width;
-						if (canvasXScaling < 0.001)
-							canvasXScaling = 0.001;
-						
-						xPosition = Math.round(xPosition / canvasXScaling);
-									
-						if (xPosition < -5)
-							xPosition = -5;
-						
-						if (xPosition > canvas.width + 5)
-							xPosition = canvas.width + 5;
-						
-						var yPosition = (e.pageY !== null && e.pageY !== undefined ? e.pageY : e.clientY) - canvas.offsetTop;
-						
-						var canvasYScaling = canvasCssHeight / canvas.height;
-						if (canvasYScaling < 0.001)
-							canvasYScaling = 0.001;
-						
-						yPosition = Math.round(yPosition / canvasYScaling);
-						
-						if (yPosition < -5)
-							yPosition = -5;
-						
-						if (yPosition > canvas.height + 5)
-							yPosition = canvas.height + 5;
-						
-						let ratio = 1;
-						mouseXPosition = Math.floor(xPosition / ratio);
-						mouseYPosition = Math.floor((canvas.height - yPosition - 1) / ratio);
-					};
-					
-					var isLeftMouseButtonPressed = false;
-					var isRightMouseButtonPressed = false;
-					
-					var checkMouseButtonHandler = function (e) {
-						if ((e.buttons & 1) === 1)
-							isLeftMouseButtonPressed = true;
-						else
-							isLeftMouseButtonPressed = false;
-						
-						if ((e.buttons & 2) === 2)
-							isRightMouseButtonPressed = true;
-						else
-							isRightMouseButtonPressed = false;
-					};
-										
-					var disableContextMenu;
-					disableContextMenu = function () {
-						if (canvas === null) {
-							canvas = document.getElementById('bridgeCanvas');
-							
-							if (canvas === null) {
-								setTimeout(disableContextMenu, 50);
-								return;
-							}
-						}
-						
-						canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-					};
-					disableContextMenu();
-					
-					document.addEventListener('pointermove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
-					document.addEventListener('pointerdown', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
-					document.addEventListener('pointerup', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
-					document.addEventListener('pointercancel', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });
-					
-					return {
-						isLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed; },
-						isRightMouseButtonPressed: function () { return isRightMouseButtonPressed; },
-						getMouseX: function () { return Math.round(mouseXPosition); },
-						getMouseY: function () { return Math.round(mouseYPosition); }
-					};
-				})());
-			
+                eval("\r\n\t\t\t\twindow.BridgeMouseJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseXPosition = -50;\r\n\t\t\t\t\tvar mouseYPosition = -50;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseMoveHandler = function (e) {\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasCssWidth = canvas.offsetWidth;\r\n\t\t\t\t\t\tvar canvasCssHeight = canvas.offsetHeight;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar xPosition = (e.pageX !== null && e.pageX !== undefined ? e.pageX : e.clientX) - canvas.offsetLeft;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasXScaling = canvasCssWidth / canvas.width;\r\n\t\t\t\t\t\tif (canvasXScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasXScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\txPosition = Math.round(xPosition / canvasXScaling);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition < -5)\r\n\t\t\t\t\t\t\txPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition > canvas.width + 5)\r\n\t\t\t\t\t\t\txPosition = canvas.width + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar yPosition = (e.pageY !== null && e.pageY !== undefined ? e.pageY : e.clientY) - canvas.offsetTop;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasYScaling = canvasCssHeight / canvas.height;\r\n\t\t\t\t\t\tif (canvasYScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasYScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tyPosition = Math.round(yPosition / canvasYScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition < -5)\r\n\t\t\t\t\t\t\tyPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition > canvas.height + 5)\r\n\t\t\t\t\t\t\tyPosition = canvas.height + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\t\t\t\t\t\tmouseXPosition = Math.floor(xPosition / canvasScalingFactor);\r\n\t\t\t\t\t\tmouseYPosition = Math.floor((canvas.height - yPosition - 1) / canvasScalingFactor);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar isLeftMouseButtonPressed = false;\r\n\t\t\t\t\tvar isRightMouseButtonPressed = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar checkMouseButtonHandler = function (e) {\r\n\t\t\t\t\t\tif ((e.buttons & 1) === 1)\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = false;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif ((e.buttons & 2) === 2)\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = false;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar disableContextMenu;\r\n\t\t\t\t\tdisableContextMenu = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\t\tsetTimeout(disableContextMenu, 50);\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });\r\n\t\t\t\t\t};\r\n\t\t\t\t\tdisableContextMenu();\r\n\t\t\t\t\t\r\n\t\t\t\t\tdocument.addEventListener('pointermove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointerdown', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointerup', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointercancel', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed; },\r\n\t\t\t\t\t\tisRightMouseButtonPressed: function () { return isRightMouseButtonPressed; },\r\n\t\t\t\t\t\tgetMouseX: function () { return Math.round(mouseXPosition); },\r\n\t\t\t\t\t\tgetMouseY: function () { return Math.round(mouseYPosition); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
             }
         },
         methods: {
@@ -17489,13 +17635,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "GetMobileScreenHeight", "DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight"
         ],
         ctors: {
-            ctor: function (canvasWidthAndHeightInfo) {
+            ctor: function (canvasWidthAndHeightInfo, canvasScalingFactor) {
                 this.$initialize();
                 DTLibrary.DTDisplay$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont).ctor.call(this);
                 this.canvasWidthAndHeightInfo = canvasWidthAndHeightInfo;
 
                 this.bridgeDisplayRectangle = new ChessCompStompWithHacks.BridgeDisplayRectangle(canvasWidthAndHeightInfo);
-                this.bridgeDisplayImages = new ChessCompStompWithHacks.BridgeDisplayImages(canvasWidthAndHeightInfo);
+                this.bridgeDisplayImages = new ChessCompStompWithHacks.BridgeDisplayImages(canvasWidthAndHeightInfo, canvasScalingFactor);
                 this.bridgeDisplayFont = new ChessCompStompWithHacks.BridgeDisplayFont(canvasWidthAndHeightInfo);
             }
         },
@@ -19918,7 +20064,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         this.soundAndMusicVolumePicker.SetY(((this.panelY + 390) | 0));
                     }
                 }
-
             },
             GetClickUrl: function () {
                 return null;
@@ -20775,10 +20920,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             versionString: null
         },
         alias: [
-            "ProcessDisplayType", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessDisplayType",
             "GetClickUrl", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetClickUrl",
             "GetCompletedAchievements", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetCompletedAchievements",
             "ProcessExtraTime", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessExtraTime",
+            "ProcessDisplayType", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessDisplayType",
             "GetNextFrame", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetNextFrame",
             "ProcessMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic",
             "Render", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render",
@@ -20793,13 +20938,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.versionString = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo().Version;
 
-                this.startButton = new ChessCompStompWithHacksLibrary.Button(425, 300, 400, 200, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, true);
+                this.startButton = new ChessCompStompWithHacksLibrary.Button(0, 0, 400, 125, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 137, 41, ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, true);
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(425, 300, 400, 200, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, true);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(0, 0, 400, 125, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 106, 41, ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, true);
 
-                this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 80, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, true);
+                this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(0, 0, 200, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 34, 12, ChessCompStompWithHacksLibrary.GameFont.GameFont18Pt, true);
 
-                this.creditsButton = new ChessCompStompWithHacksLibrary.Button(895, 5, 100, 80, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Credits", 13, 10, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, true);
+                this.creditsButton = new ChessCompStompWithHacksLibrary.Button(0, 0, 100, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Credits", 6, 12, ChessCompStompWithHacksLibrary.GameFont.GameFont18Pt, true);
 
                 this.UpdateButtonPositions(display);
             }
@@ -20807,23 +20952,16 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         methods: {
             UpdateButtonPositions: function (display) {
                 this.startButton.SetX(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 400) | 0)), 2)) | 0));
-                this.startButton.SetY(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() - 200) | 0)), 2)) | 0));
+                this.startButton.SetY(((((Bridge.Int.div(display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight(), 2)) | 0) - 100) | 0));
 
                 this.continueButton.SetX(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 400) | 0)), 2)) | 0));
-                this.continueButton.SetY(((Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() - 200) | 0)), 2)) | 0));
+                this.continueButton.SetY(((((Bridge.Int.div(display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight(), 2)) | 0) - 100) | 0));
 
-
-                this.clearDataButton.SetX(160);
-                this.clearDataButton.SetY(10);
+                this.clearDataButton.SetX(320);
+                this.clearDataButton.SetY(5);
 
                 this.creditsButton.SetX(((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 105) | 0));
-            },
-            ProcessDisplayType: function (displayType, displayProcessing) {
-                if (displayType === DTLibrary.DisplayType.Desktop) {
-                    return new ChessCompStompWithHacksLibrary.TitleScreenDesktopFrame(this.globalState, this.sessionState);
-                }
-
-                return this;
+                this.creditsButton.SetY(5);
             },
             GetClickUrl: function () {
                 return null;
@@ -20832,6 +20970,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 return this.sessionState.GetCompletedAchievements();
             },
             ProcessExtraTime: function (milliseconds) { },
+            ProcessDisplayType: function (displayType, displayProcessing) {
+                if (displayType === DTLibrary.DisplayType.Desktop) {
+                    return new ChessCompStompWithHacksLibrary.TitleScreenDesktopFrame(this.globalState, this.sessionState);
+                }
+
+                return this;
+            },
             GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
                 this.UpdateButtonPositions(displayProcessing);
 
@@ -20879,21 +21024,21 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     return new ChessCompStompWithHacksLibrary.CreditsFrame(this.globalState, this.sessionState);
                 }
 
-                if (this.globalState.DebugMode) {
-                    if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.One) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.One)) {
-                        return new ChessCompStompWithHacksLibrary.ChessTestingFrame(this.globalState, this.sessionState);
-                    }
-                }
-
                 return this;
             },
             ProcessMusic: function () {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
+                var isLandscape = DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput);
+
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((Bridge.Int.div(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), 2)) | 0) - 325) | 0), ((((Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), 3), 4)) | 0) + 32) | 0), "Chess Comp Stomp With Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
+                if (isLandscape) {
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((Bridge.Int.div(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), 2)) | 0) - 474) | 0), ((((Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), 3), 4)) | 0) + 32) | 0), "Chess Comp Stomp With Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont48Pt, DTLibrary.DTColor.Black());
+                } else {
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((Bridge.Int.div(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), 2)) | 0) - 319) | 0), ((((Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), 3), 4)) | 0) + 32) | 0), "Chess Comp Stomp With Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
+                }
 
                 if (this.sessionState.HasStarted) {
                     this.clearDataButton.Render(displayOutput);
@@ -20905,7 +21050,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.startButton.Render(displayOutput);
                 }
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth() - 52) | 0), 105, "v" + (this.versionString || ""), ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth() - 52) | 0), 74, "v" + (this.versionString || ""), ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
 
                 this.creditsButton.Render(displayOutput);
 
