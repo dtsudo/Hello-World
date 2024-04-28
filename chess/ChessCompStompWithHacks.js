@@ -382,7 +382,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             methods: {
                 InitializeDisplayTypeHandlingJavascript: function (isWebStandalone, canvasScalingFactor) {
-                    eval("\r\n\r\n\t\t\t\tdocument.addEventListener('keydown', function (e) {\r\n\t\t\t\t\tif (e.key === 'd') {\r\n\t\t\t\t\t\tif (window.d === undefined)\r\n\t\t\t\t\t\t\twindow.d = false;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.d = !window.d;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (e.key === 'f') {\r\n\t\t\t\t\t\tif (window.f === undefined)\r\n\t\t\t\t\t\t\twindow.f = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.f = !window.f;\r\n\t\t\t\t\t}\r\n\t\t\t\t}, false);\r\n\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet context = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\r\n\t\t\t\t\tlet isWebStandalone = " + ((isWebStandalone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches;\r\n\r\n\t\t\t\t\t\tif (window.d !== undefined)\r\n\t\t\t\t\t\t\tisDesktop = window.d;\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(defaultWidth, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight; // sic\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(defaultWidth, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif ((isDesktop && !isWebStandalone || !isDesktop) && !window.f) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = Math.floor(canvas.width / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = Math.floor(canvas.height / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\t\t\t\t\thandleDisplayTypeChanges();\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return Math.floor(currentCanvasWidth / canvasScalingFactor); },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return Math.floor(currentCanvasHeight / canvasScalingFactor); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                    eval("\r\n\r\n\t\t\t\tdocument.addEventListener('keydown', function (e) {\r\n\t\t\t\t\tif (e.key === 'd') {\r\n\t\t\t\t\t\tif (window.d === undefined)\r\n\t\t\t\t\t\t\twindow.d = false;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.d = !window.d;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (e.key === 'f') {\r\n\t\t\t\t\t\tif (window.f === undefined)\r\n\t\t\t\t\t\t\twindow.f = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\twindow.f = !window.f;\r\n\t\t\t\t\t}\r\n\t\t\t\t}, false);\r\n\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet context = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\r\n\t\t\t\t\tlet isWebStandalone = " + ((isWebStandalone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches;\r\n\r\n\t\t\t\t\t\tif (window.d !== undefined)\r\n\t\t\t\t\t\t\tisDesktop = window.d;\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(defaultWidth, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight; // sic\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(defaultWidth, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif ((isDesktop && !isWebStandalone || !isDesktop) && !window.f) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = Math.floor(canvas.width / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = Math.floor(canvas.height / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandalone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\t\t\t\t\thandleDisplayTypeChanges();\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return Math.floor(currentCanvasWidth / canvasScalingFactor); },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return Math.floor(currentCanvasHeight / canvasScalingFactor); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
                 },
                 InitializeClearCanvasJavascript: function (canvasScalingFactor) {
                     eval("\r\n\t\t\t\twindow.BridgeClearCanvasJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar clearCanvas = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\t\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.clearRect(0, 0, canvas.width, canvas.height);\r\n\t\t\t\t\t\tlet canvasScalingFactor = " + canvasScalingFactor + ";\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tclearCanvas: clearCanvas\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
@@ -5343,7 +5343,17 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCoding", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCoding_LicenseText", {
+        statics: {
+            methods: {
+                GetLicenseTextForBridge: function () {
+                    return System.String.replaceAll(System.String.replaceAll(("                                 Apache License\r\n                           Version 2.0, January 2004\r\n                        http://www.apache.org/licenses/\r\n\r\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\r\n\r\n   1. Definitions.\r\n\r\n      \"License\" shall mean the terms and conditions for use, reproduction,\r\n      and distribution as defined by Sections 1 through 9 of this document.\r\n\r\n      \"Licensor\" shall mean the copyright owner or entity authorized by\r\n      the copyright owner that is granting the License.\r\n\r\n      \"Legal Entity\" shall mean the union of the acting entity and all\r\n      other entities that control, are controlled by, or are under common\r\n      control with that entity. For the purposes of this definition,\r\n      \"control\" means (i) the power, direct or indirect, to cause the\r\n      direction or management of such entity, whether by contract or\r\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\r\n      outstanding shares, or (iii) beneficial ownership of such entity.\r\n\r\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\r\n      exercising permissions granted by this License.\r\n\r\n      \"Source\" form shall mean the preferred form for making modifications,\r\n      including but not limited to software source code, documentation\r\n      source, and configuration files.\r\n\r\n      \"Object\" form shall mean any form resulting from mechanical\r\n      transformation or translation of a Source form, including but\r\n      not limited to compiled object code, generated documentation,\r\n      and conversions to other media types.\r\n\r\n      \"Work\" shall mean the work of authorship, whether in Source or\r\n      Object form, made available under the License, as indicated by a\r\n      copyright notice that is included in or attached to the work\r\n      (an example is provided in the Appendix below).\r\n\r\n      \"Derivative Works\" shall mean any work, whether in Source or Object\r\n      form, that is based on (or derived from) the Work and for which the\r\n      editorial revisions, annotations, elaborations, or other modifications\r\n      represent, as a whole, an original work of authorship. For the purposes\r\n      of this License, Derivative Works shall not include works that remain\r\n      separable from, or merely link (or bind by name) to the interfaces of,\r\n      the Work and Derivative Works thereof.\r\n\r\n      \"Contribution\" shall mean any work of authorship, including\r\n      the original version of the Work and any modifications or additions\r\n      to that Work or Derivative Works thereof, that is intentionally\r\n      submitted to Licensor for inclusion in the Work by the copyright owner\r\n      or by an individual or Legal Entity authorized to submit on behalf of\r\n      the copyright owner. For the purposes of this definition, \"submitted\"\r\n      means any form of electronic, verbal, or written communication sent\r\n      to the Licensor or its representatives, including but not limited to\r\n      communication on electronic mailing lists, source code control systems,\r\n      and issue tracking systems that are managed by, or on behalf of, the\r\n      Licensor for the purpose of discussing and improving the Work, but\r\n      excluding communication that is conspicuously marked or otherwise\r\n      designated in writing by the copyright owner as \"Not a Contribution.\"\r\n\r\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\r\n      on behalf of whom a Contribution has been received by Licensor and\r\n      subsequently incorporated within the Work.\r\n\r\n   2. Grant of Copyright License. Subject to the terms and conditions of\r\n      this License, each Contributor hereby grants to You a perpetual,\r\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\r\n      copyright license to reproduce, prepare Derivative Works of,\r\n      publicly display, publicly perform, sublicense, and distribute the\r\n      Work and such Derivative Works in Source or Object form.\r\n\r\n   3. Grant of Patent License. Subject to the terms and conditions of\r\n      this License, each Contributor hereby grants to You a perpetual,\r\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\r\n      (except as stated in this section) patent license to make, have made,\r\n      use, offer to sell, sell, import, and otherwise transfer the Work,\r\n      where such license applies only to those patent claims licensable\r\n      by such Contributor that are necessarily infringed by their\r\n      Contribution(s) alone or by combination of their Contribution(s)\r\n      with the Work to which such Contribution(s) was submitted. If You\r\n      institute patent litigation against any entity (including a\r\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\r\n      or a Contribution incorporated within the Work constitutes direct\r\n      or contributory patent infringement, then any patent licenses\r\n      granted to You under this License for that Work shall terminate\r\n      as of the date such litigation is filed.\r\n\r\n   4. Redistribution. You may reproduce and distribute copies of the\r\n      Work or Derivative Works thereof in any medium, with or without\r\n      modifications, and in Source or Object form, provided that You\r\n      meet the following conditions:\r\n\r\n      (a) You must give any other recipients of the Work or\r\n          Derivative Works a copy of this License; and\r\n\r\n      (b) You must cause any modified files to carry prominent notices\r\n          stating that You changed the files; and\r\n\r\n      (c) You must retain, in the Source form of any Derivative Works\r\n          that You distribute, all copyright, patent, trademark, and\r\n          attribution notices from the Source form of the Work,\r\n          excluding those notices that do not pertain to any part of\r\n          the Derivative Works; and\r\n\r\n      (d) If the Work includes a \"NOTICE\" text file as part of its\r\n          distribution, then any Derivative Works that You distribute must\r\n          include a readable copy of the attribution notices contained\r\n          within such NOTICE file, excluding those notices that do not\r\n          pertain to any part of the Derivative Works, in at least one\r\n          of the following places: within a NOTICE text file distributed\r\n          as part of the Derivative Works; within the Source form or\r\n          documentation, if provided along with the Derivative Works; or,\r\n          within a display generated by the Derivative Works, if and\r\n          wherever such third-party notices normally appear. The contents\r\n          of the NOTICE file are for informational purposes only and\r\n          do not modify the License. You may add Your own attribution\r\n          notices within Derivative Works that You distribute, alongside\r\n          or as an addendum to the NOTICE text from the Work, provided\r\n          that such additional attribution notices cannot be construed\r\n          as modifying the License.\r\n\r\n      You may add Your own copyright statement to Your modifications and\r\n      may provide additional or different license terms and conditions\r\n      for use, reproduction, or distribution of Your modifications, or\r\n      for any such Derivative Works as a whole, provided Your use,\r\n      reproduction, and distribution of the Work otherwise complies with\r\n      the conditions stated in this License.\r\n\r\n   5. Submission of Contributions. Unless You explicitly state otherwise,\r\n      any Contribution intentionally submitted for inclusion in the Work\r\n      by You to the Licensor shall be under the terms and conditions of\r\n      this License, without any additional terms or conditions.\r\n      Notwithstanding the above, nothing herein shall supersede or modify\r\n      the terms of any separate license agreement you may have executed\r\n      with Licensor regarding such Contributions.\r\n\r\n   6. Trademarks. This License does not grant permission to use the trade\r\n      names, trademarks, service marks, or product names of the Licensor,\r\n      except as required for reasonable and customary use in describing the\r\n      origin of the Work and reproducing the content of the NOTICE file.\r\n\r\n   7. Disclaimer of Warranty. Unless required by applicable law or\r\n      agreed to in writing, Licensor provides the Work (and each\r\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\r\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\r\n      implied, including, without limitation, any warranties or conditions\r\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\r\n      PARTICULAR PURPOSE. You are solely responsible for determining the\r\n      appropriateness of using or redistributing the Work and assume any\r\n      risks associated with Your exercise of permissions under this License.\r\n\r\n   8. Limitation of Liability. In no event and under no legal theory,\r\n      whether in tort (including negligence), contract, or otherwise,\r\n      unless required by applicable law (such as deliberate and grossly\r\n      negligent acts) or agreed to in writing, shall any Contributor be\r\n      liable to You for damages, including any direct, indirect, special,\r\n      incidental, or consequential damages of any character arising as a\r\n      result of this License or out of the use or inability to use the\r\n      Work (including but not limited to damages for loss of goodwill,\r\n      work stoppage, computer failure or malfunction, or any and all\r\n      other commercial damages or losses), even if such Contributor\r\n      has been advised of the possibility of such damages.\r\n\r\n   9. Accepting Warranty or Additional Liability. While redistributing\r\n      the Work or Derivative Works thereof, You may choose to offer,\r\n      and charge a fee for, acceptance of support, warranty, indemnity,\r\n      or other liability obligations and/or rights consistent with this\r\n      License. However, in accepting such obligations, You may act only\r\n      on Your own behalf and on Your sole responsibility, not on behalf\r\n      of any other Contributor, and only if You agree to indemnify,\r\n      defend, and hold each Contributor harmless for any liability\r\n      incurred by, or claims asserted against, such Contributor by reason\r\n      of your accepting any such warranty or additional liability.\r\n\r\n   END OF TERMS AND CONDITIONS\r\n\r\n   APPENDIX: How to apply the Apache License to your work.\r\n\r\n      To apply the Apache License to your work, attach the following\r\n      boilerplate notice, with the fields enclosed by brackets \"{}\"\r\n      replaced with your own identifying information. (Don't include\r\n      the brackets!)  The text should be enclosed in the appropriate\r\n      comment syntax for the file format. We also recommend that a\r\n      file or class name and description of purpose be included on the\r\n      same \"printed page\" as the copyright notice for easier\r\n      identification within third-party archives.\r\n\r\n   Copyright 2008-2017 Object.NET, Inc.\r\n\r\n   Licensed under the Apache License, Version 2.0 (the \"License\");\r\n   you may not use this file except in compliance with the License.\r\n   You may obtain a copy of the License at\r\n\r\n       http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n   Unless required by applicable law or agreed to in writing, software\r\n   distributed under the License is distributed on an \"AS IS\" BASIS,\r\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n   See the License for the specific language governing permissions and\r\n   limitations under the License."), "\r", ""), "\t", "    ");
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop", {
         statics: {
             methods: {
                 IsHoverOverGitHubUrl: function (mouseInput, height) {
@@ -5356,7 +5366,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     return "Design and coding by dtsudo (https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nThe source code is written in C#.\n\nBridge.NET is used to transpile the C# source code into javascript.\nBridge.NET is licensed under Apache License 2.0.\n(https://github.com/bridgedotnet/Bridge)";
                 },
                 GetWebEmbeddedVersionText: function () {
-                    var returnValue = "Design and coding by dtsudo \n\nThe source code is written in C#. Bridge.NET is used to transpile the\nC# source code into javascript. Bridge.NET is licensed under Apache\nLicense 2.0.\n\n\n" + (ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetInfo() || "");
+                    var returnValue = "Design and coding by dtsudo \n\nThe source code is written in C#. Bridge.NET is used to transpile the\nC# source code into javascript. Bridge.NET is licensed under Apache\nLicense 2.0.\n\n\n" + (ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.GetInfo() || "");
 
                     return returnValue;
                 },
@@ -5406,7 +5416,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var clickedButton = this.viewLicenseButton.ProcessFrame(mouseInput, previousMouseInput);
 
                 if (this.buildType === DTLibrary.BuildType.WebEmbedded) {
-                    this.isHoverOverGitHubUrl = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.IsHoverOverGitHubUrl(mouseInput, this.height);
+                    this.isHoverOverGitHubUrl = ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.IsHoverOverGitHubUrl(mouseInput, this.height);
                 }
 
                 var clickUrl = null;
@@ -5422,15 +5432,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     clickUrl = (a || "") + (d || "") + (b || "") + (f || "") + (e || "") + (c || "");
                 }
 
-                return new ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.Result(clickedButton, clickUrl);
+                return new ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.Result(clickedButton, clickUrl);
             },
             Render: function (displayOutput) {
                 if (this.buildType === DTLibrary.BuildType.WebStandAlone) {
-                    var text = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetWebStandAloneVersionText();
+                    var text = ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.GetWebStandAloneVersionText();
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
                 } else if (this.buildType === DTLibrary.BuildType.WebEmbedded) {
-                    var text1 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetWebEmbeddedVersionText();
+                    var text1 = ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.GetWebEmbeddedVersionText();
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text1, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
@@ -5438,7 +5448,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(109, ((((this.height - 10) | 0) - 226) | 0), "https://github.com/dtsudo", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, this.isHoverOverGitHubUrl ? new DTLibrary.DTColor.ctor(0, 0, 255) : DTLibrary.DTColor.Black());
                 } else if (this.buildType === DTLibrary.BuildType.Electron) {
-                    var text2 = ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.GetElectronVersionText();
+                    var text2 = ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.GetElectronVersionText();
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((this.height - 10) | 0), text2, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
@@ -5452,7 +5462,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCoding.Result", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop.Result", {
         $kind: "nested class",
         fields: {
             ClickedButton: false,
@@ -5467,17 +5477,55 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCoding_LicenseText", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_DesignAndCodingMobile", {
         statics: {
             methods: {
-                GetLicenseTextForBridge: function () {
-                    return System.String.replaceAll(System.String.replaceAll(("                                 Apache License\r\n                           Version 2.0, January 2004\r\n                        http://www.apache.org/licenses/\r\n\r\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\r\n\r\n   1. Definitions.\r\n\r\n      \"License\" shall mean the terms and conditions for use, reproduction,\r\n      and distribution as defined by Sections 1 through 9 of this document.\r\n\r\n      \"Licensor\" shall mean the copyright owner or entity authorized by\r\n      the copyright owner that is granting the License.\r\n\r\n      \"Legal Entity\" shall mean the union of the acting entity and all\r\n      other entities that control, are controlled by, or are under common\r\n      control with that entity. For the purposes of this definition,\r\n      \"control\" means (i) the power, direct or indirect, to cause the\r\n      direction or management of such entity, whether by contract or\r\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\r\n      outstanding shares, or (iii) beneficial ownership of such entity.\r\n\r\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\r\n      exercising permissions granted by this License.\r\n\r\n      \"Source\" form shall mean the preferred form for making modifications,\r\n      including but not limited to software source code, documentation\r\n      source, and configuration files.\r\n\r\n      \"Object\" form shall mean any form resulting from mechanical\r\n      transformation or translation of a Source form, including but\r\n      not limited to compiled object code, generated documentation,\r\n      and conversions to other media types.\r\n\r\n      \"Work\" shall mean the work of authorship, whether in Source or\r\n      Object form, made available under the License, as indicated by a\r\n      copyright notice that is included in or attached to the work\r\n      (an example is provided in the Appendix below).\r\n\r\n      \"Derivative Works\" shall mean any work, whether in Source or Object\r\n      form, that is based on (or derived from) the Work and for which the\r\n      editorial revisions, annotations, elaborations, or other modifications\r\n      represent, as a whole, an original work of authorship. For the purposes\r\n      of this License, Derivative Works shall not include works that remain\r\n      separable from, or merely link (or bind by name) to the interfaces of,\r\n      the Work and Derivative Works thereof.\r\n\r\n      \"Contribution\" shall mean any work of authorship, including\r\n      the original version of the Work and any modifications or additions\r\n      to that Work or Derivative Works thereof, that is intentionally\r\n      submitted to Licensor for inclusion in the Work by the copyright owner\r\n      or by an individual or Legal Entity authorized to submit on behalf of\r\n      the copyright owner. For the purposes of this definition, \"submitted\"\r\n      means any form of electronic, verbal, or written communication sent\r\n      to the Licensor or its representatives, including but not limited to\r\n      communication on electronic mailing lists, source code control systems,\r\n      and issue tracking systems that are managed by, or on behalf of, the\r\n      Licensor for the purpose of discussing and improving the Work, but\r\n      excluding communication that is conspicuously marked or otherwise\r\n      designated in writing by the copyright owner as \"Not a Contribution.\"\r\n\r\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\r\n      on behalf of whom a Contribution has been received by Licensor and\r\n      subsequently incorporated within the Work.\r\n\r\n   2. Grant of Copyright License. Subject to the terms and conditions of\r\n      this License, each Contributor hereby grants to You a perpetual,\r\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\r\n      copyright license to reproduce, prepare Derivative Works of,\r\n      publicly display, publicly perform, sublicense, and distribute the\r\n      Work and such Derivative Works in Source or Object form.\r\n\r\n   3. Grant of Patent License. Subject to the terms and conditions of\r\n      this License, each Contributor hereby grants to You a perpetual,\r\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\r\n      (except as stated in this section) patent license to make, have made,\r\n      use, offer to sell, sell, import, and otherwise transfer the Work,\r\n      where such license applies only to those patent claims licensable\r\n      by such Contributor that are necessarily infringed by their\r\n      Contribution(s) alone or by combination of their Contribution(s)\r\n      with the Work to which such Contribution(s) was submitted. If You\r\n      institute patent litigation against any entity (including a\r\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\r\n      or a Contribution incorporated within the Work constitutes direct\r\n      or contributory patent infringement, then any patent licenses\r\n      granted to You under this License for that Work shall terminate\r\n      as of the date such litigation is filed.\r\n\r\n   4. Redistribution. You may reproduce and distribute copies of the\r\n      Work or Derivative Works thereof in any medium, with or without\r\n      modifications, and in Source or Object form, provided that You\r\n      meet the following conditions:\r\n\r\n      (a) You must give any other recipients of the Work or\r\n          Derivative Works a copy of this License; and\r\n\r\n      (b) You must cause any modified files to carry prominent notices\r\n          stating that You changed the files; and\r\n\r\n      (c) You must retain, in the Source form of any Derivative Works\r\n          that You distribute, all copyright, patent, trademark, and\r\n          attribution notices from the Source form of the Work,\r\n          excluding those notices that do not pertain to any part of\r\n          the Derivative Works; and\r\n\r\n      (d) If the Work includes a \"NOTICE\" text file as part of its\r\n          distribution, then any Derivative Works that You distribute must\r\n          include a readable copy of the attribution notices contained\r\n          within such NOTICE file, excluding those notices that do not\r\n          pertain to any part of the Derivative Works, in at least one\r\n          of the following places: within a NOTICE text file distributed\r\n          as part of the Derivative Works; within the Source form or\r\n          documentation, if provided along with the Derivative Works; or,\r\n          within a display generated by the Derivative Works, if and\r\n          wherever such third-party notices normally appear. The contents\r\n          of the NOTICE file are for informational purposes only and\r\n          do not modify the License. You may add Your own attribution\r\n          notices within Derivative Works that You distribute, alongside\r\n          or as an addendum to the NOTICE text from the Work, provided\r\n          that such additional attribution notices cannot be construed\r\n          as modifying the License.\r\n\r\n      You may add Your own copyright statement to Your modifications and\r\n      may provide additional or different license terms and conditions\r\n      for use, reproduction, or distribution of Your modifications, or\r\n      for any such Derivative Works as a whole, provided Your use,\r\n      reproduction, and distribution of the Work otherwise complies with\r\n      the conditions stated in this License.\r\n\r\n   5. Submission of Contributions. Unless You explicitly state otherwise,\r\n      any Contribution intentionally submitted for inclusion in the Work\r\n      by You to the Licensor shall be under the terms and conditions of\r\n      this License, without any additional terms or conditions.\r\n      Notwithstanding the above, nothing herein shall supersede or modify\r\n      the terms of any separate license agreement you may have executed\r\n      with Licensor regarding such Contributions.\r\n\r\n   6. Trademarks. This License does not grant permission to use the trade\r\n      names, trademarks, service marks, or product names of the Licensor,\r\n      except as required for reasonable and customary use in describing the\r\n      origin of the Work and reproducing the content of the NOTICE file.\r\n\r\n   7. Disclaimer of Warranty. Unless required by applicable law or\r\n      agreed to in writing, Licensor provides the Work (and each\r\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\r\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\r\n      implied, including, without limitation, any warranties or conditions\r\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\r\n      PARTICULAR PURPOSE. You are solely responsible for determining the\r\n      appropriateness of using or redistributing the Work and assume any\r\n      risks associated with Your exercise of permissions under this License.\r\n\r\n   8. Limitation of Liability. In no event and under no legal theory,\r\n      whether in tort (including negligence), contract, or otherwise,\r\n      unless required by applicable law (such as deliberate and grossly\r\n      negligent acts) or agreed to in writing, shall any Contributor be\r\n      liable to You for damages, including any direct, indirect, special,\r\n      incidental, or consequential damages of any character arising as a\r\n      result of this License or out of the use or inability to use the\r\n      Work (including but not limited to damages for loss of goodwill,\r\n      work stoppage, computer failure or malfunction, or any and all\r\n      other commercial damages or losses), even if such Contributor\r\n      has been advised of the possibility of such damages.\r\n\r\n   9. Accepting Warranty or Additional Liability. While redistributing\r\n      the Work or Derivative Works thereof, You may choose to offer,\r\n      and charge a fee for, acceptance of support, warranty, indemnity,\r\n      or other liability obligations and/or rights consistent with this\r\n      License. However, in accepting such obligations, You may act only\r\n      on Your own behalf and on Your sole responsibility, not on behalf\r\n      of any other Contributor, and only if You agree to indemnify,\r\n      defend, and hold each Contributor harmless for any liability\r\n      incurred by, or claims asserted against, such Contributor by reason\r\n      of your accepting any such warranty or additional liability.\r\n\r\n   END OF TERMS AND CONDITIONS\r\n\r\n   APPENDIX: How to apply the Apache License to your work.\r\n\r\n      To apply the Apache License to your work, attach the following\r\n      boilerplate notice, with the fields enclosed by brackets \"{}\"\r\n      replaced with your own identifying information. (Don't include\r\n      the brackets!)  The text should be enclosed in the appropriate\r\n      comment syntax for the file format. We also recommend that a\r\n      file or class name and description of purpose be included on the\r\n      same \"printed page\" as the copyright notice for easier\r\n      identification within third-party archives.\r\n\r\n   Copyright 2008-2017 Object.NET, Inc.\r\n\r\n   Licensed under the Apache License, Version 2.0 (the \"License\");\r\n   you may not use this file except in compliance with the License.\r\n   You may obtain a copy of the License at\r\n\r\n       http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n   Unless required by applicable law or agreed to in writing, software\r\n   distributed under the License is distributed on an \"AS IS\" BASIS,\r\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n   See the License for the specific language governing permissions and\r\n   limitations under the License."), "\r", ""), "\t", "    ");
+                GetWebVersionText: function (isLandscape) {
+                    if (isLandscape) {
+                        return "Design and coding by dtsudo (https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nBridge.NET is used to transpile the C# source code into javascript.\nBridge.NET is licensed under Apache License 2.0.\n\nSee the source code for more information (including licensing details).";
+                    } else {
+                        return "Design and coding by dtsudo\n(https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nBridge.NET is used to transpile the C# source\ncode into javascript. Bridge.NET is licensed\nunder Apache License 2.0.\n\nSee the source code for more information\n(including licensing details).";
+                    }
+                },
+                GetElectronVersionText: function (isLandscape) {
+                    if (isLandscape) {
+                        return "Design and coding by dtsudo (https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nBridge.NET is used to transpile the C# source code into javascript.\nBridge.NET is licensed under Apache License 2.0.\n\nThis game uses the Electron framework.\n\nSee the source code for more information (including licensing details).";
+                    } else {
+                        return "Design and coding by dtsudo\n(https://github.com/dtsudo)\n\nThis game is open source, under the MIT license.\n\nBridge.NET is used to transpile the C# source\ncode into javascript. Bridge.NET is licensed\nunder Apache License 2.0.\n\nThis game uses the Electron framework.\n\nSee the source code for more information\n(including licensing details).";
+                    }
+                },
+                Render: function (displayOutput, buildType, width, height) {
+                    var isLandscape = DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput);
+
+                    buildType = DTLibrary.BuildType.Electron;
+
+                    if (buildType === DTLibrary.BuildType.WebStandAlone || buildType === DTLibrary.BuildType.WebEmbedded) {
+                        var text = ChessCompStompWithHacksLibrary.Credits_DesignAndCodingMobile.GetWebVersionText(isLandscape);
+
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                    } else if (buildType === DTLibrary.BuildType.Electron) {
+                        var text1 = ChessCompStompWithHacksLibrary.Credits_DesignAndCodingMobile.GetElectronVersionText(isLandscape);
+
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), text1, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                    } else {
+                        throw new System.Exception();
+                    }
                 }
             }
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Font", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Font_LicenseText", {
+        statics: {
+            methods: {
+                GetLicenseText: function () {
+                    return System.String.replaceAll(System.String.replaceAll(("dtchessfont.otf, dtchessfont.ttf, and dtchessfont.woff are licensed under the SIL Open Font License, Version 1.1.\r\nDtsudo created this font as a modified version of Fetamont.\r\n\r\nFetamont.otf, Fetamont.ttf, and Fetamont.woff are licensed under the SIL Open Font License, Version 1.1.\r\nThe copyright and license text for Fetamont is below.\r\n\r\n-----------------------------------------------------------\r\n\r\nCopyright (c), Metaflop (http://www.metaflop.com),\r\nCopyright (c), Simon Egli,\r\nCopyright (c), Marco Mueller,\r\nCopyright (c), Alexis Reigel,\r\nwith Reserved Font Name Fetamont.\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE."), "\r", ""), "\t", "    ");
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_FontDesktop", {
         fields: {
             colorTheme: 0,
             viewLicenseButton: null,
@@ -5499,8 +5547,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
              *
              * @instance
              * @public
-             * @this ChessCompStompWithHacksLibrary.Credits_Font
-             * @memberof ChessCompStompWithHacksLibrary.Credits_Font
+             * @this ChessCompStompWithHacksLibrary.Credits_FontDesktop
+             * @memberof ChessCompStompWithHacksLibrary.Credits_FontDesktop
              * @param   {DTLibrary.IMouse}            mouseInput            
              * @param   {DTLibrary.IMouse}            previousMouseInput    
              * @param   {DTLibrary.ISoundOutput$1}    soundOutput
@@ -5521,17 +5569,37 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Font_LicenseText", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_FontMobile", {
         statics: {
             methods: {
-                GetLicenseText: function () {
-                    return System.String.replaceAll(System.String.replaceAll(("dtchessfont.otf, dtchessfont.ttf, and dtchessfont.woff are licensed under the SIL Open Font License, Version 1.1.\r\nDtsudo created this font as a modified version of Fetamont.\r\n\r\nFetamont.otf, Fetamont.ttf, and Fetamont.woff are licensed under the SIL Open Font License, Version 1.1.\r\nThe copyright and license text for Fetamont is below.\r\n\r\n-----------------------------------------------------------\r\n\r\nCopyright (c), Metaflop (http://www.metaflop.com),\r\nCopyright (c), Simon Egli,\r\nCopyright (c), Marco Mueller,\r\nCopyright (c), Alexis Reigel,\r\nwith Reserved Font Name Fetamont.\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE."), "\r", ""), "\t", "    ");
+                Render: function (displayOutput, width, height) {
+                    var newline = "\n";
+
+                    var text;
+
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput)) {
+                        text = "The font was created by metaflop and modified by dtsudo." + (newline || "") + (newline || "") + "See the source code for more information (including licensing details).";
+                    } else {
+                        text = "The font was created by metaflop and modified" + (newline || "") + "by dtsudo." + (newline || "") + (newline || "") + "See the source code for more information" + (newline || "") + "(including licensing details).";
+                    }
+
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
                 }
             }
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Images", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Images_LicenseText", {
+        statics: {
+            methods: {
+                GetLicenseTextForChessPieceImages: function () {
+                    return System.String.replaceAll(System.String.replaceAll(("Copyright Cburnett\r\nRedistribution and use in source and binary forms, with or without modification, are permitted provided that the\r\nfollowing conditions are met:\r\n\r\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following\r\ndisclaimer.\r\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following\r\ndisclaimer in the documentation and/or other materials provided with the distribution.\r\n3. Neither the name of the author nor the names of its contributors may be used to endorse or promote products\r\nderived from this software without specific prior written permission.\r\n\r\nTHIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES,\r\nINCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR\r\nPURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,\r\nINCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\r\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\r\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\r\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."), "\r", ""), "\t", "    ");
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_ImagesDesktop", {
         fields: {
             colorTheme: 0,
             viewLicenseButton: null,
@@ -5553,8 +5621,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
              *
              * @instance
              * @public
-             * @this ChessCompStompWithHacksLibrary.Credits_Images
-             * @memberof ChessCompStompWithHacksLibrary.Credits_Images
+             * @this ChessCompStompWithHacksLibrary.Credits_ImagesDesktop
+             * @memberof ChessCompStompWithHacksLibrary.Credits_ImagesDesktop
              * @param   {DTLibrary.IMouse}            mouseInput            
              * @param   {DTLibrary.IMouse}            previousMouseInput    
              * @param   {DTLibrary.ISoundOutput$1}    soundOutput
@@ -5575,43 +5643,93 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Images_LicenseText", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_ImagesMobile", {
         statics: {
             methods: {
-                GetLicenseTextForChessPieceImages: function () {
-                    return System.String.replaceAll(System.String.replaceAll(("Copyright Cburnett\r\nRedistribution and use in source and binary forms, with or without modification, are permitted provided that the\r\nfollowing conditions are met:\r\n\r\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following\r\ndisclaimer.\r\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following\r\ndisclaimer in the documentation and/or other materials provided with the distribution.\r\n3. Neither the name of the author nor the names of its contributors may be used to endorse or promote products\r\nderived from this software without specific prior written permission.\r\n\r\nTHIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES,\r\nINCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR\r\nPURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,\r\nINCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\r\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\r\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\r\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."), "\r", ""), "\t", "    ");
+                Render: function (displayOutput, width, height) {
+                    var newline = "\n";
+
+                    var text;
+
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput)) {
+                        text = "Image files created by:" + (newline || "") + "* Cburnett" + (newline || "") + "* Kenney" + (newline || "") + (newline || "") + "See the source code for more information (including licensing details).";
+                    } else {
+                        text = "Image files created by:" + (newline || "") + "* Cburnett" + (newline || "") + "* Kenney" + (newline || "") + (newline || "") + "See the source code for more information" + (newline || "") + "(including licensing details).";
+                    }
+
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
                 }
             }
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Music", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_MusicDesktop", {
         statics: {
             methods: {
                 GetText: function () {
                     return "The music tracks were created by Juhani Junkala and are licensed\nunder the CC0 Creative Commons license.\n\n(https://opengameart.org/content/5-chiptunes-action)";
                 },
                 Render: function (displayOutput, width, height) {
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), ChessCompStompWithHacksLibrary.Credits_Music.GetText(), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), ChessCompStompWithHacksLibrary.Credits_MusicDesktop.GetText(), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
                 }
             }
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.Credits_Sound", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_MusicMobile", {
+        statics: {
+            methods: {
+                Render: function (displayOutput, width, height) {
+                    var newline = "\n";
+
+                    var text;
+
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput)) {
+                        text = "Music track authors:" + (newline || "") + "* Juhani Junkala" + (newline || "") + (newline || "") + "See the source code for more information (including licensing details).";
+                    } else {
+                        text = "Music track authors:" + (newline || "") + "* Juhani Junkala" + (newline || "") + (newline || "") + "See the source code for more information" + (newline || "") + "(including licensing details).";
+                    }
+
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_SoundDesktop", {
         statics: {
             methods: {
                 GetText: function () {
                     return "The sound effects were created by Kenney (https://www.kenney.nl)\nand are licensed under Creative Commons Zero.";
                 },
                 Render: function (displayOutput, width, height) {
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), ChessCompStompWithHacksLibrary.Credits_Sound.GetText(), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), ChessCompStompWithHacksLibrary.Credits_SoundDesktop.GetText(), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
                 }
             }
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.CreditsFrame.Tab", {
+    Bridge.define("ChessCompStompWithHacksLibrary.Credits_SoundMobile", {
+        statics: {
+            methods: {
+                Render: function (displayOutput, width, height) {
+                    var newline = "\n";
+
+                    var text;
+
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput)) {
+                        text = "Sound effects created by:" + (newline || "") + "* Kenney" + (newline || "") + (newline || "") + "See the source code for more information (including licensing details).";
+                    } else {
+                        text = "Sound effects created by:" + (newline || "") + "* Kenney" + (newline || "") + (newline || "") + "See the source code for more information" + (newline || "") + "(including licensing details).";
+                    }
+
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(10, ((height - 10) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab", {
         $kind: "nested enum",
         statics: {
             fields: {
@@ -5624,7 +5742,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.CreditsFrame.TabButton", {
+    Bridge.define("ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton", {
         $kind: "nested class",
         fields: {
             X: 0,
@@ -5643,6 +5761,50 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.Height = height;
                 this.Tab = tab;
                 this.TabName = tabName;
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                DesignAndCoding: 0,
+                Images: 1,
+                Font: 2,
+                Sound: 3,
+                Music: 4
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton", {
+        $kind: "nested class",
+        fields: {
+            X: 0,
+            Y: 0,
+            Width: 0,
+            Height: 0,
+            Tab: 0,
+            TabName: null
+        },
+        ctors: {
+            ctor: function (x, y, width, height, tab, tabName) {
+                this.$initialize();
+                this.X = x;
+                this.Y = y;
+                this.Width = width;
+                this.Height = height;
+                this.Tab = tab;
+                this.TabName = tabName;
+            }
+        },
+        methods: {
+            SetX: function (x) {
+                this.X = x;
+            },
+            SetY: function (y) {
+                this.Y = y;
             }
         }
     });
@@ -6922,6 +7084,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                  * @default 1000
                  * @type number
                  */
+                DESKTOP_WINDOW_WIDTH: 0,
                 WINDOW_WIDTH: 0,
                 /**
                  * The height in pixels, when the display type is "desktop"
@@ -6934,6 +7097,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                  * @default 700
                  * @type number
                  */
+                DESKTOP_WINDOW_HEIGHT: 0,
                 WINDOW_HEIGHT: 0,
                 FILE_ID_FOR_GLOBAL_CONFIGURATION: 0,
                 FILE_ID_FOR_SESSION_STATE: 0,
@@ -6941,7 +7105,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             ctors: {
                 init: function () {
+                    this.DESKTOP_WINDOW_WIDTH = 1000;
                     this.WINDOW_WIDTH = 1000;
+                    this.DESKTOP_WINDOW_HEIGHT = 700;
                     this.WINDOW_HEIGHT = 700;
                     this.FILE_ID_FOR_GLOBAL_CONFIGURATION = 1;
                     this.FILE_ID_FOR_SESSION_STATE = 2;
@@ -10196,8 +10362,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var settingsIconWidth = Bridge.Int.mul(displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetWidth(ChessCompStompWithHacksLibrary.GameImage.Gear), scalingFactor);
                 var settingsIconHeight = Bridge.Int.mul(displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetHeight(ChessCompStompWithHacksLibrary.GameImage.Gear), scalingFactor);
 
-                var windowWidth = this.isMobileDisplayType ? displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() : ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH;
-                var windowHeight = this.isMobileDisplayType ? displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() : ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT;
+                var windowWidth = this.isMobileDisplayType ? displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() : ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH;
+                var windowHeight = this.isMobileDisplayType ? displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() : ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT;
 
                 var isHover = ((windowWidth - settingsIconWidth) | 0) <= mouseX && mouseX <= windowWidth && ((windowHeight - settingsIconHeight) | 0) <= mouseY && mouseY <= windowHeight;
 
@@ -10222,8 +10388,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             Render: function (displayOutput) {
                 var scalingFactor = this.isMobileDisplayType ? 2 : 1;
 
-                var windowWidth = this.isMobileDisplayType ? displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth() : ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH;
-                var windowHeight = this.isMobileDisplayType ? displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight() : ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT;
+                var windowWidth = this.isMobileDisplayType ? displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth() : ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH;
+                var windowHeight = this.isMobileDisplayType ? displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight() : ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT;
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(this.isClicked ? ChessCompStompWithHacksLibrary.GameImage.GearSelected : (this.isHover && !this.isMobileDisplayType ? ChessCompStompWithHacksLibrary.GameImage.GearHover : ChessCompStompWithHacksLibrary.GameImage.Gear), ((windowWidth - Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.Gear), scalingFactor)) | 0), ((windowHeight - Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.Gear), scalingFactor)) | 0), 0, Bridge.Int.mul(scalingFactor, 128));
             }
@@ -12494,8 +12660,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function () {
                 this.$initialize();
-                this.canvasWidth = ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH;
-                this.canvasHeight = ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT;
+                this.canvasWidth = ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH;
+                this.canvasHeight = ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT;
             }
         },
         methods: {
@@ -18244,7 +18410,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             Render: function (displayOutput) {
                 var $t;
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(128, 128, 128), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(128, 128, 128), true);
 
                 var chessPiecesRenderer = new ChessCompStompWithHacksLibrary.ChessTestingFrame.ChessPiecesRendererOld();
 
@@ -18516,11 +18682,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.underlyingFrame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 this.underlyingFrame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render(displayOutput);
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.$ctor1(0, 0, 0, 64), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.$ctor1(0, 0, 0, 64), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(ChessCompStompWithHacksLibrary.ClearDataConfirmationDesktopFrame.PANEL_X, ChessCompStompWithHacksLibrary.ClearDataConfirmationDesktopFrame.PANEL_Y, 479, 149, DTLibrary.DTColor.White(), true);
 
@@ -18677,7 +18843,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.CreditsFrame", {
+    Bridge.define("ChessCompStompWithHacksLibrary.CreditsDesktopFrame", {
         inherits: [DTLibrary.IFrame$4(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont,ChessCompStompWithHacksLibrary.GameSound,ChessCompStompWithHacksLibrary.GameMusic)],
         fields: {
             globalState: null,
@@ -18708,20 +18874,20 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState = globalState;
                 this.sessionState = sessionState;
 
-                this.selectedTab = ChessCompStompWithHacksLibrary.CreditsFrame.Tab.DesignAndCoding;
+                this.selectedTab = ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.DesignAndCoding;
                 this.hoverTab = null;
                 this.clickTab = null;
 
-                this.creditsDesignAndCoding = new ChessCompStompWithHacksLibrary.Credits_DesignAndCoding(sessionState.GetColorTheme(), 450, globalState.BuildType);
-                this.creditsImages = new ChessCompStompWithHacksLibrary.Credits_Images(sessionState.GetColorTheme(), 450);
-                this.creditsFont = new ChessCompStompWithHacksLibrary.Credits_Font(sessionState.GetColorTheme(), 450);
+                this.creditsDesignAndCoding = new ChessCompStompWithHacksLibrary.Credits_DesignAndCodingDesktop(sessionState.GetColorTheme(), 450, globalState.BuildType);
+                this.creditsImages = new ChessCompStompWithHacksLibrary.Credits_ImagesDesktop(sessionState.GetColorTheme(), 450);
+                this.creditsFont = new ChessCompStompWithHacksLibrary.Credits_FontDesktop(sessionState.GetColorTheme(), 450);
 
-                this.tabButtons = new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.CreditsFrame.TabButton)).ctor();
-                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(20, 569, 234, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.DesignAndCoding, "Design and coding"));
-                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(254, 569, 103, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Images, "Images"));
-                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(357, 569, 82, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Font, "Font"));
-                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(439, 569, 96, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Sound, "Sound"));
-                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsFrame.TabButton(535, 569, 90, 40, ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Music, "Music"));
+                this.tabButtons = new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton)).ctor();
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton(20, 569, 234, 40, ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.DesignAndCoding, "Design and coding"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton(254, 569, 103, 40, ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Images, "Images"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton(357, 569, 82, 40, ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Font, "Font"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton(439, 569, 96, 40, ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Sound, "Sound"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsDesktopFrame.TabButton(535, 569, 90, 40, ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Music, "Music"));
 
                 this.backButton = new ChessCompStompWithHacksLibrary.Button(780, 20, 200, 80, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 67, 28, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
@@ -18736,6 +18902,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 return new (System.Collections.Generic.HashSet$1(System.String)).ctor();
             },
             ProcessDisplayType: function (displayType, displayProcessing) {
+                if (displayType !== DTLibrary.DisplayType.Desktop) {
+                    return new ChessCompStompWithHacksLibrary.CreditsMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                }
+
                 return this;
             },
             GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
@@ -18789,7 +18959,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var translatedMouse = new DTLibrary.TranslatedMouse(mouseInput, -20, -120);
                 var translatedPreviousMouse = new DTLibrary.TranslatedMouse(previousMouseInput, -20, -120);
 
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.DesignAndCoding) {
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.DesignAndCoding) {
                     var result = this.creditsDesignAndCoding.ProcessFrame(translatedMouse, translatedPreviousMouse, soundOutput);
 
                     var clickedViewLicenseButton = result.ClickedButton;
@@ -18802,7 +18972,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Images) {
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Images) {
                     var clickedViewLicenseButton1 = this.creditsImages.ProcessFrame(translatedMouse, translatedPreviousMouse, soundOutput);
 
                     if (clickedViewLicenseButton1) {
@@ -18811,7 +18981,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Font) {
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Font) {
                     var clickedViewLicenseButton2 = this.creditsFont.ProcessFrame(translatedMouse, translatedPreviousMouse, soundOutput);
 
                     if (clickedViewLicenseButton2) {
@@ -18828,7 +18998,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             Render: function (displayOutput) {
                 var $t;
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(422, 675, "Credits", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
 
@@ -18874,20 +19044,226 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 var translatedDisplay = new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, 20, 120);
 
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.DesignAndCoding) {
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.DesignAndCoding) {
                     this.creditsDesignAndCoding.Render(translatedDisplay);
                 }
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Images) {
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Images) {
                     this.creditsImages.Render(translatedDisplay);
                 }
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Font) {
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Font) {
                     this.creditsFont.Render(translatedDisplay);
                 }
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Sound) {
-                    ChessCompStompWithHacksLibrary.Credits_Sound.Render(translatedDisplay, 960, 450);
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Sound) {
+                    ChessCompStompWithHacksLibrary.Credits_SoundDesktop.Render(translatedDisplay, 960, 450);
                 }
-                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsFrame.Tab.Music) {
-                    ChessCompStompWithHacksLibrary.Credits_Music.Render(translatedDisplay, 960, 450);
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsDesktopFrame.Tab.Music) {
+                    ChessCompStompWithHacksLibrary.Credits_MusicDesktop.Render(translatedDisplay, 960, 450);
+                }
+
+                this.backButton.Render(displayOutput);
+            },
+            RenderMusic: function (musicOutput) {
+                this.globalState.RenderMusic(musicOutput);
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.CreditsMobileFrame", {
+        inherits: [DTLibrary.IFrame$4(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont,ChessCompStompWithHacksLibrary.GameSound,ChessCompStompWithHacksLibrary.GameMusic)],
+        fields: {
+            globalState: null,
+            sessionState: null,
+            tabButtons: null,
+            selectedTab: 0,
+            hoverTab: null,
+            clickTab: null,
+            backButton: null
+        },
+        alias: [
+            "GetClickUrl", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetClickUrl",
+            "GetCompletedAchievements", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetCompletedAchievements",
+            "ProcessDisplayType", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessDisplayType",
+            "GetNextFrame", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetNextFrame",
+            "ProcessExtraTime", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessExtraTime",
+            "ProcessMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic",
+            "Render", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render",
+            "RenderMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$RenderMusic"
+        ],
+        ctors: {
+            ctor: function (globalState, sessionState, display) {
+                this.$initialize();
+                this.globalState = globalState;
+                this.sessionState = sessionState;
+
+                this.selectedTab = ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.DesignAndCoding;
+                this.hoverTab = null;
+                this.clickTab = null;
+
+                this.tabButtons = new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton)).ctor();
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton(20, 0, 234, 40, ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.DesignAndCoding, "Design and coding"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton(254, 0, 103, 40, ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Images, "Images"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton(357, 0, 82, 40, ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Font, "Font"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton(439, 0, 96, 40, ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Sound, "Sound"));
+                this.tabButtons.add(new ChessCompStompWithHacksLibrary.CreditsMobileFrame.TabButton(535, 0, 90, 40, ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Music, "Music"));
+
+                this.backButton = new ChessCompStompWithHacksLibrary.Button(0, 0, 300, 125, new DTLibrary.DTColor.ctor(235, 235, 235), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Back", 99, 43, ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, true);
+
+                this.UpdateCoordinates(display);
+            }
+        },
+        methods: {
+            UpdateCoordinates: function (display) {
+                var $t;
+                this.backButton.SetX(((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 320) | 0));
+                this.backButton.SetY(20);
+
+                var tabButtonY;
+                if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation(ChessCompStompWithHacksLibrary.GameImage, display)) {
+                    tabButtonY = 569;
+                } else {
+                    tabButtonY = (display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight() - 131) | 0;
+                }
+
+                $t = Bridge.getEnumerator(this.tabButtons);
+                try {
+                    while ($t.moveNext()) {
+                        var tabButton = $t.Current;
+                        tabButton.SetY(tabButtonY);
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$Dispose();
+                    }
+                }
+            },
+            GetClickUrl: function () {
+                return null;
+            },
+            GetCompletedAchievements: function () {
+                return new (System.Collections.Generic.HashSet$1(System.String)).ctor();
+            },
+            ProcessDisplayType: function (displayType, displayProcessing) {
+                if (displayType === DTLibrary.DisplayType.Desktop) {
+                    return new ChessCompStompWithHacksLibrary.CreditsDesktopFrame(this.globalState, this.sessionState);
+                }
+
+                return this;
+            },
+            GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
+                var $t;
+                this.UpdateCoordinates(displayProcessing);
+
+                var mouseX = mouseInput.DTLibrary$IMouse$GetX();
+                var mouseY = mouseInput.DTLibrary$IMouse$GetY();
+
+                this.hoverTab = null;
+                $t = Bridge.getEnumerator(this.tabButtons);
+                try {
+                    while ($t.moveNext()) {
+                        var tabButton = $t.Current;
+                        if (tabButton.X <= mouseX && mouseX <= ((tabButton.X + tabButton.Width) | 0) && tabButton.Y <= mouseY && mouseY <= ((tabButton.Y + tabButton.Height) | 0)) {
+                            this.hoverTab = tabButton.Tab;
+                        }
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$Dispose();
+                    }
+                }
+
+                if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
+                    if (this.hoverTab != null) {
+                        this.clickTab = this.hoverTab;
+                    }
+                }
+
+                if (this.clickTab != null && !mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
+                    if (System.Nullable.hasValue(this.hoverTab) && System.Nullable.getValue(this.hoverTab) === System.Nullable.getValue(this.clickTab)) {
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        this.selectedTab = System.Nullable.getValue(this.clickTab);
+                    }
+
+                    this.clickTab = null;
+                }
+
+                if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc)) {
+                    soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                    return new ChessCompStompWithHacksLibrary.TitleScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                }
+
+                var clickedBackButton = this.backButton.ProcessFrame(mouseInput, previousMouseInput);
+                if (clickedBackButton) {
+                    soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                    return new ChessCompStompWithHacksLibrary.TitleScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                }
+
+                return this;
+            },
+            ProcessExtraTime: function (milliseconds) { },
+            ProcessMusic: function () {
+                this.globalState.ProcessMusic();
+            },
+            Render: function (displayOutput) {
+                var $t;
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((Bridge.Int.div(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), 2)) | 0) - 78) | 0), ((displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight() - 25) | 0), "Credits", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
+
+                var tabWidth = (displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth() - 40) | 0;
+                var tabHeight = (this.tabButtons.getItem(0).Y - 165) | 0;
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(20, 165, tabWidth, tabHeight, DTLibrary.DTColor.White(), true);
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(20, 165, tabWidth, tabHeight, DTLibrary.DTColor.Black(), false);
+
+                $t = Bridge.getEnumerator(this.tabButtons);
+                try {
+                    while ($t.moveNext()) {
+                        var tabButton = $t.Current;
+                        var backgroundColor;
+
+                        if (tabButton.Tab === this.selectedTab) {
+                            backgroundColor = DTLibrary.DTColor.White();
+                        } else {
+                            if (System.Nullable.hasValue(this.clickTab) && System.Nullable.getValue(this.clickTab) === tabButton.Tab) {
+                                backgroundColor = ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(this.sessionState.GetColorTheme());
+                            } else {
+                                backgroundColor = new DTLibrary.DTColor.ctor(200, 200, 200);
+                            }
+                        }
+
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(tabButton.X, tabButton.Y, ((tabButton.Width - 1) | 0), ((tabButton.Height - 1) | 0), backgroundColor, true);
+
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(tabButton.X, tabButton.Y, tabButton.Width, tabButton.Height, DTLibrary.DTColor.Black(), false);
+
+                        if (this.selectedTab === tabButton.Tab) {
+                            displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((tabButton.X + 1) | 0), ((tabButton.Y - 1) | 0), ((tabButton.Width - 2) | 0), 3, DTLibrary.DTColor.White(), true);
+                        }
+
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((tabButton.X + 10) | 0), ((((tabButton.Y + tabButton.Height) | 0) - 10) | 0), tabButton.TabName, ChessCompStompWithHacksLibrary.GameFont.GameFont18Pt, DTLibrary.DTColor.Black());
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$Dispose();
+                    }
+                }
+
+                var translatedDisplay = new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, 20, 165);
+
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.DesignAndCoding) {
+                    ChessCompStompWithHacksLibrary.Credits_DesignAndCodingMobile.Render(translatedDisplay, this.globalState.BuildType, tabWidth, tabHeight);
+                }
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Images) {
+                    ChessCompStompWithHacksLibrary.Credits_ImagesMobile.Render(translatedDisplay, tabWidth, tabHeight);
+                }
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Font) {
+                    ChessCompStompWithHacksLibrary.Credits_FontMobile.Render(translatedDisplay, tabWidth, tabHeight);
+                }
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Sound) {
+                    ChessCompStompWithHacksLibrary.Credits_SoundMobile.Render(translatedDisplay, tabWidth, tabHeight);
+                }
+                if (this.selectedTab === ChessCompStompWithHacksLibrary.CreditsMobileFrame.Tab.Music) {
+                    ChessCompStompWithHacksLibrary.Credits_MusicMobile.Render(translatedDisplay, tabWidth, tabHeight);
                 }
 
                 this.backButton.Render(displayOutput);
@@ -19244,7 +19620,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             ProcessMusic: function () { },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, this.displayType === DTLibrary.DisplayType.Desktop ? ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH : displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), this.displayType === DTLibrary.DisplayType.Desktop ? ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT : displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, this.displayType === DTLibrary.DisplayType.Desktop ? ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH : displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), this.displayType === DTLibrary.DisplayType.Desktop ? ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT : displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 if (this.displayType === DTLibrary.DisplayType.Desktop) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$TryDrawText(440, 400, "Loading...", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
@@ -19290,11 +19666,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.$initialize();
                 this.globalState = globalState;
                 this.sessionState = sessionState;
-                this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
+                this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon(false);
                 this.elapsedTimeMicros = 0;
 
                 var buttonWidth = 150;
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Begin", 38, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Begin", 38, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
             }
         },
         methods: {
@@ -19355,7 +19731,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(406, 675, "Welcome", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
 
@@ -19935,13 +20311,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.underlyingFrame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 if (this.renderUnderlyingFrame) {
                     this.underlyingFrame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render(displayOutput);
                 }
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.$ctor1(0, 0, 0, 64), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.$ctor1(0, 0, 0, 64), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(ChessCompStompWithHacksLibrary.SettingsMenuDesktopFrame.PANEL_X, this.panelY, 299, ((this.panelHeight - 1) | 0), DTLibrary.DTColor.White(), true);
 
@@ -20222,7 +20598,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(50, 650, "1) Test keyboard\n2) Test mouse\n3) Test font\n4) Test sound\n5) Test music", ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
             },
@@ -20285,7 +20661,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 var red = new DTLibrary.DTColor.ctor(255, 0, 0);
 
@@ -20368,7 +20744,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 var red = new DTLibrary.DTColor.ctor(255, 0, 0);
 
@@ -20448,14 +20824,14 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 if (this.x < 0) {
                     this.x = 0;
                 }
-                if (this.x > ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH) {
-                    this.x = ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH;
+                if (this.x > ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH) {
+                    this.x = ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH;
                 }
                 if (this.y < 0) {
                     this.y = 0;
                 }
-                if (this.y > ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT) {
-                    this.y = ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT;
+                if (this.y > ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT) {
+                    this.y = ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT;
                 }
 
                 return this;
@@ -20464,7 +20840,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this.x - 5) | 0), ((this.y - 5) | 0), 11, 11, DTLibrary.DTColor.Black(), true);
             },
@@ -20546,7 +20922,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 var dtColor;
 
@@ -20660,7 +21036,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 if (this.volumePicker != null) {
                     this.volumePicker.Render(displayOutput);
@@ -20749,7 +21125,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 if (this.volumePicker != null) {
                     this.volumePicker.Render(displayOutput);
@@ -20794,9 +21170,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.versionString = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo().Version;
 
-                this.startButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
+                this.startButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Start", 35, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
-                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
+                this.continueButton = new ChessCompStompWithHacksLibrary.Button(((Bridge.Int.div((((ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH - buttonWidth) | 0)), 2)) | 0), 300, buttonWidth, 50, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Continue", 15, 13, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, false);
 
                 this.clearDataButton = new ChessCompStompWithHacksLibrary.Button(160, 10, 200, 31, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset data", 40, 6, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
@@ -20860,7 +21236,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 if (clickedCreditsButton) {
                     this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.CreditsFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.CreditsDesktopFrame(this.globalState, this.sessionState);
                 }
 
                 if (this.globalState.DebugMode) {
@@ -20879,7 +21255,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(182, 510, "Chess Comp Stomp With Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
 
@@ -21021,7 +21397,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 if (clickedCreditsButton) {
                     this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.CreditsFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.CreditsMobileFrame(this.globalState, this.sessionState, displayProcessing);
                 }
 
                 return this;
