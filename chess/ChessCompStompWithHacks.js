@@ -7434,11 +7434,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             fields: {
                 WIDTH: 0,
+                WIDTH_2: 0,
                 HEIGHT: 0
             },
             ctors: {
                 init: function () {
                     this.WIDTH = 155;
+                    this.WIDTH_2 = 100;
                     this.HEIGHT = 100;
                 }
             },
@@ -7485,6 +7487,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             }
         },
         methods: {
+            SetX: function (x) {
+                this.x = x;
+            },
+            SetY: function (y) {
+                this.y = y;
+            },
             GetHack: function () {
                 return this.hack;
             },
@@ -7511,8 +7519,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var mouseX = mouseInput.DTLibrary$IMouse$GetX();
                 var mouseY = mouseInput.DTLibrary$IMouse$GetY();
 
-                var isHover = this.x <= mouseX && mouseX <= ((this.x + 77) | 0) && this.y <= mouseY && mouseY <= ((this.y + ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT) | 0);
-                var isHoverRightSide = ((this.x + 77) | 0) <= mouseX && mouseX <= ((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0) && this.y <= mouseY && mouseY <= ((this.y + ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT) | 0);
+                var isHover = this.x <= mouseX && mouseX <= ((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0) && this.y <= mouseY && mouseY <= ((this.y + ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT) | 0);
+                var isHoverRightSide = ((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0) <= mouseX && mouseX <= ((((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0) + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH_2) | 0) && this.y <= mouseY && mouseY <= ((this.y + ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT) | 0);
 
                 if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && isHover) {
                     this.isLeftClick = true;
@@ -7572,7 +7580,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.x, this.y, 154, 99, backgroundColor, true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.x, this.y, ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH, ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT, backgroundColor, true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.x, this.y, ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH, ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT, DTLibrary.DTColor.Black(), false);
 
@@ -7583,6 +7591,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 if (hasResearchedHack) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((this.x + 3) | 0), ((this.y + 20) | 0), "Hack implemented", ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt, new DTLibrary.DTColor.ctor(128, 128, 128));
                 }
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0), this.y, ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH_2, ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT, backgroundColor, true);
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0), this.y, ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH_2, ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT, DTLibrary.DTColor.Black(), false);
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0) + 3) | 0), ((this.y + 90) | 0), "More\nDetails", ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
             }
         }
     });
@@ -7899,80 +7913,144 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     });
 
     Bridge.define("ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile", {
-        statics: {
-            fields: {
-                FIRST_SET_OF_HACKS_X: 0,
-                SECOND_SET_OF_HACKS_X: 0,
-                THIRD_SET_OF_HACKS_X: 0
-            },
-            ctors: {
-                init: function () {
-                    this.FIRST_SET_OF_HACKS_X = 8;
-                    this.SECOND_SET_OF_HACKS_X = 336;
-                    this.THIRD_SET_OF_HACKS_X = 664;
-                }
-            }
-        },
         fields: {
             sessionState: null,
             hackDisplays: null,
+            tabButtons: null,
+            clickTab: null,
             resetHacksButton: null,
             allowResearchingHacks: false
         },
         ctors: {
-            ctor: function (sessionState, allowResearchingHacks) {
+            ctor: function (sessionState, allowResearchingHacks, display) {
                 this.$initialize();
+                this.tabButtons = function (_o1) {
+                        _o1.add(new ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.TabButton(0, 0, 10, 10, ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, "Tactics"));
+                        _o1.add(new ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.TabButton(0, 0, 10, 10, ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Eliteness, "Eliteness"));
+                        _o1.add(new ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.TabButton(0, 0, 10, 10, ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.RuleWarping, "Rule Warping"));
+                        return _o1;
+                    }(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.TabButton)).ctor());
+
+                this.clickTab = null;
+
                 this.sessionState = sessionState;
 
                 this.allowResearchingHacks = allowResearchingHacks;
 
                 this.resetHacksButton = new ChessCompStompWithHacksLibrary.Button(8, 70, 170, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset hacks", 18, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
-                this.hackDisplays = new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor();
+                this.hackDisplays = new (System.Collections.Generic.Dictionary$2(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab,System.Collections.Generic.List$1(System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile))))();
+                this.hackDisplays.set(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, function (_o2) {
+                        _o2.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        _o2.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        _o2.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        return _o2;
+                    }(new (System.Collections.Generic.List$1(System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile))).ctor()));
+                this.hackDisplays.set(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Eliteness, function (_o3) {
+                        _o3.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        _o3.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        _o3.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        return _o3;
+                    }(new (System.Collections.Generic.List$1(System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile))).ctor()));
+                this.hackDisplays.set(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.RuleWarping, function (_o4) {
+                        _o4.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        _o4.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        _o4.add(new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)).ctor());
+                        return _o4;
+                    }(new (System.Collections.Generic.List$1(System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile))).ctor()));
 
-                var addHackDisplay = Bridge.fn.bind(this, function (hack, x, y, theme) {
-                    this.hackDisplays.add(new ChessCompStompWithHacksLibrary.HackDisplayMobile(hack, x, y, allowResearchingHacks, sessionState, theme));
+                var addHackDisplay = Bridge.fn.bind(this, function (tab, hack, row, theme) {
+                    this.hackDisplays.get(tab).getItem(row).add(new ChessCompStompWithHacksLibrary.HackDisplayMobile(hack, 0, 0, allowResearchingHacks, sessionState, theme));
                 });
 
-                var addHackDisplayInFirstSet = function (hack, x, y) {
-                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.FIRST_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Green);
+                var addHackDisplayInFirstSet = function (hack, row) {
+                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, hack, row, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Green);
                 };
 
-                var addHackDisplayInSecondSet = function (hack, x, y) {
-                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.SECOND_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Blue);
+                var addHackDisplayInSecondSet = function (hack, row) {
+                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Eliteness, hack, row, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Blue);
                 };
 
-                var addHackDisplayInThirdSet = function (hack, x, y) {
-                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.THIRD_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Purple);
+                var addHackDisplayInThirdSet = function (hack, row) {
+                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.RuleWarping, hack, row, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Purple);
                 };
 
-                var firstXOffset = 6;
-                var secondXOffset = 167;
+                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.PawnsCanMoveThreeSpacesInitially, 0);
+                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.KnightsCanMakeLargeKnightsMove, 1);
+                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.RooksCanCaptureLikeCannons, 1);
+                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.TacticalNuke, 2);
 
-                var firstRow = 431;
-                var secondRow = (firstRow - 127) | 0;
-                var thirdRow = (secondRow - 126) | 0;
+                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.ExtraPawnFirst, 0);
+                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.ExtraPawnSecond, 0);
+                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.ExtraQueen, 1);
+                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.OpponentMustCaptureWhenPossible, 2);
+                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.PawnsDestroyCapturingPiece, 2);
 
-                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.PawnsCanMoveThreeSpacesInitially, firstXOffset, firstRow);
-                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.KnightsCanMakeLargeKnightsMove, firstXOffset, secondRow);
-                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.RooksCanCaptureLikeCannons, secondXOffset, secondRow);
-                addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.TacticalNuke, firstXOffset, thirdRow);
+                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.SuperCastling, 0);
+                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.StalemateIsVictory, 0);
+                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.RooksCanMoveLikeBishops, 1);
+                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.QueensCanMoveLikeKnights, 1);
+                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.SuperEnPassant, 2);
+                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.AnyPieceCanPromote, 2);
 
-                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.ExtraPawnFirst, firstXOffset, firstRow);
-                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.ExtraPawnSecond, secondXOffset, firstRow);
-                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.ExtraQueen, firstXOffset, secondRow);
-                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.OpponentMustCaptureWhenPossible, firstXOffset, thirdRow);
-                addHackDisplayInSecondSet(ChessCompStompWithHacksEngine.Hack.PawnsDestroyCapturingPiece, secondXOffset, thirdRow);
-
-                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.SuperCastling, firstXOffset, firstRow);
-                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.StalemateIsVictory, secondXOffset, firstRow);
-                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.RooksCanMoveLikeBishops, firstXOffset, secondRow);
-                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.QueensCanMoveLikeKnights, secondXOffset, secondRow);
-                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.SuperEnPassant, firstXOffset, thirdRow);
-                addHackDisplayInThirdSet(ChessCompStompWithHacksEngine.Hack.AnyPieceCanPromote, secondXOffset, thirdRow);
+                this.UpdateCoordinates(display);
             }
         },
         methods: {
+            UpdateCoordinates: function (display) {
+                var $t;
+                var isLandscape = DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation(ChessCompStompWithHacksLibrary.GameImage, display);
+
+                isLandscape = true;
+
+                if (isLandscape) {
+                    this.tabButtons.getItem(0).SetX(20);
+                    this.tabButtons.getItem(1).SetX(20);
+                    this.tabButtons.getItem(2).SetX(20);
+
+                    this.tabButtons.getItem(0).SetY(400);
+                    this.tabButtons.getItem(1).SetY(300);
+                    this.tabButtons.getItem(2).SetY(200);
+
+                    var tabButtonWidth = (Bridge.Int.div(display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth(), 4)) | 0;
+                    this.tabButtons.getItem(0).SetWidth(tabButtonWidth);
+                    this.tabButtons.getItem(1).SetWidth(tabButtonWidth);
+                    this.tabButtons.getItem(2).SetWidth(tabButtonWidth);
+
+                    this.tabButtons.getItem(0).SetHeight(100);
+                    this.tabButtons.getItem(1).SetHeight(100);
+                    this.tabButtons.getItem(2).SetHeight(100);
+
+                    var xStartOfTabContent = (50 + tabButtonWidth) | 0;
+
+                    var widthOfTabContent = (((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 50) | 0) - 50) | 0) - tabButtonWidth) | 0;
+
+                    var amountOfWhitespace = (((widthOfTabContent - 255) | 0) - 255) | 0;
+
+                    var xColumn0 = (xStartOfTabContent + ((Bridge.Int.div(amountOfWhitespace, 3)) | 0)) | 0;
+                    var xColumn1 = (((((xStartOfTabContent + ((Bridge.Int.div(amountOfWhitespace, 3)) | 0)) | 0) + 255) | 0) + ((Bridge.Int.div(amountOfWhitespace, 3)) | 0)) | 0;
+
+                    $t = Bridge.getEnumerator(this.hackDisplays.getValues(), System.Collections.Generic.List$1(System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile)));
+                    try {
+                        while ($t.moveNext()) {
+                            var hackDisplaysInTab = $t.Current;
+                            for (var row = 0; row < 3; row = (row + 1) | 0) {
+                                for (var column = 0; column < hackDisplaysInTab.getItem(row).Count; column = (column + 1) | 0) {
+                                    var hackDisplay = hackDisplaysInTab.getItem(row).getItem(column);
+
+                                    hackDisplay.SetX(column === 0 ? xColumn0 : xColumn1);
+                                    hackDisplay.SetY(row === 0 ? 431 : (row === 1 ? 304 : 178));
+                                }
+                            }
+                        }
+                    } finally {
+                        if (Bridge.is($t, System.IDisposable)) {
+                            $t.System$IDisposable$Dispose();
+                        }
+                    }
+                } else {
+                }
+            },
             /**
              * Returns the hack that the player right-clicked (or null if the player didn't right-click any hacks)
              *
@@ -7987,22 +8065,70 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
              * @return  {?ChessCompStompWithHacksEngine.Hack}
              */
             ProcessFrame: function (mouseInput, previousMouseInput, displayProcessing, soundOutput) {
-                var $t;
+                var $t, $t1, $t2;
+                this.UpdateCoordinates(displayProcessing);
+
                 var rightClickedHack = null;
 
-                $t = Bridge.getEnumerator(this.hackDisplays);
+
+
+                var mouseX = mouseInput.DTLibrary$IMouse$GetX();
+                var mouseY = mouseInput.DTLibrary$IMouse$GetY();
+
+                var hoverTab = null;
+                $t = Bridge.getEnumerator(this.tabButtons);
                 try {
                     while ($t.moveNext()) {
-                        var hackDisplay = $t.Current;
-                        var hasRightClicked = hackDisplay.ProcessFrame(mouseInput, previousMouseInput, soundOutput, displayProcessing);
-
-                        if (hasRightClicked) {
-                            rightClickedHack = hackDisplay.GetHack();
+                        var tabButton = $t.Current;
+                        if (tabButton.X <= mouseX && mouseX <= ((tabButton.X + tabButton.Width) | 0) && tabButton.Y <= mouseY && mouseY <= ((tabButton.Y + tabButton.Height) | 0)) {
+                            hoverTab = tabButton.Tab;
                         }
                     }
                 } finally {
                     if (Bridge.is($t, System.IDisposable)) {
                         $t.System$IDisposable$Dispose();
+                    }
+                }
+
+                if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
+                    if (hoverTab != null) {
+                        this.clickTab = hoverTab;
+                    }
+                }
+
+                if (this.clickTab != null && !mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
+                    if (System.Nullable.hasValue(hoverTab) && System.Nullable.getValue(hoverTab) === System.Nullable.getValue(this.clickTab)) {
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        this.sessionState.SetHackSelectionMobileTab(System.Nullable.getValue(this.clickTab));
+                    }
+
+                    this.clickTab = null;
+                }
+
+                $t1 = Bridge.getEnumerator(this.hackDisplays.get(this.sessionState.GetHackSelectionMobileTab()));
+                try {
+                    while ($t1.moveNext()) {
+                        var hackDisplayList = $t1.Current;
+                        $t2 = Bridge.getEnumerator(hackDisplayList);
+                        try {
+                            while ($t2.moveNext()) {
+                                var hackDisplay = $t2.Current;
+                                var hasRightClicked = hackDisplay.ProcessFrame(mouseInput, previousMouseInput, soundOutput, displayProcessing);
+
+                                if (hasRightClicked) {
+                                    rightClickedHack = hackDisplay.GetHack();
+                                }
+                            }
+                        } finally {
+                            if (Bridge.is($t2, System.IDisposable)) {
+                                $t2.System$IDisposable$Dispose();
+                            }
+                        }
+
+                    }
+                } finally {
+                    if (Bridge.is($t1, System.IDisposable)) {
+                        $t1.System$IDisposable$Dispose();
                     }
                 }
 
@@ -8017,32 +8143,44 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 return rightClickedHack;
             },
             RenderButtons: function (displayOutput) {
-                var $t;
+                var $t, $t1, $t2;
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(436, 675, "Hacks", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
 
                 var gray = new DTLibrary.DTColor.ctor(150, 150, 150);
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.FIRST_SET_OF_HACKS_X, 150, 329, 450, gray, false);
-
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.SECOND_SET_OF_HACKS_X, 150, 329, 450, gray, false);
-
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.THIRD_SET_OF_HACKS_X, 150, 329, 450, gray, false);
-
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(122, 590, "Tactics", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
-
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(435, 590, "Eliteness", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
-
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(740, 590, "Rule warping", ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
-
-                $t = Bridge.getEnumerator(this.hackDisplays);
+                $t = Bridge.getEnumerator(this.tabButtons);
                 try {
                     while ($t.moveNext()) {
-                        var hackDisplay = $t.Current;
-                        hackDisplay.RenderButtonDisplay(displayOutput);
+                        var tabButton = $t.Current;
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(tabButton.X, tabButton.Y, tabButton.Width, tabButton.Height, DTLibrary.DTColor.Black(), false);
+
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(tabButton.X, ((tabButton.Y + tabButton.Height) | 0), tabButton.TabName, ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
                     }
                 } finally {
                     if (Bridge.is($t, System.IDisposable)) {
                         $t.System$IDisposable$Dispose();
+                    }
+                }
+
+                $t1 = Bridge.getEnumerator(this.hackDisplays.get(this.sessionState.GetHackSelectionMobileTab()));
+                try {
+                    while ($t1.moveNext()) {
+                        var hackDisplayList = $t1.Current;
+                        $t2 = Bridge.getEnumerator(hackDisplayList);
+                        try {
+                            while ($t2.moveNext()) {
+                                var hackDisplay = $t2.Current;
+                                hackDisplay.RenderButtonDisplay(displayOutput);
+                            }
+                        } finally {
+                            if (Bridge.is($t2, System.IDisposable)) {
+                                $t2.System$IDisposable$Dispose();
+                            }
+                        }
+                    }
+                } finally {
+                    if (Bridge.is($t1, System.IDisposable)) {
+                        $t1.System$IDisposable$Dispose();
                     }
                 }
 
@@ -8051,6 +8189,54 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     this.resetHacksButton.Render(displayOutput);
                 }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                Tactics: 0,
+                Eliteness: 1,
+                RuleWarping: 2
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.TabButton", {
+        $kind: "nested class",
+        fields: {
+            X: 0,
+            Y: 0,
+            Width: 0,
+            Height: 0,
+            Tab: 0,
+            TabName: null
+        },
+        ctors: {
+            ctor: function (x, y, width, height, tab, tabName) {
+                this.$initialize();
+                this.X = x;
+                this.Y = y;
+                this.Width = width;
+                this.Height = height;
+                this.Tab = tab;
+                this.TabName = tabName;
+            }
+        },
+        methods: {
+            SetX: function (x) {
+                this.X = x;
+            },
+            SetY: function (y) {
+                this.Y = y;
+            },
+            SetWidth: function (width) {
+                this.Width = width;
+            },
+            SetHeight: function (height) {
+                this.Height = height;
             }
         }
     });
@@ -10406,6 +10592,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             AddResearchedHack: function (hack) {
                 this.data.ResearchedHacks.add(hack);
             },
+            GetHackSelectionMobileTab: function () {
+                return this.data.HackSelectionMobileTab;
+            },
+            SetHackSelectionMobileTab: function (tab) {
+                this.data.HackSelectionMobileTab = tab;
+            },
             /**
              * Includes both used and unused hack points
              *
@@ -10659,6 +10851,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     data.ColorTheme = System.Nullable.getValue(colorTheme);
 
+                    data.HackSelectionMobileTab = iterator.TryPopInt();
+
                     return data;
                 }
             }
@@ -10682,6 +10876,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             ResearchedHacks: null,
             CompletedObjectives: null,
             ObjectivesThatWereAlreadyCompletedPriorToCurrentGame: null,
+            HackSelectionMobileTab: 0,
             ColorTheme: 0,
             GameLogic: null,
             MostRecentGameLogic: null
@@ -10702,6 +10897,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.MostRecentGameLogic = null;
 
                 this.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
+
+                this.HackSelectionMobileTab = ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics;
 
                 this.ColorTheme = ChessCompStompWithHacksLibrary.ColorTheme.Initial;
             }
@@ -10750,6 +10947,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 list.AddIntSet(completedObjectiveIds);
 
                 list.AddInt(ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeId(this.ColorTheme));
+
+                list.AddInt(this.HackSelectionMobileTab);
             }
         }
     });
@@ -20392,7 +20591,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState = globalState;
                 this.sessionState = sessionState;
 
-                this.hackSelectionScreenDisplay = new ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile(sessionState, true);
+                this.hackSelectionScreenDisplay = new ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile(sessionState, true, display);
 
                 this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon(true);
 
