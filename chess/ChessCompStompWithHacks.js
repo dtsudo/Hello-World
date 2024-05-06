@@ -18509,12 +18509,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 						
 						//audio.audio.volume = volume;
 						if (audioContext.state !== 'running')
-							audioContext.resume();
-						if (audio.previousVolume !== volume) {
-							audio.gainNode.gain.value = volume;
-							audio.previousVolume = volume;
-						}
-						audio.audio.play();
+							audioContext.resume().then(() => {
+								if (audio.previousVolume !== volume) {
+									audio.gainNode.gain.value = volume;
+									audio.previousVolume = volume;
+								}
+								audio.audio.play();
+							});
 					};
 					
 					return {
