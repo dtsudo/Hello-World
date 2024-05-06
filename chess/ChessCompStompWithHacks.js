@@ -483,6 +483,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 			
                 },
                 Start: function (fps, isEmbeddedVersion, isElectronVersion, canvasScalingFactor, stopWaitingEvenIfMusicHasNotLoaded, debugMode) {
+                    stopWaitingEvenIfMusicHasNotLoaded = true;
+
                     ChessCompStompWithHacks.GameInitializer.canvasScalingFactor = canvasScalingFactor;
 
                     ChessCompStompWithHacks.GameInitializer.hasInitializedClearCanvasJavascript = false;
@@ -695,7 +697,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 					
 					var isEmbeddedVersion = false;
 					
-					var stopWaitingEvenIfMusicHasNotLoaded = true;
+					var stopWaitingEvenIfMusicHasNotLoaded = false;
 
 					var canvasScalingFactor = 2;
 										
@@ -7213,6 +7215,36 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
+    Bridge.define("ChessCompStompWithHacksLibrary.HackDisplay", {
+        statics: {
+            methods: {
+                GetResearchedHackBackgroundColor: function (theme) {
+                    switch (theme) {
+                        case ChessCompStompWithHacksLibrary.HackDisplay.Theme.Blue: 
+                            return new DTLibrary.DTColor.ctor(196, 234, 255);
+                        case ChessCompStompWithHacksLibrary.HackDisplay.Theme.Green: 
+                            return new DTLibrary.DTColor.ctor(201, 255, 196);
+                        case ChessCompStompWithHacksLibrary.HackDisplay.Theme.Purple: 
+                            return new DTLibrary.DTColor.ctor(202, 196, 255);
+                        default: 
+                            throw new System.Exception();
+                    }
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.HackDisplay.Theme", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                Blue: 0,
+                Green: 1,
+                Purple: 2
+            }
+        }
+    });
+
     Bridge.define("ChessCompStompWithHacksLibrary.HackDisplayDesktop", {
         statics: {
             fields: {
@@ -7223,20 +7255,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 init: function () {
                     this.WIDTH = 155;
                     this.HEIGHT = 100;
-                }
-            },
-            methods: {
-                GetResearchedHackBackgroundColor: function (theme) {
-                    switch (theme) {
-                        case ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme.Blue: 
-                            return new DTLibrary.DTColor.ctor(196, 234, 255);
-                        case ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme.Green: 
-                            return new DTLibrary.DTColor.ctor(201, 255, 196);
-                        case ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme.Purple: 
-                            return new DTLibrary.DTColor.ctor(202, 196, 255);
-                        default: 
-                            throw new System.Exception();
-                    }
                 }
             }
         },
@@ -7387,7 +7405,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var canAffordHack = this.CanAffordHack();
 
                 if (hasResearchedHack) {
-                    backgroundColor = ChessCompStompWithHacksLibrary.HackDisplayDesktop.GetResearchedHackBackgroundColor(this.theme);
+                    backgroundColor = ChessCompStompWithHacksLibrary.HackDisplay.GetResearchedHackBackgroundColor(this.theme);
                 } else {
                     if (canAffordHack && this.isLeftClick && this.allowResearchingHacks) {
                         backgroundColor = ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(this.sessionState.GetColorTheme());
@@ -7419,17 +7437,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme", {
-        $kind: "nested enum",
-        statics: {
-            fields: {
-                Blue: 0,
-                Green: 1,
-                Purple: 2
-            }
-        }
-    });
-
     Bridge.define("ChessCompStompWithHacksLibrary.HackDisplayMobile", {
         statics: {
             fields: {
@@ -7442,20 +7449,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.WIDTH = 155;
                     this.WIDTH_2 = 100;
                     this.HEIGHT = 100;
-                }
-            },
-            methods: {
-                GetResearchedHackBackgroundColor: function (theme) {
-                    switch (theme) {
-                        case ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Blue: 
-                            return new DTLibrary.DTColor.ctor(196, 234, 255);
-                        case ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Green: 
-                            return new DTLibrary.DTColor.ctor(201, 255, 196);
-                        case ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Purple: 
-                            return new DTLibrary.DTColor.ctor(202, 196, 255);
-                        default: 
-                            throw new System.Exception();
-                    }
                 }
             }
         },
@@ -7567,7 +7560,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var canAffordHack = this.CanAffordHack();
 
                 if (hasResearchedHack) {
-                    backgroundColor = ChessCompStompWithHacksLibrary.HackDisplayMobile.GetResearchedHackBackgroundColor(this.theme);
+                    backgroundColor = ChessCompStompWithHacksLibrary.HackDisplay.GetResearchedHackBackgroundColor(this.theme);
                 } else {
                     if (canAffordHack && this.isLeftClick && this.allowResearchingHacks) {
                         backgroundColor = ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(this.sessionState.GetColorTheme());
@@ -7597,17 +7590,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0), this.y, ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH_2, ChessCompStompWithHacksLibrary.HackDisplayMobile.HEIGHT, DTLibrary.DTColor.Black(), false);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((((this.x + ChessCompStompWithHacksLibrary.HackDisplayMobile.WIDTH) | 0) + 3) | 0), ((this.y + 90) | 0), "More\nDetails", ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
-            }
-        }
-    });
-
-    Bridge.define("ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme", {
-        $kind: "nested enum",
-        statics: {
-            fields: {
-                Blue: 0,
-                Green: 1,
-                Purple: 2
             }
         }
     });
@@ -7778,15 +7760,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 });
 
                 var addHackDisplayInFirstSet = function (hack, x, y) {
-                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayDesktop.FIRST_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme.Green);
+                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayDesktop.FIRST_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplay.Theme.Green);
                 };
 
                 var addHackDisplayInSecondSet = function (hack, x, y) {
-                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayDesktop.SECOND_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme.Blue);
+                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayDesktop.SECOND_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplay.Theme.Blue);
                 };
 
                 var addHackDisplayInThirdSet = function (hack, x, y) {
-                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayDesktop.THIRD_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplayDesktop.Theme.Purple);
+                    addHackDisplay(hack, ((ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayDesktop.THIRD_SET_OF_HACKS_X + x) | 0), y, ChessCompStompWithHacksLibrary.HackDisplay.Theme.Purple);
                 };
 
                 var firstXOffset = 6;
@@ -7913,6 +7895,79 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     });
 
     Bridge.define("ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile", {
+        statics: {
+            methods: {
+                GetTabIdMapping: function () {
+                    var list = new (System.Collections.Generic.List$1(System.Tuple$2(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab,System.Int32))).ctor();
+
+                    list.add({ Item1: ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, Item2: 1 });
+                    list.add({ Item1: ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Eliteness, Item2: 2 });
+                    list.add({ Item1: ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.RuleWarping, Item2: 3 });
+
+                    return list;
+                },
+                /**
+                 * Returns null if the tabId isn't valid
+                 *
+                 * @static
+                 * @public
+                 * @this ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile
+                 * @memberof ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile
+                 * @param   {number}     tabId
+                 * @return  {?number}
+                 */
+                GetTabFromTabId: function (tabId) {
+                    var $t;
+                    var mapping = ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.GetTabIdMapping();
+
+                    $t = Bridge.getEnumerator(mapping);
+                    try {
+                        while ($t.moveNext()) {
+                            var tuple = $t.Current;
+                            if (tuple.Item2 === tabId) {
+                                return tuple.Item1;
+                            }
+                        }
+                    } finally {
+                        if (Bridge.is($t, System.IDisposable)) {
+                            $t.System$IDisposable$Dispose();
+                        }
+                    }
+
+                    return null;
+                },
+                /**
+                 * Maps a tab to an integer identifier (in a consistent but arbitrary way)
+                 *
+                 * @static
+                 * @public
+                 * @this ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile
+                 * @memberof ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile
+                 * @param   {number}    tab
+                 * @return  {number}
+                 */
+                GetTabId: function (tab) {
+                    var $t;
+                    var mapping = ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.GetTabIdMapping();
+
+                    $t = Bridge.getEnumerator(mapping);
+                    try {
+                        while ($t.moveNext()) {
+                            var tuple = $t.Current;
+                            if (tuple.Item1 === tab) {
+                                return tuple.Item2;
+                            }
+                        }
+                    } finally {
+                        if (Bridge.is($t, System.IDisposable)) {
+                            $t.System$IDisposable$Dispose();
+                        }
+                    }
+
+                    throw new System.Exception();
+                }
+            }
+        },
         fields: {
             sessionState: null,
             hackDisplays: null,
@@ -7937,7 +7992,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.allowResearchingHacks = allowResearchingHacks;
 
-                this.resetHacksButton = new ChessCompStompWithHacksLibrary.Button(8, 70, 170, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset hacks", 18, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
+                this.resetHacksButton = new ChessCompStompWithHacksLibrary.Button(8, 70, 170, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Reset hacks", 18, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, true);
 
                 this.hackDisplays = new (System.Collections.Generic.Dictionary$2(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab,System.Collections.Generic.List$1(System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.HackDisplayMobile))))();
                 this.hackDisplays.set(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, function (_o2) {
@@ -7964,15 +8019,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 });
 
                 var addHackDisplayInFirstSet = function (hack, row) {
-                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, hack, row, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Green);
+                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics, hack, row, ChessCompStompWithHacksLibrary.HackDisplay.Theme.Green);
                 };
 
                 var addHackDisplayInSecondSet = function (hack, row) {
-                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Eliteness, hack, row, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Blue);
+                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Eliteness, hack, row, ChessCompStompWithHacksLibrary.HackDisplay.Theme.Blue);
                 };
 
                 var addHackDisplayInThirdSet = function (hack, row) {
-                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.RuleWarping, hack, row, ChessCompStompWithHacksLibrary.HackDisplayMobile.Theme.Purple);
+                    addHackDisplay(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.RuleWarping, hack, row, ChessCompStompWithHacksLibrary.HackDisplay.Theme.Purple);
                 };
 
                 addHackDisplayInFirstSet(ChessCompStompWithHacksEngine.Hack.PawnsCanMoveThreeSpacesInitially, 0);
@@ -10229,7 +10284,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     if (data1_02 != null) {
                         try {
-                            var sessionState1_02 = new ChessCompStompWithHacksLibrary.SessionState_v1_02();
+                            var sessionState1_02 = new ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02();
 
                             var iterator = data1_02.GetIterator();
                             sessionState1_02.TryDeserializeEverythingExceptGameLogic(iterator);
@@ -10238,10 +10293,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                                 throw new DTLibrary.DTDeserializationException();
                             }
 
-                            var sessionState1_03 = new ChessCompStompWithHacksLibrary.SessionState.$ctor1(new DTLibrary.SimpleTimer(), sessionState1_02);
-
                             var listBuilder = new DTLibrary.ByteList.Builder();
-                            sessionState1_03.SerializeEverythingExceptGameLogic(listBuilder);
+
+                            sessionState1_02.SerializeEverythingExceptGameLogicUsingV1_03Logic(listBuilder);
 
                             var byteList = listBuilder.ToByteList();
 
@@ -10256,6 +10310,239 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 },
                 MigrateSoundAndMusicVolumeDataFromOlderVersionsToV1_03IfNeeded: function (fileIO) { }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02", {
+        $kind: "nested class",
+        fields: {
+            data: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.data = new ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data();
+            }
+        },
+        methods: {
+            GetData: function () {
+                return this.data;
+            },
+            SerializeEverythingExceptGameLogicUsingV1_03Logic: function (list) {
+                this.data.SerializeEverythingExceptGameLogicUsingV1_03Logic(list);
+            },
+            /**
+             * Can possibly throw DTDeserializationException
+             *
+             * @instance
+             * @public
+             * @this ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02
+             * @memberof ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02
+             * @param   {DTLibrary.ByteList.Iterator}    iterator
+             * @return  {void}
+             */
+            TryDeserializeEverythingExceptGameLogic: function (iterator) {
+                var data = ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data.TryDeserializeEverythingExceptGameLogic(iterator);
+                this.data = data;
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data", {
+        $kind: "nested class",
+        statics: {
+            fields: {
+                MAX_NUMBER_OF_WINS: 0
+            },
+            ctors: {
+                init: function () {
+                    this.MAX_NUMBER_OF_WINS = 50000;
+                }
+            },
+            methods: {
+                /**
+                 * Can possibly throw DTDeserializationException
+                 *
+                 * @static
+                 * @public
+                 * @this ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data
+                 * @memberof ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data
+                 * @param   {DTLibrary.ByteList.Iterator}                                                          iterator
+                 * @return  {ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data}
+                 */
+                TryDeserializeEverythingExceptGameLogic: function (iterator) {
+                    var $t, $t1;
+                    var data = new ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data();
+
+                    data.StartTime = iterator.TryPopNullableLong();
+
+                    data.NumberOfWins = iterator.TryPopInt();
+
+                    if (data.NumberOfWins < 0 || data.NumberOfWins > ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data.MAX_NUMBER_OF_WINS) {
+                        throw new DTLibrary.DTDeserializationException();
+                    }
+
+                    data.WasPlayerWhiteInPreviousGame = iterator.TryPopNullableBool();
+
+                    data.HasShownAIHackMessage = iterator.TryPopBool();
+
+                    data.HasShownFinalBattleMessage = iterator.TryPopBool();
+
+                    data.HasShownFinalBattleVictoryPanel = iterator.TryPopBool();
+
+                    var researchedHackIds = iterator.TryPopIntSet();
+
+                    if (researchedHackIds == null) {
+                        throw new DTLibrary.DTDeserializationException();
+                    }
+
+                    data.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor();
+                    $t = Bridge.getEnumerator(researchedHackIds);
+                    try {
+                        while ($t.moveNext()) {
+                            var researchedHackId = $t.Current;
+                            var hack = ChessCompStompWithHacksLibrary.HackUtil.GetHackFromHackId(researchedHackId);
+
+                            if (hack == null) {
+                                throw new DTLibrary.DTDeserializationException();
+                            }
+
+                            data.ResearchedHacks.add(System.Nullable.getValue(hack));
+                        }
+                    } finally {
+                        if (Bridge.is($t, System.IDisposable)) {
+                            $t.System$IDisposable$Dispose();
+                        }
+                    }
+
+                    var completedObjectiveIds = iterator.TryPopIntSet();
+
+                    if (completedObjectiveIds == null) {
+                        throw new DTLibrary.DTDeserializationException();
+                    }
+
+                    data.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
+                    $t1 = Bridge.getEnumerator(completedObjectiveIds);
+                    try {
+                        while ($t1.moveNext()) {
+                            var completedObjectiveId = $t1.Current;
+                            var objective = ChessCompStompWithHacksLibrary.ObjectiveUtil.GetObjectiveFromObjectiveId(completedObjectiveId);
+
+                            if (objective == null) {
+                                throw new DTLibrary.DTDeserializationException();
+                            }
+
+                            data.CompletedObjectives.add(System.Nullable.getValue(objective));
+                        }
+                    } finally {
+                        if (Bridge.is($t1, System.IDisposable)) {
+                            $t1.System$IDisposable$Dispose();
+                        }
+                    }
+
+                    data.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(data.CompletedObjectives);
+
+                    var colorTheme = ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeFromColorThemeId(iterator.TryPopInt());
+                    if (colorTheme == null) {
+                        throw new DTLibrary.DTDeserializationException();
+                    }
+
+                    data.ColorTheme = System.Nullable.getValue(colorTheme);
+
+                    return data;
+                }
+            }
+        },
+        fields: {
+            /**
+             * Null if player hasn't started playing yet
+             or if player chose to "clear saved data".
+             *
+             * @instance
+             * @public
+             * @memberof ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data
+             * @type ?System.Int64
+             */
+            StartTime: null,
+            NumberOfWins: 0,
+            WasPlayerWhiteInPreviousGame: null,
+            HasShownAIHackMessage: false,
+            HasShownFinalBattleMessage: false,
+            HasShownFinalBattleVictoryPanel: false,
+            ResearchedHacks: null,
+            CompletedObjectives: null,
+            ObjectivesThatWereAlreadyCompletedPriorToCurrentGame: null,
+            ColorTheme: 0,
+            GameLogic: null,
+            MostRecentGameLogic: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor();
+                this.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
+                this.WasPlayerWhiteInPreviousGame = null;
+                this.HasShownAIHackMessage = false;
+                this.HasShownFinalBattleMessage = false;
+                this.HasShownFinalBattleVictoryPanel = false;
+                this.NumberOfWins = 0;
+                this.StartTime = System.Int64.lift(null);
+
+                this.GameLogic = null;
+                this.MostRecentGameLogic = null;
+
+                this.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
+
+                this.ColorTheme = ChessCompStompWithHacksLibrary.ColorTheme.Initial;
+            }
+        },
+        methods: {
+            SerializeEverythingExceptGameLogicUsingV1_03Logic: function (list) {
+                var $t, $t1;
+                list.AddNullableLong(this.StartTime);
+
+                list.AddInt(this.NumberOfWins);
+
+                list.AddNullableBool(this.WasPlayerWhiteInPreviousGame);
+
+                list.AddBool(this.HasShownAIHackMessage);
+
+                list.AddBool(this.HasShownFinalBattleMessage);
+
+                list.AddBool(this.HasShownFinalBattleVictoryPanel);
+
+                var researchedHackIds = new (System.Collections.Generic.HashSet$1(System.Int32)).ctor();
+                $t = Bridge.getEnumerator(this.ResearchedHacks);
+                try {
+                    while ($t.moveNext()) {
+                        var researchedHack = $t.Current;
+                        researchedHackIds.add(ChessCompStompWithHacksLibrary.HackUtil.GetHackId(researchedHack));
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$Dispose();
+                    }
+                }
+                list.AddIntSet(researchedHackIds);
+
+                var completedObjectiveIds = new (System.Collections.Generic.HashSet$1(System.Int32)).ctor();
+                $t1 = Bridge.getEnumerator(this.CompletedObjectives);
+                try {
+                    while ($t1.moveNext()) {
+                        var completedObjective = $t1.Current;
+                        completedObjectiveIds.add(ChessCompStompWithHacksLibrary.ObjectiveUtil.GetObjectiveId(completedObjective));
+                    }
+                } finally {
+                    if (Bridge.is($t1, System.IDisposable)) {
+                        $t1.System$IDisposable$Dispose();
+                    }
+                }
+                list.AddIntSet(completedObjectiveIds);
+
+                list.AddInt(ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeId(this.ColorTheme));
+
+                list.AddInt(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.GetTabId(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.Tab.Tactics));
             }
         }
     });
@@ -10488,11 +10775,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.$initialize();
                 this.timer = timer;
                 this.data = new ChessCompStompWithHacksLibrary.SessionState.Data();
-            },
-            $ctor1: function (timer, sessionState_v1_02) {
-                this.$initialize();
-                this.timer = timer;
-                this.data = ChessCompStompWithHacksLibrary.SessionState.Data.GetDataFromV1_02Data(sessionState_v1_02.GetData());
             }
         },
         methods: {
@@ -10747,21 +11029,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 }
             },
             methods: {
-                GetDataFromV1_02Data: function (dataV1_02) {
-                    var data = new ChessCompStompWithHacksLibrary.SessionState.Data();
-                    data.StartTime = dataV1_02.StartTime;
-                    data.NumberOfWins = dataV1_02.NumberOfWins;
-                    data.WasPlayerWhiteInPreviousGame = dataV1_02.WasPlayerWhiteInPreviousGame;
-                    data.HasShownAIHackMessage = dataV1_02.HasShownAIHackMessage;
-                    data.HasShownFinalBattleMessage = dataV1_02.HasShownFinalBattleMessage;
-                    data.HasShownFinalBattleVictoryPanel = dataV1_02.HasShownFinalBattleVictoryPanel;
-                    data.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(dataV1_02.ResearchedHacks);
-                    data.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(dataV1_02.CompletedObjectives);
-                    data.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(dataV1_02.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame);
-                    data.ColorTheme = dataV1_02.ColorTheme;
-
-                    return data;
-                },
                 /**
                  * Can possibly throw DTDeserializationException
                  *
@@ -10851,7 +11118,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     data.ColorTheme = System.Nullable.getValue(colorTheme);
 
-                    data.HackSelectionMobileTab = iterator.TryPopInt();
+                    var tab = ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.GetTabFromTabId(iterator.TryPopInt());
+                    if (tab == null) {
+                        throw new DTLibrary.DTDeserializationException();
+                    }
+
+                    data.HackSelectionMobileTab = System.Nullable.getValue(tab);
 
                     return data;
                 }
@@ -10948,237 +11220,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 list.AddInt(ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeId(this.ColorTheme));
 
-                list.AddInt(this.HackSelectionMobileTab);
-            }
-        }
-    });
-
-    Bridge.define("ChessCompStompWithHacksLibrary.SessionState_v1_02", {
-        fields: {
-            data: null
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                this.data = new ChessCompStompWithHacksLibrary.SessionState_v1_02.Data();
-            }
-        },
-        methods: {
-            GetData: function () {
-                return this.data;
-            },
-            SerializeEverythingExceptGameLogic: function (list) {
-                this.data.SerializeEverythingExceptGameLogic(list);
-            },
-            /**
-             * Can possibly throw DTDeserializationException
-             *
-             * @instance
-             * @public
-             * @this ChessCompStompWithHacksLibrary.SessionState_v1_02
-             * @memberof ChessCompStompWithHacksLibrary.SessionState_v1_02
-             * @param   {DTLibrary.ByteList.Iterator}    iterator
-             * @return  {void}
-             */
-            TryDeserializeEverythingExceptGameLogic: function (iterator) {
-                var data = ChessCompStompWithHacksLibrary.SessionState_v1_02.Data.TryDeserializeEverythingExceptGameLogic(iterator);
-                this.data = data;
-            }
-        }
-    });
-
-    Bridge.define("ChessCompStompWithHacksLibrary.SessionState_v1_02.Data", {
-        $kind: "nested class",
-        statics: {
-            fields: {
-                MAX_NUMBER_OF_WINS: 0
-            },
-            ctors: {
-                init: function () {
-                    this.MAX_NUMBER_OF_WINS = 50000;
-                }
-            },
-            methods: {
-                /**
-                 * Can possibly throw DTDeserializationException
-                 *
-                 * @static
-                 * @public
-                 * @this ChessCompStompWithHacksLibrary.SessionState_v1_02.Data
-                 * @memberof ChessCompStompWithHacksLibrary.SessionState_v1_02.Data
-                 * @param   {DTLibrary.ByteList.Iterator}                               iterator
-                 * @return  {ChessCompStompWithHacksLibrary.SessionState_v1_02.Data}
-                 */
-                TryDeserializeEverythingExceptGameLogic: function (iterator) {
-                    var $t, $t1;
-                    var data = new ChessCompStompWithHacksLibrary.SessionState_v1_02.Data();
-
-                    data.StartTime = iterator.TryPopNullableLong();
-
-                    data.NumberOfWins = iterator.TryPopInt();
-
-                    if (data.NumberOfWins < 0 || data.NumberOfWins > ChessCompStompWithHacksLibrary.SessionState_v1_02.Data.MAX_NUMBER_OF_WINS) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.WasPlayerWhiteInPreviousGame = iterator.TryPopNullableBool();
-
-                    data.HasShownAIHackMessage = iterator.TryPopBool();
-
-                    data.HasShownFinalBattleMessage = iterator.TryPopBool();
-
-                    data.HasShownFinalBattleVictoryPanel = iterator.TryPopBool();
-
-                    var researchedHackIds = iterator.TryPopIntSet();
-
-                    if (researchedHackIds == null) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor();
-                    $t = Bridge.getEnumerator(researchedHackIds);
-                    try {
-                        while ($t.moveNext()) {
-                            var researchedHackId = $t.Current;
-                            var hack = ChessCompStompWithHacksLibrary.HackUtil.GetHackFromHackId(researchedHackId);
-
-                            if (hack == null) {
-                                throw new DTLibrary.DTDeserializationException();
-                            }
-
-                            data.ResearchedHacks.add(System.Nullable.getValue(hack));
-                        }
-                    } finally {
-                        if (Bridge.is($t, System.IDisposable)) {
-                            $t.System$IDisposable$Dispose();
-                        }
-                    }
-
-                    var completedObjectiveIds = iterator.TryPopIntSet();
-
-                    if (completedObjectiveIds == null) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
-                    $t1 = Bridge.getEnumerator(completedObjectiveIds);
-                    try {
-                        while ($t1.moveNext()) {
-                            var completedObjectiveId = $t1.Current;
-                            var objective = ChessCompStompWithHacksLibrary.ObjectiveUtil.GetObjectiveFromObjectiveId(completedObjectiveId);
-
-                            if (objective == null) {
-                                throw new DTLibrary.DTDeserializationException();
-                            }
-
-                            data.CompletedObjectives.add(System.Nullable.getValue(objective));
-                        }
-                    } finally {
-                        if (Bridge.is($t1, System.IDisposable)) {
-                            $t1.System$IDisposable$Dispose();
-                        }
-                    }
-
-                    data.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(data.CompletedObjectives);
-
-                    var colorTheme = ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeFromColorThemeId(iterator.TryPopInt());
-                    if (colorTheme == null) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.ColorTheme = System.Nullable.getValue(colorTheme);
-
-                    return data;
-                }
-            }
-        },
-        fields: {
-            /**
-             * Null if player hasn't started playing yet
-             or if player chose to "clear saved data".
-             *
-             * @instance
-             * @public
-             * @memberof ChessCompStompWithHacksLibrary.SessionState_v1_02.Data
-             * @type ?System.Int64
-             */
-            StartTime: null,
-            NumberOfWins: 0,
-            WasPlayerWhiteInPreviousGame: null,
-            HasShownAIHackMessage: false,
-            HasShownFinalBattleMessage: false,
-            HasShownFinalBattleVictoryPanel: false,
-            ResearchedHacks: null,
-            CompletedObjectives: null,
-            ObjectivesThatWereAlreadyCompletedPriorToCurrentGame: null,
-            ColorTheme: 0,
-            GameLogic: null,
-            MostRecentGameLogic: null
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                this.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor();
-                this.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
-                this.WasPlayerWhiteInPreviousGame = null;
-                this.HasShownAIHackMessage = false;
-                this.HasShownFinalBattleMessage = false;
-                this.HasShownFinalBattleVictoryPanel = false;
-                this.NumberOfWins = 0;
-                this.StartTime = System.Int64.lift(null);
-
-                this.GameLogic = null;
-                this.MostRecentGameLogic = null;
-
-                this.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
-
-                this.ColorTheme = ChessCompStompWithHacksLibrary.ColorTheme.Initial;
-            }
-        },
-        methods: {
-            SerializeEverythingExceptGameLogic: function (list) {
-                var $t, $t1;
-                list.AddNullableLong(this.StartTime);
-
-                list.AddInt(this.NumberOfWins);
-
-                list.AddNullableBool(this.WasPlayerWhiteInPreviousGame);
-
-                list.AddBool(this.HasShownAIHackMessage);
-
-                list.AddBool(this.HasShownFinalBattleMessage);
-
-                list.AddBool(this.HasShownFinalBattleVictoryPanel);
-
-                var researchedHackIds = new (System.Collections.Generic.HashSet$1(System.Int32)).ctor();
-                $t = Bridge.getEnumerator(this.ResearchedHacks);
-                try {
-                    while ($t.moveNext()) {
-                        var researchedHack = $t.Current;
-                        researchedHackIds.add(ChessCompStompWithHacksLibrary.HackUtil.GetHackId(researchedHack));
-                    }
-                } finally {
-                    if (Bridge.is($t, System.IDisposable)) {
-                        $t.System$IDisposable$Dispose();
-                    }
-                }
-                list.AddIntSet(researchedHackIds);
-
-                var completedObjectiveIds = new (System.Collections.Generic.HashSet$1(System.Int32)).ctor();
-                $t1 = Bridge.getEnumerator(this.CompletedObjectives);
-                try {
-                    while ($t1.moveNext()) {
-                        var completedObjective = $t1.Current;
-                        completedObjectiveIds.add(ChessCompStompWithHacksLibrary.ObjectiveUtil.GetObjectiveId(completedObjective));
-                    }
-                } finally {
-                    if (Bridge.is($t1, System.IDisposable)) {
-                        $t1.System$IDisposable$Dispose();
-                    }
-                }
-                list.AddIntSet(completedObjectiveIds);
-
-                list.AddInt(ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeId(this.ColorTheme));
+                list.AddInt(ChessCompStompWithHacksLibrary.HackSelectionScreenDisplayMobile.GetTabId(this.HackSelectionMobileTab));
             }
         }
     });
@@ -18467,7 +18509,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 						
 						//audio.audio.volume = volume;
 						audioContext.resume();
-						audio.gainNode.gain.setValueAtTime(volume, 0);
+						if (audio.previousVolume !== volume) {
+							audio.gainNode.gain.setValueAtTime(volume, 0);
+							audio.previousVolume = volume;
+						}
 						audio.audio.play();
 					};
 					
@@ -20765,7 +20810,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     return null;
                 }
 
-                var sessionState = new ChessCompStompWithHacksLibrary.SessionState.ctor(this.globalState.Timer);
+                var sessionState = new ChessCompStompWithHacksLibrary.SessionState(this.globalState.Timer);
 
                 this.globalState.LoadSessionState(sessionState);
 
