@@ -18508,9 +18508,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 						}
 						
 						//audio.audio.volume = volume;
-						audioContext.resume();
+						if (audioContext.state !== 'running')
+							audioContext.resume();
 						if (audio.previousVolume !== volume) {
-							audio.gainNode.gain.setValueAtTime(volume, 0);
+							audio.gainNode.gain.value = volume;
 							audio.previousVolume = volume;
 						}
 						audio.audio.play();
