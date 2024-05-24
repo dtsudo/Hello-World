@@ -18341,7 +18341,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 IsMobileSafari: function () {
-                    var isMobileSafari = eval("\r\n\t\t\t\t((function () {\r\n\t\t\t\t\tlet userAgent = navigator.userAgent.toLowerCase();\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (userAgent.includes('chrome'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tif (userAgent.includes('chromium'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (!userAgent.includes('safari'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tif (!userAgent.includes('mobile'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t})())\r\n\t\t\t");
+                    var isMobileSafari = eval("\r\n\t\t\t\t((function () {\r\n\t\t\t\t\tlet isDesktop = window.matchMedia('(pointer:fine)').matches;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (isDesktop)\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\r\n\t\t\t\t\tlet userAgent = window.navigator.userAgent.toLowerCase();\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (userAgent.includes('chrome'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\tif (userAgent.includes('chromium'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif (!userAgent.includes('safari'))\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t})())\r\n\t\t\t");
 
                     if (isMobileSafari) {
                         return true;
