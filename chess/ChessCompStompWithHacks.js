@@ -18731,8 +18731,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 								let hasAudioLoadingSucceeded = false;
 								let audio = new Audio();
 								audio.addEventListener('canplaythrough', function () {
+									if (!hasAudioLoadingSucceeded) {
+										setTimeout(function () { numberOfAudioObjectsLoaded++; }, 2000 + Math.floor(Math.random() * 5000));
+									}
+
 									hasAudioLoadingSucceeded = true;
-									numberOfAudioObjectsLoaded++;
 								});
 
 								audio.src = soundPath;
