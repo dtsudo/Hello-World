@@ -547,8 +547,25 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
 
+                    var isPointerFine = window.matchMedia('(pointer:fine)').matches;
+
+                    if (isPointerFine) {
+                        ChessCompStompWithHacks.GameInitializer.displayLogger.WriteLine$1("isPointerFine: true");
+                    } else {
+                        ChessCompStompWithHacks.GameInitializer.displayLogger.WriteLine$1("isPointerFine: false");
+                    }
+
+                    var userAgent = window.navigator.userAgent;
+
+                    ChessCompStompWithHacks.GameInitializer.displayLogger.WriteLine$1("UserAgent: " + (userAgent || ""));
+
+                    var screenWidth = window.screen.width;
+                    var screenHeight = window.screen.height;
+
+                    ChessCompStompWithHacks.GameInitializer.displayLogger.WriteLine$1("width x height: " + screenWidth + " x " + screenHeight);
+
                     if (ChessCompStompWithHacks.GameInitializer.displayLogger != null && ChessCompStompWithHacks.GameInitializer.shouldRenderDisplayLogger) {
-                        ChessCompStompWithHacks.GameInitializer.displayLogger.Render(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, ChessCompStompWithHacks.GameInitializer.display, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
+                        ChessCompStompWithHacks.GameInitializer.displayLogger.Render(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, ChessCompStompWithHacks.GameInitializer.display, ChessCompStompWithHacksLibrary.GameFont.GameFont12Pt, DTLibrary.DTColor.Black());
                     }
 
                     if (currentKeyboard.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.L) && !ChessCompStompWithHacks.GameInitializer.previousKeyboard.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.L)) {
