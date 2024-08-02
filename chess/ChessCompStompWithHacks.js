@@ -4183,8 +4183,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         },
         ctors: {
             ctor: function (x, y, width, height, backgroundColor, hoverColor, clickColor, text, textXOffset, textYOffset, font, isMobileDisplayType) {
-                if (isMobileDisplayType === void 0) { isMobileDisplayType = false; }
-
                 this.$initialize();
                 this.x = x;
                 this.y = y;
@@ -4296,10 +4294,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             methods: {
                 GetChessPiecesRenderer: function (pieces, kingInDangerSquare, previousMoveSquares, renderFromWhitePerspective, colorTheme) {
-                    return ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer$1(pieces, kingInDangerSquare, previousMoveSquares, renderFromWhitePerspective, colorTheme, ChessCompStompWithHacksLibrary.GameImageUtil.ChessPieceScalingFactor);
-                },
-                GetChessPiecesRenderer$1: function (pieces, kingInDangerSquare, previousMoveSquares, renderFromWhitePerspective, colorTheme, chessPieceScalingFactor) {
-                    return new ChessCompStompWithHacksLibrary.ChessPiecesRenderer(pieces, kingInDangerSquare, previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, renderFromWhitePerspective, null, null, null, colorTheme, chessPieceScalingFactor);
+                    return new ChessCompStompWithHacksLibrary.ChessPiecesRenderer(pieces, kingInDangerSquare, previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, renderFromWhitePerspective, null, null, null, colorTheme);
                 },
                 GetHoverSquare: function (mouseInput, renderFromWhitePerspective, displayProcessing) {
                     return ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(mouseInput, renderFromWhitePerspective, ChessCompStompWithHacksLibrary.GameImageUtil.ChessPieceScalingFactor, displayProcessing);
@@ -4401,11 +4396,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             nukeAnimationMicroseconds: null,
             nukeCenter: null,
             nukedSquares: null,
-            colorTheme: 0,
-            chessPieceScalingFactor: 0
+            colorTheme: 0
         },
         ctors: {
-            ctor: function (pieces, kingInDangerSquare, previousMoveSquares, selectedPieceSquare, possibleMoveSquares, potentialNukeSquaresInfo, hoverSquare, hoverPieceInfo, renderFromWhitePerspective, nukeAnimationMicroseconds, nukeCenter, nukedSquares, colorTheme, chessPieceScalingFactor) {
+            ctor: function (pieces, kingInDangerSquare, previousMoveSquares, selectedPieceSquare, possibleMoveSquares, potentialNukeSquaresInfo, hoverSquare, hoverPieceInfo, renderFromWhitePerspective, nukeAnimationMicroseconds, nukeCenter, nukedSquares, colorTheme) {
                 this.$initialize();
                 this.pieces = pieces;
                 this.kingInDangerSquare = kingInDangerSquare;
@@ -4420,16 +4414,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.nukeCenter = nukeCenter;
                 this.nukedSquares = nukedSquares;
                 this.colorTheme = colorTheme;
-                this.chessPieceScalingFactor = chessPieceScalingFactor;
             }
         },
         methods: {
             LandNuke: function (nukeCenter) {
                 var nukedSquares = ChessCompStompWithHacksEngine.TacticalNukeUtil.GetNukedSquares(nukeCenter);
 
-                return new ChessCompStompWithHacksLibrary.ChessPiecesRenderer(this.pieces, this.kingInDangerSquare, this.previousMoveSquares, this.selectedPieceSquare, this.possibleMoveSquares, this.potentialNukeSquaresInfo, this.hoverSquare, this.hoverPieceInfo, this.renderFromWhitePerspective, 0, nukeCenter, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare)).$ctor2(nukedSquares), this.colorTheme, this.chessPieceScalingFactor);
+                return new ChessCompStompWithHacksLibrary.ChessPiecesRenderer(this.pieces, this.kingInDangerSquare, this.previousMoveSquares, this.selectedPieceSquare, this.possibleMoveSquares, this.potentialNukeSquaresInfo, this.hoverSquare, this.hoverPieceInfo, this.renderFromWhitePerspective, 0, nukeCenter, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare)).$ctor2(nukedSquares), this.colorTheme);
             },
-            ProcessFrame: function (pieces, kingInDangerSquare, previousMoveSquares, selectedPieceSquare, possibleMoveSquares, potentialNukeSquaresInfo, hoverSquare, hoverPieceInfo, elapsedMicrosPerFrame) {
+            ProcessFrame: function (pieces, kingInDangerSquare, previousMoveSquares, selectedPieceSquare, possibleMoveSquares, potentialNukeSquaresInfo, hoverSquare, hoverPieceInfo, elapsedMicrosPerFrame, chessPieceScalingFactor) {
                 var newNukeAnimationMicroseconds;
                 if (this.nukeAnimationMicroseconds == null) {
                     newNukeAnimationMicroseconds = null;
@@ -4441,7 +4434,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     newNukeAnimationMicroseconds = 1650001;
                 }
 
-                return new ChessCompStompWithHacksLibrary.ChessPiecesRenderer(pieces, kingInDangerSquare, previousMoveSquares, selectedPieceSquare, possibleMoveSquares, potentialNukeSquaresInfo, hoverSquare, hoverPieceInfo, this.renderFromWhitePerspective, newNukeAnimationMicroseconds, this.nukeCenter, this.nukedSquares, this.colorTheme, this.chessPieceScalingFactor);
+                return new ChessCompStompWithHacksLibrary.ChessPiecesRenderer(pieces, kingInDangerSquare, previousMoveSquares, selectedPieceSquare, possibleMoveSquares, potentialNukeSquaresInfo, hoverSquare, hoverPieceInfo, this.renderFromWhitePerspective, newNukeAnimationMicroseconds, this.nukeCenter, this.nukedSquares, this.colorTheme);
             },
             HasNukeLanded: function () {
                 return System.Nullable.hasValue(this.nukeAnimationMicroseconds) && System.Nullable.getValue(this.nukeAnimationMicroseconds) >= ChessCompStompWithHacksLibrary.ChessPiecesRenderer.NUKE_IMPACT_MICROSECONDS;
@@ -4449,10 +4442,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             HasNukeFinished: function () {
                 return System.Nullable.hasValue(this.nukeAnimationMicroseconds) && System.Nullable.getValue(this.nukeAnimationMicroseconds) >= ChessCompStompWithHacksLibrary.ChessPiecesRenderer.NUKE_ANIMATION_COMPLETED_MICROSECONDS;
             },
-            Render: function (displayOutput, chessPiecesRendererPieceAnimation) {
+            Render: function (displayOutput, chessPiecesRendererPieceAnimation, chessPieceScalingFactor) {
                 var $t, $t1, $t2, $t3, $t4, $t5;
-                var width = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), this.chessPieceScalingFactor), 128)) | 0;
-                var height = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), this.chessPieceScalingFactor), 128)) | 0;
+                var width = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), chessPieceScalingFactor), 128)) | 0;
+                var height = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), chessPieceScalingFactor), 128)) | 0;
 
                 var darkSquareColor = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetDarkSquareColor(this.colorTheme);
                 var lightSquareColor = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetLightSquareColor(this.colorTheme);
@@ -4492,7 +4485,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                             continue;
                         }
 
-                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImageUtil.GetImage(square), Bridge.Int.mul(renderSquare3.File, width), Bridge.Int.mul(renderSquare3.Rank, height), 0, this.chessPieceScalingFactor);
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImageUtil.GetImage(square), Bridge.Int.mul(renderSquare3.File, width), Bridge.Int.mul(renderSquare3.Rank, height), 0, chessPieceScalingFactor);
                     }
                 }
 
@@ -4514,7 +4507,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         var renderX = System.Int64.clip32(originX.add((destinationX.sub(originX)).mul(System.Int64(($t3 = pieceAnimations[System.Array.index(i3, pieceAnimations)])[System.Array.index(j2, $t3)].ElapsedMicros)).div((System.Int64(100000)))));
                         var renderY = System.Int64.clip32(originY.add((destinationY.sub(originY)).mul(System.Int64(($t4 = pieceAnimations[System.Array.index(i3, pieceAnimations)])[System.Array.index(j2, $t4)].ElapsedMicros)).div((System.Int64(100000)))));
 
-                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImageUtil.GetImage(($t5 = pieceAnimations[System.Array.index(i3, pieceAnimations)])[System.Array.index(j2, $t5)].Piece), renderX, renderY, 0, this.chessPieceScalingFactor);
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImageUtil.GetImage(($t5 = pieceAnimations[System.Array.index(i3, pieceAnimations)])[System.Array.index(j2, $t5)].Piece), renderX, renderY, 0, chessPieceScalingFactor);
                     }
                 }
 
@@ -4551,18 +4544,18 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 }
 
                 if (this.hoverPieceInfo != null) {
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImageUtil.GetImage(this.hoverPieceInfo.ChessSquarePiece), ((this.hoverPieceInfo.X - ((Bridge.Int.div(width, 2)) | 0)) | 0), ((this.hoverPieceInfo.Y - ((Bridge.Int.div(height, 2)) | 0)) | 0), 0, this.chessPieceScalingFactor);
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImageUtil.GetImage(this.hoverPieceInfo.ChessSquarePiece), ((this.hoverPieceInfo.X - ((Bridge.Int.div(width, 2)) | 0)) | 0), ((this.hoverPieceInfo.Y - ((Bridge.Int.div(height, 2)) | 0)) | 0), 0, chessPieceScalingFactor);
                 }
 
-                this.RenderNukeAnimation(displayOutput);
+                this.RenderNukeAnimation(displayOutput, chessPieceScalingFactor);
             },
-            RenderNukeAnimation: function (displayOutput) {
+            RenderNukeAnimation: function (displayOutput, chessPieceScalingFactor) {
                 if (this.nukeAnimationMicroseconds == null) {
                     return;
                 }
 
-                var width = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), this.chessPieceScalingFactor), 128)) | 0;
-                var height = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), this.chessPieceScalingFactor), 128)) | 0;
+                var width = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), chessPieceScalingFactor), 128)) | 0;
+                var height = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.WhitePawn), chessPieceScalingFactor), 128)) | 0;
 
                 if (System.Nullable.getValue(this.nukeAnimationMicroseconds) <= ChessCompStompWithHacksLibrary.ChessPiecesRenderer.NUKE_IMPACT_MICROSECONDS) {
                     if (System.Nullable.getValue(this.nukeAnimationMicroseconds) >= ChessCompStompWithHacksLibrary.ChessPiecesRenderer.NUKE_BEGIN_LANDING_MICROSECONDS) {
@@ -5966,11 +5959,15 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     Bridge.define("ChessCompStompWithHacksLibrary.GameImageUtil", {
         statics: {
             fields: {
-                ChessPieceScalingFactor: 0
+                ChessPieceScalingFactor: 0,
+                DesktopChessPieceScalingFactor: 0,
+                HackExplanationChessPieceScalingFactor: 0
             },
             ctors: {
                 init: function () {
                     this.ChessPieceScalingFactor = 16;
+                    this.DesktopChessPieceScalingFactor = 16;
+                    this.HackExplanationChessPieceScalingFactor = 16;
                 }
             },
             methods: {
@@ -6113,27 +6110,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
     Bridge.define("ChessCompStompWithHacksLibrary.GameLogic", {
         statics: {
-            fields: {
-                CHESS_PIECES_RENDERER_X: 0,
-                CHESS_PIECES_RENDERER_Y: 0,
-                NUKE_RENDERER_X: 0,
-                NUKE_RENDERER_Y: 0,
-                MOVE_TRACKER_RENDERER_X: 0,
-                MOVE_TRACKER_RENDERER_Y: 0
-            },
-            ctors: {
-                init: function () {
-                    this.CHESS_PIECES_RENDERER_X = 186;
-                    this.CHESS_PIECES_RENDERER_Y = 50;
-                    this.NUKE_RENDERER_X = 25;
-                    this.NUKE_RENDERER_Y = 50;
-                    this.MOVE_TRACKER_RENDERER_X = 720;
-                    this.MOVE_TRACKER_RENDERER_Y = 208;
-                }
-            },
             methods: {
-                GetPlayerMove: function (mouseInput, previousMouseInput, isPromotionPanelOpen, clickedPromotionPiece, possibleMoves, promotionMoves, isPlayerWhite, isNukeInFlight, promotionPanelX, promotionPanelY, clickedSquare, clickedAndHeldSquare, hasClickedOnNuke, hasClickedAndHeldOnNuke, displayProcessing) {
-                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput), isPlayerWhite, displayProcessing);
+                GetPlayerMove: function (mouseInput, previousMouseInput, isPromotionPanelOpen, clickedPromotionPiece, possibleMoves, promotionMoves, isPlayerWhite, isNukeInFlight, promotionPanelX, promotionPanelY, clickedSquare, clickedAndHeldSquare, hasClickedOnNuke, hasClickedAndHeldOnNuke, displayProcessing, coordinates) {
+                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
 
                     if (isNukeInFlight) {
                         return new ChessCompStompWithHacksLibrary.GameLogic.PlayerMoveInfo(null, false);
@@ -6206,8 +6185,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return new ChessCompStompWithHacksLibrary.GameLogic.PlayerMoveInfo(null, false);
                 },
-                GetClickedSquare: function (mouseInput, previousMouseInput, board, isPlayerWhite, displayProcessing, possibleMoves, clickedSquare, clickedAndHeldSquare, hasNukeAbility, hasUsedNuke, isNukeInFlight) {
-                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput), isPlayerWhite, displayProcessing);
+                GetClickedSquare: function (mouseInput, previousMouseInput, board, isPlayerWhite, displayProcessing, possibleMoves, clickedSquare, clickedAndHeldSquare, hasNukeAbility, hasUsedNuke, isNukeInFlight, coordinates) {
+                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
 
                     if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
                         if (hoverSquare != null) {
@@ -6226,7 +6205,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
 
                         if (hasNukeAbility && !hasUsedNuke && !isNukeInFlight) {
-                            if (ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput))) {
+                            if (ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput, coordinates), coordinates.NukeRendererScalingFactorScaled)) {
                                 return null;
                             }
                         }
@@ -6258,8 +6237,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return clickedSquare;
                 },
-                GetClickedAndHeldSquare: function (mouseInput, previousMouseInput, isPlayerWhite, displayProcessing, clickedAndHeldSquare, isPromotionPanelOpen, promotionPanelX, promotionPanelY) {
-                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput), isPlayerWhite, displayProcessing);
+                GetClickedAndHeldSquare: function (mouseInput, previousMouseInput, isPlayerWhite, displayProcessing, clickedAndHeldSquare, isPromotionPanelOpen, promotionPanelX, promotionPanelY, coordinates) {
+                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
 
                     if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
                         if (hoverSquare != null) {
@@ -6276,21 +6255,21 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return clickedAndHeldSquare;
                 },
-                GetPromotionPanelX: function (mouseX) {
+                GetPromotionPanelX: function (mouseX, coordinates) {
                     var renderOnRightSideOfMouse = mouseX;
                     var renderOnLeftSideOfMouse = (mouseX - ChessCompStompWithHacksLibrary.PromotionPanel.PROMOTION_PANEL_WIDTH) | 0;
 
-                    if (((mouseX + ChessCompStompWithHacksLibrary.PromotionPanel.PROMOTION_PANEL_WIDTH) | 0) >= ChessCompStompWithHacksLibrary.GameLogic.MOVE_TRACKER_RENDERER_X && renderOnLeftSideOfMouse >= 0) {
+                    if (((mouseX + ChessCompStompWithHacksLibrary.PromotionPanel.PROMOTION_PANEL_WIDTH) | 0) >= coordinates.MoveTrackerRendererX && renderOnLeftSideOfMouse >= 0) {
                         return renderOnLeftSideOfMouse;
                     }
                     return renderOnRightSideOfMouse;
                 },
-                GetPromotionPanelInfo: function (isPromotionPanelOpen, promotionPanelX, promotionPanelY, promotionMoves, mouseInput, previousMouseInput, clickedSquare, clickedAndHeldSquare, isPlayerWhite, displayProcessing, possibleMoves, isNukeInFlight, hasClickedOnNuke) {
+                GetPromotionPanelInfo: function (isPromotionPanelOpen, promotionPanelX, promotionPanelY, promotionMoves, mouseInput, previousMouseInput, clickedSquare, clickedAndHeldSquare, isPlayerWhite, displayProcessing, possibleMoves, isNukeInFlight, hasClickedOnNuke, coordinates) {
                     if (isNukeInFlight || hasClickedOnNuke) {
                         return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(false, 0, 0, null);
                     }
 
-                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput), isPlayerWhite, displayProcessing);
+                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
 
                     if (isPromotionPanelOpen) {
                         if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
@@ -6308,7 +6287,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                                 }).toList(ChessCompStompWithHacksEngine.DisplayMove);
 
                             if (moves.Count > 0 && moves.getItem(0).Promotion != null) {
-                                return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(true, ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelX(mouseInput.DTLibrary$IMouse$GetX()), mouseInput.DTLibrary$IMouse$GetY(), moves);
+                                return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(true, ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelX(mouseInput.DTLibrary$IMouse$GetX(), coordinates), mouseInput.DTLibrary$IMouse$GetY(), moves);
                             }
                         } else if (clickedSquare != null && clickedAndHeldSquare != null && hoverSquare != null && hoverSquare.equalsT(clickedAndHeldSquare) && !clickedSquare.equalsT(hoverSquare)) {
                             var moves1 = System.Linq.Enumerable.from(possibleMoves).where(function (x) {
@@ -6316,7 +6295,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                                 }).toList(ChessCompStompWithHacksEngine.DisplayMove);
 
                             if (moves1.Count > 0 && moves1.getItem(0).Promotion != null) {
-                                return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(true, ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelX(mouseInput.DTLibrary$IMouse$GetX()), mouseInput.DTLibrary$IMouse$GetY(), moves1);
+                                return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(true, ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelX(mouseInput.DTLibrary$IMouse$GetX(), coordinates), mouseInput.DTLibrary$IMouse$GetY(), moves1);
                             }
                         } else if (clickedSquare != null && clickedAndHeldSquare != null && hoverSquare != null && clickedSquare.equalsT(clickedAndHeldSquare)) {
                             var moves2 = System.Linq.Enumerable.from(possibleMoves).where(function (x) {
@@ -6324,7 +6303,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                                 }).toList(ChessCompStompWithHacksEngine.DisplayMove);
 
                             if (moves2.Count > 0 && moves2.getItem(0).Promotion != null) {
-                                return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(true, ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelX(mouseInput.DTLibrary$IMouse$GetX()), mouseInput.DTLibrary$IMouse$GetY(), moves2);
+                                return new ChessCompStompWithHacksLibrary.GameLogic.PromotionPanelInfo(true, ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelX(mouseInput.DTLibrary$IMouse$GetX(), coordinates), mouseInput.DTLibrary$IMouse$GetY(), moves2);
                             }
                         }
                     }
@@ -6348,7 +6327,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return null;
                 },
-                GetHasClickedOnNuke: function (board, possibleMoves, isPromotionPanelOpen, mouseInput, previousMouseInput, hasNukeAbility, hasUsedNuke, isNukeInFlight, hasClickedOnNuke, hasClickedAndHeldOnNuke, promotionPanelX, promotionPanelY, isPlayerWhite, displayProcessing) {
+                GetHasClickedOnNuke: function (board, possibleMoves, isPromotionPanelOpen, mouseInput, previousMouseInput, hasNukeAbility, hasUsedNuke, isNukeInFlight, hasClickedOnNuke, hasClickedAndHeldOnNuke, promotionPanelX, promotionPanelY, isPlayerWhite, displayProcessing, coordinates) {
                     if (!hasNukeAbility) {
                         return false;
                     }
@@ -6366,7 +6345,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                             return false;
                         }
 
-                        if (!hasClickedOnNuke && hasClickedAndHeldOnNuke && ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput))) {
+                        if (!hasClickedOnNuke && hasClickedAndHeldOnNuke && ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput, coordinates), coordinates.NukeRendererScalingFactorScaled)) {
                             return true;
                         }
 
@@ -6374,7 +6353,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
 
                     if (hasClickedOnNuke && mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
-                        var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput), isPlayerWhite, displayProcessing);
+                        var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
 
                         if (hoverSquare != null && !System.Linq.Enumerable.from(possibleMoves).any(function (x) {
                                 return x.IsNuke && x.EndingFile === hoverSquare.File && x.EndingRank === hoverSquare.Rank;
@@ -6388,7 +6367,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return hasClickedOnNuke;
                 },
-                GetHasClickedAndHeldOnNuke: function (mouseInput, previousMouseInput, isPromotionPanelOpen, promotionPanelX, promotionPanelY, hasClickedAndHeldOnNuke, hasNukeAbility, hasUsedNuke, isNukeInFlight) {
+                GetHasClickedAndHeldOnNuke: function (mouseInput, previousMouseInput, isPromotionPanelOpen, promotionPanelX, promotionPanelY, hasClickedAndHeldOnNuke, hasNukeAbility, hasUsedNuke, isNukeInFlight, coordinates) {
                     if (!hasNukeAbility) {
                         return false;
                     }
@@ -6402,7 +6381,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
 
                     if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && !previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
-                        if (ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput))) {
+                        if (ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput, coordinates), coordinates.NukeRendererScalingFactorScaled)) {
                             var isHoverOverPanel = ChessCompStompWithHacksLibrary.PromotionPanel.IsHoverOverPanel(promotionPanelX, promotionPanelY, mouseInput);
                             if (!isPromotionPanelOpen || !isHoverOverPanel) {
                                 return true;
@@ -6416,7 +6395,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return hasClickedAndHeldOnNuke;
                 },
-                UpdateChessPiecesRenderer: function (chessPiecesRenderer, gameState, turnCount, isPlayerWhite, isPlayerTurn, clickedSquare, clickedAndHeldSquare, moves, mouseInput, displayProcessing, mostRecentMove, isPromotionPanelOpen, promotionPanelX, promotionPanelY, elapsedMicrosPerFrame, hasClickedOnNuke, hasClickedAndHeldOnNuke, isNukeInFlight) {
+                UpdateChessPiecesRenderer: function (chessPiecesRenderer, gameState, turnCount, isPlayerWhite, isPlayerTurn, clickedSquare, clickedAndHeldSquare, moves, mouseInput, displayProcessing, mostRecentMove, isPromotionPanelOpen, promotionPanelX, promotionPanelY, elapsedMicrosPerFrame, hasClickedOnNuke, hasClickedAndHeldOnNuke, isNukeInFlight, coordinates, displayType) {
                     var $t, $t1;
                     var selectedPiece;
                     if (clickedSquare != null) {
@@ -6471,7 +6450,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
 
-                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput), isPlayerWhite, displayProcessing);
+                    var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
                     var isHoverOverPanel = ChessCompStompWithHacksLibrary.PromotionPanel.IsHoverOverPanel(promotionPanelX, promotionPanelY, mouseInput);
 
                     var hoverPiece = null;
@@ -6479,25 +6458,27 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         if (clickedSquare == null && clickedAndHeldSquare != null) {
                             var piece1 = gameState.Board.GetPiece(clickedAndHeldSquare);
                             if (piece1 !== ChessCompStompWithHacksEngine.ChessSquarePiece.Empty && ChessCompStompWithHacksEngine.ChessSquarePieceUtil.IsWhite(piece1) === isPlayerWhite) {
-                                hoverPiece = new ChessCompStompWithHacksLibrary.ChessPiecesRenderer.HoverPieceInfo(piece1, (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput)).GetX(), (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput)).GetY());
+                                hoverPiece = new ChessCompStompWithHacksLibrary.ChessPiecesRenderer.HoverPieceInfo(piece1, (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates)).GetX(), (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates)).GetY());
                             }
                         } else if (clickedSquare != null && clickedAndHeldSquare != null && clickedSquare.equalsT(clickedAndHeldSquare)) {
                             var piece2 = gameState.Board.GetPiece(clickedAndHeldSquare);
                             if (piece2 !== ChessCompStompWithHacksEngine.ChessSquarePiece.Empty && ChessCompStompWithHacksEngine.ChessSquarePieceUtil.IsWhite(piece2) === isPlayerWhite) {
-                                hoverPiece = new ChessCompStompWithHacksLibrary.ChessPiecesRenderer.HoverPieceInfo(piece2, (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput)).GetX(), (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput)).GetY());
+                                hoverPiece = new ChessCompStompWithHacksLibrary.ChessPiecesRenderer.HoverPieceInfo(piece2, (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates)).GetX(), (new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates)).GetY());
                             }
                         }
                     }
 
                     var potentialNukeSquaresInfo = null;
                     if ((hasClickedOnNuke || hasClickedAndHeldOnNuke) && hoverSquare != null && turnCount > ChessCompStompWithHacksEngine.TacticalNukeUtil.NumberOfMovesPlayedBeforeNukeIsAvailable && isPlayerTurn) {
-                        var isValidSquare = System.Linq.Enumerable.from(moves).any(function (x) {
-                                return x.IsNuke && x.EndingFile === hoverSquare.File && x.EndingRank === hoverSquare.Rank;
-                            });
-                        potentialNukeSquaresInfo = new ChessCompStompWithHacksLibrary.ChessPiecesRenderer.PotentialNukeSquaresInfo(hoverSquare, isValidSquare);
+                        if (displayType === DTLibrary.DisplayType.Desktop || mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
+                            var isValidSquare = System.Linq.Enumerable.from(moves).any(function (x) {
+                                    return x.IsNuke && x.EndingFile === hoverSquare.File && x.EndingRank === hoverSquare.Rank;
+                                });
+                            potentialNukeSquaresInfo = new ChessCompStompWithHacksLibrary.ChessPiecesRenderer.PotentialNukeSquaresInfo(hoverSquare, isValidSquare);
+                        }
                     }
 
-                    return chessPiecesRenderer.ProcessFrame(gameState.Board, ChessCompStompWithHacksLibrary.ChessPiecesRendererUtil.GetKingInDangerSquare(gameState), mostRecentMove != null ? ChessCompStompWithHacksLibrary.ChessPiecesRendererUtil.GetPreviousMoveSquares$1(mostRecentMove.OriginalGameState, mostRecentMove.Move) : DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), selectedPiece, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare)).$ctor1(possibleMoves), potentialNukeSquaresInfo, !isPromotionPanelOpen || !isHoverOverPanel ? hoverSquare : null, hoverPiece, elapsedMicrosPerFrame);
+                    return chessPiecesRenderer.ProcessFrame(gameState.Board, ChessCompStompWithHacksLibrary.ChessPiecesRendererUtil.GetKingInDangerSquare(gameState), mostRecentMove != null ? ChessCompStompWithHacksLibrary.ChessPiecesRendererUtil.GetPreviousMoveSquares$1(mostRecentMove.OriginalGameState, mostRecentMove.Move) : DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), selectedPiece, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare)).$ctor1(possibleMoves), potentialNukeSquaresInfo, (!isPromotionPanelOpen || !isHoverOverPanel) && (displayType === DTLibrary.DisplayType.Desktop || mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) ? hoverSquare : null, hoverPiece, elapsedMicrosPerFrame, coordinates.ChessPieceScalingFactor);
                 }
             }
         },
@@ -6534,8 +6515,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             previousMouseInput: null
         },
         ctors: {
-            ctor: function (globalState, isPlayerWhite, researchedHacks, aiHackLevel, colorTheme) {
+            ctor: function (globalState, isPlayerWhite, researchedHacks, aiHackLevel, colorTheme, displayType) {
                 this.$initialize();
+                var coordinates = new ChessCompStompWithHacksLibrary.GameLogic.Coordinates(displayType);
+
                 this.globalState = globalState;
                 this.gameState = ChessCompStompWithHacksLibrary.NewGameCreation.CreateNewGame(isPlayerWhite, researchedHacks, aiHackLevel);
                 this.moveTracker = new ChessCompStompWithHacksLibrary.MoveTracker(colorTheme);
@@ -6591,13 +6574,27 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
             },
-            ProcessNextFrame: function (mouseInput, displayProcessing, soundOutput, elapsedMicrosPerFrame) {
+            ProcessNextFrame: function (mouseInput, displayProcessing, soundOutput, elapsedMicrosPerFrame, isMobileDisplayType) {
                 var $t, $t1, $t2;
                 var previousMouseInput = this.previousMouseInput;
                 this.previousMouseInput = new DTLibrary.CopiedMouse(mouseInput);
 
+                var displayType = new DTLibrary.DisplayType();
+
+                if (!isMobileDisplayType) {
+                    displayType = DTLibrary.DisplayType.Desktop;
+                } else {
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation(ChessCompStompWithHacksLibrary.GameImage, displayProcessing)) {
+                        displayType = DTLibrary.DisplayType.MobileLandscape;
+                    } else {
+                        displayType = DTLibrary.DisplayType.MobilePortrait;
+                    }
+                }
+
+                var coordinates = new ChessCompStompWithHacksLibrary.GameLogic.Coordinates(displayType);
+
                 if (this.gameStatus !== ChessCompStompWithHacksEngine.ComputeMoves.GameStatus.InProgress) {
-                    this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.GameLogic.UpdateChessPiecesRenderer(this.chessPiecesRenderer, this.gameState, this.gameState.TurnCount, this.gameState.IsPlayerWhite, this.gameState.IsPlayerTurn(), null, null, this.possibleMoves, mouseInput, displayProcessing, this.moveTracker.GetMostRecentMove(), this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, elapsedMicrosPerFrame, false, false, this.isNukeInFlight);
+                    this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.GameLogic.UpdateChessPiecesRenderer(this.chessPiecesRenderer, this.gameState, this.gameState.TurnCount, this.gameState.IsPlayerWhite, this.gameState.IsPlayerTurn(), null, null, this.possibleMoves, mouseInput, displayProcessing, this.moveTracker.GetMostRecentMove(), this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, elapsedMicrosPerFrame, false, false, this.isNukeInFlight, coordinates, displayType);
 
                     this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
 
@@ -6605,7 +6602,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     var originalMoveTrackerRendererPositionIndex = this.moveTrackerRendererPositionIndex;
 
-                    this.moveTrackerRendererPositionIndex = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput));
+                    this.moveTrackerRendererPositionIndex = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput, coordinates));
                     this.moveTrackerRenderer = this.moveTrackerRenderer.ProcessFrame(this.moveTracker, this.moveTrackerRendererPositionIndex, elapsedMicrosPerFrame);
 
                     if (System.Nullable.hasValue(this.moveTrackerRendererPositionIndex)) {
@@ -6747,7 +6744,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
                 } else {
-                    var playerMoveInfo = ChessCompStompWithHacksLibrary.GameLogic.GetPlayerMove(mouseInput, previousMouseInput, this.isPromotionPanelOpen, this.clickedPromotionPiece, this.possibleMoves, this.promotionMoves, this.gameState.IsPlayerWhite, this.isNukeInFlight, this.promotionPanelX, this.promotionPanelY, this.clickedSquare, this.clickedAndHeldSquare, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, displayProcessing);
+                    var playerMoveInfo = ChessCompStompWithHacksLibrary.GameLogic.GetPlayerMove(mouseInput, previousMouseInput, this.isPromotionPanelOpen, this.clickedPromotionPiece, this.possibleMoves, this.promotionMoves, this.gameState.IsPlayerWhite, this.isNukeInFlight, this.promotionPanelX, this.promotionPanelY, this.clickedSquare, this.clickedAndHeldSquare, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, displayProcessing, coordinates);
 
                     var playerMove = playerMoveInfo.DisplayMove;
 
@@ -6797,17 +6794,17 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 }
 
                 if (!hasPlayerJustMoved) {
-                    var newClickedSquare = ChessCompStompWithHacksLibrary.GameLogic.GetClickedSquare(mouseInput, previousMouseInput, this.gameState.Board, this.gameState.IsPlayerWhite, displayProcessing, this.possibleMoves, this.clickedSquare, this.clickedAndHeldSquare, this.gameState.Abilities.HasTacticalNuke, this.gameState.HasUsedNuke, this.isNukeInFlight);
+                    var newClickedSquare = ChessCompStompWithHacksLibrary.GameLogic.GetClickedSquare(mouseInput, previousMouseInput, this.gameState.Board, this.gameState.IsPlayerWhite, displayProcessing, this.possibleMoves, this.clickedSquare, this.clickedAndHeldSquare, this.gameState.Abilities.HasTacticalNuke, this.gameState.HasUsedNuke, this.isNukeInFlight, coordinates);
 
-                    var newClickedAndHeldSquare = ChessCompStompWithHacksLibrary.GameLogic.GetClickedAndHeldSquare(mouseInput, previousMouseInput, this.gameState.IsPlayerWhite, displayProcessing, this.clickedAndHeldSquare, this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY);
+                    var newClickedAndHeldSquare = ChessCompStompWithHacksLibrary.GameLogic.GetClickedAndHeldSquare(mouseInput, previousMouseInput, this.gameState.IsPlayerWhite, displayProcessing, this.clickedAndHeldSquare, this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, coordinates);
 
-                    var promotionPanelInfo = ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelInfo(this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, this.promotionMoves, mouseInput, previousMouseInput, this.clickedSquare, this.clickedAndHeldSquare, this.gameState.IsPlayerWhite, displayProcessing, this.possibleMoves, this.isNukeInFlight, this.hasClickedOnNuke);
+                    var promotionPanelInfo = ChessCompStompWithHacksLibrary.GameLogic.GetPromotionPanelInfo(this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, this.promotionMoves, mouseInput, previousMouseInput, this.clickedSquare, this.clickedAndHeldSquare, this.gameState.IsPlayerWhite, displayProcessing, this.possibleMoves, this.isNukeInFlight, this.hasClickedOnNuke, coordinates);
 
                     var newClickedPromotionPiece = ChessCompStompWithHacksLibrary.GameLogic.GetClickedPromotionPiece(this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, mouseInput, previousMouseInput, this.clickedPromotionPiece, displayProcessing);
 
-                    var newHasClickedOnNuke = ChessCompStompWithHacksLibrary.GameLogic.GetHasClickedOnNuke(this.gameState.Board, this.possibleMoves, this.isPromotionPanelOpen, mouseInput, previousMouseInput, this.gameState.Abilities.HasTacticalNuke, this.gameState.HasUsedNuke, this.isNukeInFlight, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, this.promotionPanelX, this.promotionPanelY, this.gameState.IsPlayerWhite, displayProcessing);
+                    var newHasClickedOnNuke = ChessCompStompWithHacksLibrary.GameLogic.GetHasClickedOnNuke(this.gameState.Board, this.possibleMoves, this.isPromotionPanelOpen, mouseInput, previousMouseInput, this.gameState.Abilities.HasTacticalNuke, this.gameState.HasUsedNuke, this.isNukeInFlight, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, this.promotionPanelX, this.promotionPanelY, this.gameState.IsPlayerWhite, displayProcessing, coordinates);
 
-                    var newHasClickedAndHeldOnNuke = ChessCompStompWithHacksLibrary.GameLogic.GetHasClickedAndHeldOnNuke(mouseInput, previousMouseInput, this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, this.hasClickedAndHeldOnNuke, this.gameState.Abilities.HasTacticalNuke, this.gameState.HasUsedNuke, this.isNukeInFlight);
+                    var newHasClickedAndHeldOnNuke = ChessCompStompWithHacksLibrary.GameLogic.GetHasClickedAndHeldOnNuke(mouseInput, previousMouseInput, this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, this.hasClickedAndHeldOnNuke, this.gameState.Abilities.HasTacticalNuke, this.gameState.HasUsedNuke, this.isNukeInFlight, coordinates);
 
                     this.clickedSquare = newClickedSquare;
                     this.clickedAndHeldSquare = newClickedAndHeldSquare;
@@ -6820,20 +6817,20 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.hasClickedAndHeldOnNuke = newHasClickedAndHeldOnNuke;
                 }
 
-                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.GameLogic.UpdateChessPiecesRenderer(this.chessPiecesRenderer, this.gameState, this.gameState.TurnCount, this.gameState.IsPlayerWhite, this.gameState.IsPlayerTurn(), this.clickedSquare, this.clickedAndHeldSquare, this.possibleMoves, mouseInput, displayProcessing, this.moveTracker.GetMostRecentMove(), this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, elapsedMicrosPerFrame, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, this.isNukeInFlight);
+                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.GameLogic.UpdateChessPiecesRenderer(this.chessPiecesRenderer, this.gameState, this.gameState.TurnCount, this.gameState.IsPlayerWhite, this.gameState.IsPlayerTurn(), this.clickedSquare, this.clickedAndHeldSquare, this.possibleMoves, mouseInput, displayProcessing, this.moveTracker.GetMostRecentMove(), this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, elapsedMicrosPerFrame, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, this.isNukeInFlight, coordinates, displayType);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
 
                 var promotionPanelHoverSquare = ChessCompStompWithHacksLibrary.PromotionPanel.IsHoverOverSquare(this.promotionPanelX, this.promotionPanelY, mouseInput, displayProcessing);
                 this.promotionPanel = this.promotionPanel.ProcessFrame(this.isPromotionPanelOpen, this.promotionPanelX, this.promotionPanelY, promotionPanelHoverSquare, this.clickedPromotionPiece);
 
-                this.nukeRenderer = this.nukeRenderer.ProcessFrame(this.gameState.HasUsedNuke, this.hasClickedOnNuke || this.hasClickedAndHeldOnNuke, ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput)) ? { Item1: (new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput)).GetX(), Item2: (new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput)).GetY() } : null, this.gameState.TurnCount, elapsedMicrosPerFrame);
+                this.nukeRenderer = this.nukeRenderer.ProcessFrame(this.gameState.HasUsedNuke, this.hasClickedOnNuke || this.hasClickedAndHeldOnNuke, ChessCompStompWithHacksLibrary.NukeRenderer.IsHoverOverNuke(new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput, coordinates), coordinates.NukeRendererScalingFactorScaled) ? { Item1: (new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput, coordinates)).GetX(), Item2: (new ChessCompStompWithHacksLibrary.GameLogic.NukeRendererMouse(mouseInput, coordinates)).GetY() } : null, this.gameState.TurnCount, elapsedMicrosPerFrame);
 
                 var isHoverOverPromotionPanel = this.isPromotionPanelOpen && ChessCompStompWithHacksLibrary.PromotionPanel.IsHoverOverPanel(this.promotionPanelX, this.promotionPanelY, mouseInput);
 
                 var oldMoveTrackerRendererPositionIndex = this.moveTrackerRendererPositionIndex;
 
-                this.moveTrackerRendererPositionIndex = isHoverOverPromotionPanel ? null : ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput));
+                this.moveTrackerRendererPositionIndex = isHoverOverPromotionPanel ? null : ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput, coordinates));
                 this.moveTrackerRenderer = this.moveTrackerRenderer.ProcessFrame(this.moveTracker, this.moveTrackerRendererPositionIndex, elapsedMicrosPerFrame);
 
                 if (System.Nullable.hasValue(this.moveTrackerRendererPositionIndex)) {
@@ -6847,8 +6844,22 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 return new ChessCompStompWithHacksLibrary.GameLogic.Result(this.gameStatus, new (System.Collections.Generic.List$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(completedObjectives), this.gameState.IsPlayerWhite, this.isFinalBattle);
             },
-            Render: function (displayOutput) {
-                this.moveTrackerRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.GameLogic.MOVE_TRACKER_RENDERER_X, ChessCompStompWithHacksLibrary.GameLogic.MOVE_TRACKER_RENDERER_Y));
+            Render: function (displayOutput, isMobileDisplayType) {
+                var displayType = new DTLibrary.DisplayType();
+
+                if (!isMobileDisplayType) {
+                    displayType = DTLibrary.DisplayType.Desktop;
+                } else {
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput)) {
+                        displayType = DTLibrary.DisplayType.MobileLandscape;
+                    } else {
+                        displayType = DTLibrary.DisplayType.MobilePortrait;
+                    }
+                }
+
+                var coordinates = new ChessCompStompWithHacksLibrary.GameLogic.Coordinates(displayType);
+
+                this.moveTrackerRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.MoveTrackerRendererX, coordinates.MoveTrackerRendererY));
 
                 var moveInfo;
 
@@ -6858,13 +6869,86 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     moveInfo = null;
                 }
 
+                var nukeRendererEndingY;
+                var nukeRendererScalingFactorScaled;
+
+                switch (displayType) {
+                    case DTLibrary.DisplayType.Desktop: 
+                        nukeRendererEndingY = (ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT + ((Bridge.Int.div(Bridge.Int.mul(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.Nuke_RocketFire), 2), coordinates.NukeRendererScalingFactorScaled), 128)) | 0)) | 0;
+                        nukeRendererScalingFactorScaled = coordinates.NukeRendererScalingFactorScaled;
+                        break;
+                    case DTLibrary.DisplayType.MobileLandscape: 
+                        nukeRendererEndingY = (displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight() + ((Bridge.Int.div(Bridge.Int.mul(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.Nuke_RocketFire), 2), coordinates.NukeRendererScalingFactorScaled), 128)) | 0)) | 0;
+                        nukeRendererScalingFactorScaled = coordinates.NukeRendererScalingFactorScaled;
+                        break;
+                    case DTLibrary.DisplayType.MobilePortrait: 
+                        nukeRendererEndingY = (displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight() + ((Bridge.Int.div(Bridge.Int.mul(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.Nuke_RocketFire), 2), coordinates.NukeRendererScalingFactorScaled), 128)) | 0)) | 0;
+                        nukeRendererScalingFactorScaled = coordinates.NukeRendererScalingFactorScaled;
+                        break;
+                    default: 
+                        throw new System.Exception();
+                }
+
                 if (moveInfo == null || moveInfo.NewGameState.TurnCount === this.gameState.TurnCount) {
-                    this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.GameLogic.CHESS_PIECES_RENDERER_X, ChessCompStompWithHacksLibrary.GameLogic.CHESS_PIECES_RENDERER_Y), this.chessPiecesRendererPieceAnimation);
-                    this.nukeRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.GameLogic.NUKE_RENDERER_X, ChessCompStompWithHacksLibrary.GameLogic.NUKE_RENDERER_Y));
+                    this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.ChessPiecesRendererX, coordinates.ChessPiecesRendererY), this.chessPiecesRendererPieceAnimation, coordinates.ChessPieceScalingFactor);
+                    this.nukeRenderer.Render(nukeRendererEndingY, nukeRendererScalingFactorScaled, new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.NukeRendererX, coordinates.NukeRendererY));
                     this.promotionPanel.Render(displayOutput);
                 } else {
-                    moveInfo.NewStateChessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.GameLogic.CHESS_PIECES_RENDERER_X, ChessCompStompWithHacksLibrary.GameLogic.CHESS_PIECES_RENDERER_Y), ChessCompStompWithHacksLibrary.ChessPiecesRendererPieceAnimation.EmptyChessPiecesRendererPieceAnimation());
-                    moveInfo.NewStateNukeRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.GameLogic.NUKE_RENDERER_X, ChessCompStompWithHacksLibrary.GameLogic.NUKE_RENDERER_Y));
+                    moveInfo.NewStateChessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.ChessPiecesRendererX, coordinates.ChessPiecesRendererY), ChessCompStompWithHacksLibrary.ChessPiecesRendererPieceAnimation.EmptyChessPiecesRendererPieceAnimation(), coordinates.ChessPieceScalingFactor);
+                    moveInfo.NewStateNukeRenderer.Render(nukeRendererEndingY, nukeRendererScalingFactorScaled, new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.NukeRendererX, coordinates.NukeRendererY));
+                }
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.GameLogic.Coordinates", {
+        $kind: "nested class",
+        fields: {
+            ChessPiecesRendererX: 0,
+            ChessPiecesRendererY: 0,
+            ChessPieceScalingFactor: 0,
+            NukeRendererX: 0,
+            NukeRendererY: 0,
+            MoveTrackerRendererX: 0,
+            MoveTrackerRendererY: 0,
+            NukeRendererScalingFactorScaled: 0
+        },
+        ctors: {
+            ctor: function (displayType) {
+                this.$initialize();
+                switch (displayType) {
+                    case DTLibrary.DisplayType.Desktop: 
+                        this.ChessPiecesRendererX = 186;
+                        this.ChessPiecesRendererY = 50;
+                        this.ChessPieceScalingFactor = 16;
+                        this.NukeRendererX = 25;
+                        this.NukeRendererY = 50;
+                        this.MoveTrackerRendererX = 720;
+                        this.MoveTrackerRendererY = 208;
+                        this.NukeRendererScalingFactorScaled = 128;
+                        break;
+                    case DTLibrary.DisplayType.MobileLandscape: 
+                        this.ChessPiecesRendererX = 160;
+                        this.ChessPiecesRendererY = 10;
+                        this.ChessPieceScalingFactor = 22;
+                        this.NukeRendererX = 10;
+                        this.NukeRendererY = 10;
+                        this.MoveTrackerRendererX = 850;
+                        this.MoveTrackerRendererY = 208;
+                        this.NukeRendererScalingFactorScaled = 128;
+                        break;
+                    case DTLibrary.DisplayType.MobilePortrait: 
+                        this.ChessPiecesRendererX = 10;
+                        this.ChessPiecesRendererY = 210;
+                        this.ChessPieceScalingFactor = 22;
+                        this.NukeRendererX = 10;
+                        this.NukeRendererY = 10;
+                        this.MoveTrackerRendererX = 350;
+                        this.MoveTrackerRendererY = 10;
+                        this.NukeRendererScalingFactorScaled = 64;
+                        break;
+                    default: 
+                        throw new System.Exception();
                 }
             }
         }
@@ -9494,7 +9578,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 GetNukeRenderer: function (hasNukeAbility, hasUsedNuke, isNukeSelected, isHoverOverNuke, turnCount, timer, colorTheme) {
                     return new ChessCompStompWithHacksLibrary.NukeRenderer(hasNukeAbility, hasUsedNuke, isNukeSelected, isHoverOverNuke, turnCount, timer, null, colorTheme);
                 },
-                IsHoverOverNuke: function (mouse) {
+                IsHoverOverNuke: function (mouse, scalingFactorScaled) {
                     var $t;
                     var mouseX = mouse.DTLibrary$IMouse$GetX();
                     var mouseY = mouse.DTLibrary$IMouse$GetY();
@@ -9519,7 +9603,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     try {
                         while ($t.moveNext()) {
                             var hitbox = $t.Current;
-                            if (mouseX >= hitbox.Item1 && mouseX <= hitbox.Item3 && mouseY >= hitbox.Item2 && mouseY <= hitbox.Item4) {
+                            var startX = (Bridge.Int.div(Bridge.Int.mul(hitbox.Item1, scalingFactorScaled), 128)) | 0;
+                            var startY = (Bridge.Int.div(Bridge.Int.mul(hitbox.Item2, scalingFactorScaled), 128)) | 0;
+                            var endX = (Bridge.Int.div(Bridge.Int.mul(hitbox.Item3, scalingFactorScaled), 128)) | 0;
+                            var endY = (Bridge.Int.div(Bridge.Int.mul(hitbox.Item4, scalingFactorScaled), 128)) | 0;
+
+                            if (mouseX >= startX && mouseX <= endX && mouseY >= startY && mouseY <= endY) {
                                 return true;
                             }
                         }
@@ -9581,7 +9670,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 return System.Nullable.getValue(this.nukeAnimationElapsedMicros) >= ChessCompStompWithHacksLibrary.NukeRenderer.ELAPSED_MICROS_TO_FLY_OFF_SCREEN;
             },
-            Render: function (displayOutput) {
+            Render: function (endingY, scalingFactorScaled, displayOutput) {
                 if (!this.hasNukeAbility) {
                     return;
                 }
@@ -9609,7 +9698,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         nukeImage = ChessCompStompWithHacksLibrary.GameImage.Nuke_NotReady;
                     }
 
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(nukeImage, 0, 0, 0, 128);
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(nukeImage, 0, 0, 0, scalingFactorScaled);
 
                     if (this.isHoverOverNuke != null && !isNukeAvailable) {
                         var numTurnsUntilNukeAvailable = (11 - this.turnCount) | 0;
@@ -9624,17 +9713,16 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         return;
                     }
 
-                    var rocketWidth = displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.Nuke_Ready);
+                    var rocketWidth = (Bridge.Int.div(Bridge.Int.mul(displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.Nuke_Ready), scalingFactorScaled), 128)) | 0;
 
-                    var rocketFireScalingFactor = 256;
+                    var rocketFireScalingFactor = Bridge.Int.mul(2, scalingFactorScaled);
                     var rocketFireWidthOriginal = displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetWidth(ChessCompStompWithHacksLibrary.GameImage.Nuke_RocketFire);
                     var rocketFireHeightOriginal = displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetHeight(ChessCompStompWithHacksLibrary.GameImage.Nuke_RocketFire);
                     var rocketFireWidthScaled = (Bridge.Int.div(Bridge.Int.mul(rocketFireWidthOriginal, rocketFireScalingFactor), 128)) | 0;
                     var rocketFireHeightScaled = (Bridge.Int.div(Bridge.Int.mul(rocketFireHeightOriginal, rocketFireScalingFactor), 128)) | 0;
-                    var endingY = (ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT + rocketFireHeightScaled) | 0;
                     var y = System.Int64.clip32(System.Int64(System.Nullable.getValue(this.nukeAnimationElapsedMicros)).mul(System.Int64(endingY)).div((System.Int64(300000))));
 
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImage.Nuke_Ready, 0, y, 0, 128);
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImage.Nuke_Ready, 0, y, 0, scalingFactorScaled);
 
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(ChessCompStompWithHacksLibrary.GameImage.Nuke_RocketFire, ((Bridge.Int.div((((rocketWidth - rocketFireWidthScaled) | 0)), 2)) | 0), ((y - rocketFireHeightScaled) | 0), 0, rocketFireScalingFactor);
                 }
@@ -11186,15 +11274,31 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 var isPlayerWhite = this.WillPlayerBeWhiteNextGame();
 
+                var displayType = new DTLibrary.DisplayType();
+
+                if (!isMobileDisplayType) {
+                    displayType = DTLibrary.DisplayType.Desktop;
+                } else {
+                    if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation(ChessCompStompWithHacksLibrary.GameImage, display)) {
+                        displayType = DTLibrary.DisplayType.MobileLandscape;
+                    } else {
+                        displayType = DTLibrary.DisplayType.MobilePortrait;
+                    }
+                }
+
                 if (isFinalBattle) {
                     this.data.ColorTheme = ChessCompStompWithHacksLibrary.ColorTheme.Final;
 
-                    this.data.GameLogic = new ChessCompStompWithHacksLibrary.GameLogic(globalState, isPlayerWhite, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(this.data.ResearchedHacks), ChessCompStompWithHacksLibrary.SessionState.AIHackLevel.FinalBattle, this.data.ColorTheme);
+                    this.data.GameLogic = new ChessCompStompWithHacksLibrary.GameLogic(globalState, isPlayerWhite, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(this.data.ResearchedHacks), ChessCompStompWithHacksLibrary.SessionState.AIHackLevel.FinalBattle, this.data.ColorTheme, displayType);
                     this.data.MostRecentGameLogic = this.data.GameLogic;
 
                     this.data.WasPlayerWhiteInPreviousGame = isPlayerWhite;
                     if (this.data.HasShownFinalBattleMessage) {
-                        return new ChessCompStompWithHacksLibrary.ChessFrame(globalState, this);
+                        if (isMobileDisplayType) {
+                            return new ChessCompStompWithHacksLibrary.ChessMobileFrame(globalState, this, display);
+                        } else {
+                            return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(globalState, this);
+                        }
                     }
 
                     this.data.HasShownFinalBattleMessage = true;
@@ -11224,7 +11328,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.data.GameLogic = new ChessCompStompWithHacksLibrary.GameLogic(globalState, isPlayerWhite, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(this.data.ResearchedHacks), aiHackLevel, this.data.ColorTheme);
+                this.data.GameLogic = new ChessCompStompWithHacksLibrary.GameLogic(globalState, isPlayerWhite, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(this.data.ResearchedHacks), aiHackLevel, this.data.ColorTheme, displayType);
                 this.data.MostRecentGameLogic = this.data.GameLogic;
 
                 this.data.WasPlayerWhiteInPreviousGame = isPlayerWhite;
@@ -11234,7 +11338,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     return isMobileDisplayType ? ChessCompStompWithHacksLibrary.AIMessageMobileFrame.GetAIHackMessageFrame(globalState, this, display) : ChessCompStompWithHacksLibrary.AIMessageDesktopFrame.GetAIHackMessageFrame(globalState, this);
                 }
 
-                return new ChessCompStompWithHacksLibrary.ChessFrame(globalState, this);
+                if (isMobileDisplayType) {
+                    return new ChessCompStompWithHacksLibrary.ChessMobileFrame(globalState, this, display);
+                } else {
+                    return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(globalState, this);
+                }
             }
         }
     });
@@ -11468,8 +11576,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         },
         ctors: {
             ctor: function (isMobileDisplayType) {
-                if (isMobileDisplayType === void 0) { isMobileDisplayType = false; }
-
                 this.$initialize();
                 this.isHover = false;
                 this.isClicked = false;
@@ -15287,9 +15393,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "IsRightMouseButtonPressed", "DTLibrary$IMouse$IsRightMouseButtonPressed"
         ],
         ctors: {
-            ctor: function (mouse) {
+            ctor: function (mouse, coordinates) {
                 this.$initialize();
-                this.mouse = new DTLibrary.TranslatedMouse(mouse, -186, -50);
+                this.mouse = new DTLibrary.TranslatedMouse(mouse, ((-coordinates.ChessPiecesRendererX) | 0), ((-coordinates.ChessPiecesRendererY) | 0));
             }
         },
         methods: {
@@ -15321,9 +15427,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "IsRightMouseButtonPressed", "DTLibrary$IMouse$IsRightMouseButtonPressed"
         ],
         ctors: {
-            ctor: function (mouse) {
+            ctor: function (mouse, coordinates) {
                 this.$initialize();
-                this.mouse = new DTLibrary.TranslatedMouse(mouse, -720, -208);
+                this.mouse = new DTLibrary.TranslatedMouse(mouse, ((-coordinates.MoveTrackerRendererX) | 0), ((-coordinates.MoveTrackerRendererY) | 0));
             }
         },
         methods: {
@@ -15355,9 +15461,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "IsRightMouseButtonPressed", "DTLibrary$IMouse$IsRightMouseButtonPressed"
         ],
         ctors: {
-            ctor: function (mouse) {
+            ctor: function (mouse, coordinates) {
                 this.$initialize();
-                this.mouse = new DTLibrary.TranslatedMouse(mouse, -25, -50);
+                this.mouse = new DTLibrary.TranslatedMouse(mouse, ((-coordinates.NukeRendererX) | 0), ((-coordinates.NukeRendererY) | 0));
             }
         },
         methods: {
@@ -15759,7 +15865,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.pieceToMove : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.pieceToMove : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -15770,7 +15876,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET));
@@ -15800,9 +15906,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         return _o1;
                     }(new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor())), ChessCompStompWithHacksLibrary.SessionState.AIHackLevel.Initial);
 
-                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer$1(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), true, colorTheme, 16);
+                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), true, colorTheme);
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = ChessCompStompWithHacksLibrary.ChessPiecesRendererPieceAnimation.EmptyChessPiecesRendererPieceAnimation();
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
@@ -15825,7 +15931,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
             }
         }
     });
@@ -15854,9 +15960,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 var gameState = ChessCompStompWithHacksLibrary.NewGameCreation.CreateNewGame(true, new (DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.Hack)).$ctor1(hacks), ChessCompStompWithHacksLibrary.SessionState.AIHackLevel.Initial);
 
-                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer$1(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), true, colorTheme, 16);
+                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), true, colorTheme);
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = ChessCompStompWithHacksLibrary.ChessPiecesRendererPieceAnimation.EmptyChessPiecesRendererPieceAnimation();
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
@@ -15879,7 +15985,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
             }
         }
     });
@@ -15904,7 +16010,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), true, colorTheme);
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(gameState.Board, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList(), null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = ChessCompStompWithHacksLibrary.ChessPiecesRendererPieceAnimation.EmptyChessPiecesRendererPieceAnimation();
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
@@ -15919,7 +16025,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
             }
         }
     });
@@ -16071,7 +16177,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 allKnightMoves.AddRange(this.potentialNormalKnightMoves);
                 allKnightMoves.AddRange(this.potentialLargeKnightMoves);
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(board, null, this.previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).AsImmutableList(allKnightMoves), null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(board, null, this.previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).AsImmutableList(allKnightMoves), null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -16082,7 +16188,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
             }
         }
     });
@@ -16271,7 +16377,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.gameState.Board, null, this.previousMoveSquares, this.status === ChessCompStompWithHacksLibrary.HackExplanation_OpponentMustCaptureWhenPossible.Status.PlayerAboutToMakeFirstMove || this.status === ChessCompStompWithHacksLibrary.HackExplanation_OpponentMustCaptureWhenPossible.Status.PlayerAboutToMakeSecondMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.nextMove.StartingFile), System.Nullable.getValue(this.nextMove.StartingRank)) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.gameState.Board, null, this.previousMoveSquares, this.status === ChessCompStompWithHacksLibrary.HackExplanation_OpponentMustCaptureWhenPossible.Status.PlayerAboutToMakeFirstMove || this.status === ChessCompStompWithHacksLibrary.HackExplanation_OpponentMustCaptureWhenPossible.Status.PlayerAboutToMakeSecondMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.nextMove.StartingFile), System.Nullable.getValue(this.nextMove.StartingRank)) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -16282,7 +16388,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET));
@@ -16367,7 +16473,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.previousMoveSquares = DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList();
                 this.possibleMoveSquares = DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).EmptyList();
 
-                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer$1(this.board, null, this.previousMoveSquares, true, colorTheme, 16);
+                this.chessPiecesRenderer = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetChessPiecesRenderer(this.board, null, this.previousMoveSquares, true, colorTheme);
 
                 this.chessPiecesRendererPieceAnimation = ChessCompStompWithHacksLibrary.ChessPiecesRendererPieceAnimation.EmptyChessPiecesRendererPieceAnimation();
             }
@@ -16432,7 +16538,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? new ChessCompStompWithHacksEngine.ChessSquare(this.possibleMoveSquares.getItem(0).File, 1) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? new ChessCompStompWithHacksEngine.ChessSquare(this.possibleMoveSquares.getItem(0).File, 1) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -16451,7 +16557,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE));
@@ -16621,7 +16727,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.gameState.Board, null, this.previousMoveSquares, this.status === ChessCompStompWithHacksLibrary.HackExplanation_PawnsDestroyCapturingPiece.Status.PlayerAboutToMakeMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.playerMove.StartingFile), System.Nullable.getValue(this.playerMove.StartingRank)) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.gameState.Board, null, this.previousMoveSquares, this.status === ChessCompStompWithHacksLibrary.HackExplanation_PawnsDestroyCapturingPiece.Status.PlayerAboutToMakeMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.playerMove.StartingFile), System.Nullable.getValue(this.playerMove.StartingRank)) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -16632,7 +16738,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET));
@@ -16796,7 +16902,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 allQueenMoves.AddRange(this.potentialNormalQueenMoves);
                 allQueenMoves.AddRange(this.potentialKnightQueenMoves);
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(board, null, this.previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).AsImmutableList(allQueenMoves), null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(board, null, this.previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).AsImmutableList(allQueenMoves), null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -16807,7 +16913,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
             }
         }
     });
@@ -17060,7 +17166,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.rookSquare : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.rookSquare : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -17071,7 +17177,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET));
@@ -17235,7 +17341,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 allRookMoves.AddRange(this.potentialNormalRookMoves);
                 allRookMoves.AddRange(this.potentialBishopRookMoves);
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(board, null, this.previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).AsImmutableList(allRookMoves), null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(board, null, this.previousMoveSquares, null, DTLibrary.DTImmutableList$1(ChessCompStompWithHacksEngine.ChessSquare).AsImmutableList(allRookMoves), null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -17246,7 +17352,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
             }
         }
     });
@@ -17462,7 +17568,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.gameState.Board, this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.OpponentAboutToClickPiece || this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.OpponentAboutToMakeMove ? this.kingInDangerSquareAfterPlayerMove1 : null, this.previousMoveSquares, this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.PlayerAboutToMakeFirstMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.playerMove1.StartingFile), System.Nullable.getValue(this.playerMove1.StartingRank)) : this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.PlayerAboutToMakeSecondMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.playerMove2.StartingFile), System.Nullable.getValue(this.playerMove2.StartingRank)) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.gameState.Board, this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.OpponentAboutToClickPiece || this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.OpponentAboutToMakeMove ? this.kingInDangerSquareAfterPlayerMove1 : null, this.previousMoveSquares, this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.PlayerAboutToMakeFirstMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.playerMove1.StartingFile), System.Nullable.getValue(this.playerMove1.StartingRank)) : this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.PlayerAboutToMakeSecondMove ? new ChessCompStompWithHacksEngine.ChessSquare(System.Nullable.getValue(this.playerMove2.StartingFile), System.Nullable.getValue(this.playerMove2.StartingRank)) : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -17473,7 +17579,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.Finished) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(449, 265, 299, 119, DTLibrary.DTColor.White(), true);
@@ -17708,7 +17814,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.kingSquare : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.kingSquare : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -17719,7 +17825,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET));
@@ -17886,7 +17992,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
-                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.pawnSquare : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame);
+                this.chessPiecesRenderer = this.chessPiecesRenderer.ProcessFrame(this.board, null, this.previousMoveSquares, this.possibleMoveSquares.Count > 0 ? this.pawnSquare : null, this.possibleMoveSquares, null, null, null, elapsedMicrosPerFrame, ChessCompStompWithHacksLibrary.GameImageUtil.DesktopChessPieceScalingFactor);
 
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
@@ -17897,7 +18003,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation);
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
                     this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET));
@@ -17941,7 +18047,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
 
-                this.nukeRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, 532, 40));
+                this.nukeRenderer.Render(1000, 128, new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, 532, 40));
             }
         }
     });
@@ -19169,10 +19275,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             methods: {
                 GetAIHackMessageFrame: function (globalState, sessionState) {
-                    return new ChessCompStompWithHacksLibrary.AIMessageDesktopFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessFrame(globalState, sessionState), "If you're going to hack, then I'm hacking too!", 29, 114, ChessCompStompWithHacksLibrary.AIMessageType.AIHackMessage);
+                    return new ChessCompStompWithHacksLibrary.AIMessageDesktopFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessDesktopFrame(globalState, sessionState), "If you're going to hack, then I'm hacking too!", 29, 114, ChessCompStompWithHacksLibrary.AIMessageType.AIHackMessage);
                 },
                 GetFinalBattleMessageFrame: function (globalState, sessionState) {
-                    return new ChessCompStompWithHacksLibrary.AIMessageDesktopFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessFrame(globalState, sessionState), "I have 23 queens. Good luck; have fun!  :)", 50, 114, ChessCompStompWithHacksLibrary.AIMessageType.FinalBattleMessage);
+                    return new ChessCompStompWithHacksLibrary.AIMessageDesktopFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessDesktopFrame(globalState, sessionState), "I have 23 queens. Good luck; have fun!  :)", 50, 114, ChessCompStompWithHacksLibrary.AIMessageType.FinalBattleMessage);
                 }
             }
         },
@@ -19277,10 +19383,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         statics: {
             methods: {
                 GetAIHackMessageFrame: function (globalState, sessionState, display) {
-                    return new ChessCompStompWithHacksLibrary.AIMessageMobileFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessFrame(globalState, sessionState), "If you're going to hack, then I'm hacking too!", 27, 90, ChessCompStompWithHacksLibrary.AIMessageType.AIHackMessage, display);
+                    return new ChessCompStompWithHacksLibrary.AIMessageMobileFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessMobileFrame(globalState, sessionState, display), "If you're going to hack, then I'm hacking too!", 27, 90, ChessCompStompWithHacksLibrary.AIMessageType.AIHackMessage, display);
                 },
                 GetFinalBattleMessageFrame: function (globalState, sessionState, display) {
-                    return new ChessCompStompWithHacksLibrary.AIMessageMobileFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessFrame(globalState, sessionState), "I have 23 queens. Good luck; have fun!  :)", 27, 90, ChessCompStompWithHacksLibrary.AIMessageType.FinalBattleMessage, display);
+                    return new ChessCompStompWithHacksLibrary.AIMessageMobileFrame(globalState, sessionState, new ChessCompStompWithHacksLibrary.ChessMobileFrame(globalState, sessionState, display), "I have 23 queens. Good luck; have fun!  :)", 27, 90, ChessCompStompWithHacksLibrary.AIMessageType.FinalBattleMessage, display);
                 }
             }
         },
@@ -19416,7 +19522,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         }
     });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.ChessFrame", {
+    Bridge.define("ChessCompStompWithHacksLibrary.ChessDesktopFrame", {
         inherits: [DTLibrary.IFrame$4(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont,ChessCompStompWithHacksLibrary.GameSound,ChessCompStompWithHacksLibrary.GameMusic)],
         statics: {
             fields: {
@@ -19460,7 +19566,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.victoryStalemateOrDefeatPanel = null;
                 this.finalBattleVictoryPanel = null;
 
-                this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon();
+                this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon(false);
 
                 this.resignButton = new ChessCompStompWithHacksLibrary.Button(869, 100, 100, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Resign", 14, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, false);
 
@@ -19483,6 +19589,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 }
             },
             ProcessDisplayType: function (displayType, displayProcessing) {
+                if (displayType !== DTLibrary.DisplayType.Desktop) {
+                    return new ChessCompStompWithHacksLibrary.ChessMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                }
+
                 return this;
             },
             GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
@@ -19523,7 +19633,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 if (gameLogic == null) {
                     gameLogic = this.sessionState.GetMostRecentGameLogic();
                 }
-                var result = gameLogic.ProcessNextFrame(isHoverOverPanel ? dummyMouseInput : new DTLibrary.TranslatedMouse(mouseInput, 0, -50), displayProcessing, soundOutput, this.globalState.ElapsedMicrosPerFrame);
+                var result = gameLogic.ProcessNextFrame(isHoverOverPanel ? dummyMouseInput : new DTLibrary.TranslatedMouse(mouseInput, 0, -50), displayProcessing, soundOutput, this.globalState.ElapsedMicrosPerFrame, false);
 
                 var hasCompletedANewObjective = this.sessionState.AddCompletedObjectives(new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(result.CompletedObjectives));
 
@@ -19607,13 +19717,245 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.globalState.ProcessMusic();
             },
             Render: function (displayOutput) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
                 var gameLogic = this.sessionState.GetGameLogic();
                 if (gameLogic == null) {
                     gameLogic = this.sessionState.GetMostRecentGameLogic();
                 }
-                gameLogic.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.ChessFrame.GAME_LOGIC_X_OFFSET, ChessCompStompWithHacksLibrary.ChessFrame.GAME_LOGIC_Y_OFFSET));
+                gameLogic.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.ChessDesktopFrame.GAME_LOGIC_X_OFFSET, ChessCompStompWithHacksLibrary.ChessDesktopFrame.GAME_LOGIC_Y_OFFSET), false);
+
+                if (this.delayBeforeShowingPanel == null) {
+                    this.resignButton.Render(displayOutput);
+                    this.viewObjectivesButton.Render(displayOutput);
+                    this.viewHacksButton.Render(displayOutput);
+                }
+
+                this.settingsIcon.Render(displayOutput);
+
+                if (this.victoryStalemateOrDefeatPanel != null) {
+                    this.victoryStalemateOrDefeatPanel.Render(displayOutput);
+                }
+
+                if (this.finalBattleVictoryPanel != null) {
+                    this.finalBattleVictoryPanel.Render(displayOutput);
+                }
+            },
+            RenderMusic: function (musicOutput) {
+                this.globalState.RenderMusic(musicOutput);
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.ChessMobileFrame", {
+        inherits: [DTLibrary.IFrame$4(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont,ChessCompStompWithHacksLibrary.GameSound,ChessCompStompWithHacksLibrary.GameMusic)],
+        fields: {
+            globalState: null,
+            sessionState: null,
+            delayBeforeShowingPanel: null,
+            victoryStalemateOrDefeatPanel: null,
+            finalBattleVictoryPanel: null,
+            settingsIcon: null,
+            resignButton: null,
+            viewObjectivesButton: null,
+            viewHacksButton: null,
+            gameLogicXOffset: 0,
+            gameLogicYOffset: 0
+        },
+        alias: [
+            "GetClickUrl", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetClickUrl",
+            "GetCompletedAchievements", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetCompletedAchievements",
+            "ProcessExtraTime", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessExtraTime",
+            "ProcessDisplayType", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessDisplayType",
+            "GetNextFrame", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetNextFrame",
+            "ProcessMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic",
+            "Render", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render",
+            "RenderMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$RenderMusic"
+        ],
+        ctors: {
+            init: function () {
+                this.gameLogicXOffset = 0;
+                this.gameLogicYOffset = 0;
+            },
+            ctor: function (globalState, sessionState, display) {
+                this.$initialize();
+                this.globalState = globalState;
+                this.sessionState = sessionState;
+                this.delayBeforeShowingPanel = null;
+                this.victoryStalemateOrDefeatPanel = null;
+                this.finalBattleVictoryPanel = null;
+
+                this.settingsIcon = new ChessCompStompWithHacksLibrary.SettingsIcon(true);
+
+                this.resignButton = new ChessCompStompWithHacksLibrary.Button(869, 100, 100, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "Resign", 14, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, true);
+
+                this.viewObjectivesButton = new ChessCompStompWithHacksLibrary.Button(770, 30, 199, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "View objectives", 16, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, true);
+
+                this.viewHacksButton = new ChessCompStompWithHacksLibrary.Button(621, 30, 150, 40, new DTLibrary.DTColor.ctor(200, 200, 200), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetHoverColor(sessionState.GetColorTheme()), ChessCompStompWithHacksLibrary.ColorThemeUtil.GetClickColor(sessionState.GetColorTheme()), "View hacks", 16, 9, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, true);
+
+                this.UpdateCoordinates(display);
+            }
+        },
+        methods: {
+            UpdateCoordinates: function (display) {
+                if (DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation(ChessCompStompWithHacksLibrary.GameImage, display)) {
+                    this.gameLogicXOffset = (Bridge.Int.div((((display.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth() - 1000) | 0)), 2)) | 0;
+                    this.gameLogicYOffset = 0;
+                } else {
+                    this.gameLogicXOffset = 0;
+                    this.gameLogicYOffset = 0;
+                }
+            },
+            GetClickUrl: function () {
+                return null;
+            },
+            GetCompletedAchievements: function () {
+                return this.sessionState.GetCompletedAchievements();
+            },
+            ProcessExtraTime: function (milliseconds) {
+                var gameLogic = this.sessionState.GetGameLogic();
+                if (gameLogic != null) {
+                    gameLogic.ProcessExtraTime(milliseconds);
+                }
+            },
+            ProcessDisplayType: function (displayType, displayProcessing) {
+                if (displayType === DTLibrary.DisplayType.Desktop) {
+                    return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(this.globalState, this.sessionState);
+                }
+
+                return this;
+            },
+            GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
+                this.UpdateCoordinates(displayProcessing);
+
+                if (this.finalBattleVictoryPanel == null) {
+                    var music = ChessCompStompWithHacksLibrary.GameMusicUtil.GetGameMusic(this.sessionState.GetColorTheme());
+                    this.globalState.MusicPlayer.SetMusic(music, 100);
+                }
+
+                var victoryStalemateOrDefeatPanelResult = null;
+
+                if (this.victoryStalemateOrDefeatPanel != null) {
+                    victoryStalemateOrDefeatPanelResult = this.victoryStalemateOrDefeatPanel.ProcessFrame(mouseInput, previousMouseInput, this.globalState.ElapsedMicrosPerFrame);
+                    if (victoryStalemateOrDefeatPanelResult.HasClickedContinueButton) {
+                        this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        return new ChessCompStompWithHacksLibrary.HackSelectionScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                    }
+                }
+
+                var finalBattleVictoryPanelResult = null;
+
+                if (this.finalBattleVictoryPanel != null) {
+                    this.globalState.MusicPlayer.SetMusic(ChessCompStompWithHacksLibrary.GameMusic.Ending, 100);
+
+                    finalBattleVictoryPanelResult = this.finalBattleVictoryPanel.ProcessFrame(mouseInput, previousMouseInput);
+                    if (finalBattleVictoryPanelResult.HasClickedContinueButton) {
+                        this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        return new ChessCompStompWithHacksLibrary.TitleScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                    }
+                }
+
+                var isHoverOverPanel = victoryStalemateOrDefeatPanelResult != null && victoryStalemateOrDefeatPanelResult.IsHoverOverPanel || finalBattleVictoryPanelResult != null && finalBattleVictoryPanelResult.IsHoverOverPanel;
+
+                var dummyMouseInput = new DTLibrary.SimulatedMouse(-999, -999, mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed(), mouseInput.DTLibrary$IMouse$IsRightMouseButtonPressed());
+
+                var gameLogic = this.sessionState.GetGameLogic();
+                if (gameLogic == null) {
+                    gameLogic = this.sessionState.GetMostRecentGameLogic();
+                }
+                var result = gameLogic.ProcessNextFrame(isHoverOverPanel ? dummyMouseInput : new DTLibrary.TranslatedMouse(mouseInput, ((-this.gameLogicXOffset) | 0), ((-this.gameLogicYOffset) | 0)), displayProcessing, soundOutput, this.globalState.ElapsedMicrosPerFrame, true);
+
+                var hasCompletedANewObjective = this.sessionState.AddCompletedObjectives(new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(result.CompletedObjectives));
+
+                if (hasCompletedANewObjective) {
+                    this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                }
+
+                var didPlayerWin = result.GameStatus === ChessCompStompWithHacksEngine.ComputeMoves.GameStatus.WhiteVictory && result.IsPlayerWhite || result.GameStatus === ChessCompStompWithHacksEngine.ComputeMoves.GameStatus.BlackVictory && !result.IsPlayerWhite;
+
+                if (this.delayBeforeShowingPanel == null) {
+                    if (result.GameStatus !== ChessCompStompWithHacksEngine.ComputeMoves.GameStatus.InProgress) {
+                        this.sessionState.CompleteGame(didPlayerWin);
+                        this.delayBeforeShowingPanel = 0;
+                        this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                    }
+                }
+
+                if (this.delayBeforeShowingPanel != null && this.victoryStalemateOrDefeatPanel == null && this.finalBattleVictoryPanel == null) {
+                    this.delayBeforeShowingPanel = Bridge.Int.clip32(System.Nullable.getValue(this.delayBeforeShowingPanel) + this.globalState.ElapsedMicrosPerFrame);
+
+                    if (System.Nullable.getValue(this.delayBeforeShowingPanel) >= 1000000) {
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(didPlayerWin ? ChessCompStompWithHacksLibrary.GameSound.Win : ChessCompStompWithHacksLibrary.GameSound.StalemateOrDefeat);
+
+                        if (didPlayerWin && result.IsFinalBattle && !this.sessionState.HasShownFinalBattleVictoryPanel()) {
+                            this.sessionState.SetShownFinalBattleVictoryPanel();
+                            this.finalBattleVictoryPanel = new ChessCompStompWithHacksLibrary.FinalBattleVictoryPanel(this.sessionState.GetColorTheme());
+                        } else {
+                            this.victoryStalemateOrDefeatPanel = new ChessCompStompWithHacksLibrary.VictoryStalemateOrDefeatPanel(result.GameStatus, result.IsPlayerWhite, this.sessionState.GetCompletedObjectives(), this.sessionState.GetObjectivesThatWereAlreadyCompletedPriorToCurrentGame(), this.sessionState.GetColorTheme());
+                        }
+                    }
+                }
+
+                var isWaitingForFinalBattleVictoryPanel = didPlayerWin && result.IsFinalBattle && !this.sessionState.HasShownFinalBattleVictoryPanel() && this.finalBattleVictoryPanel == null;
+
+                if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !isWaitingForFinalBattleVictoryPanel) {
+                    this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                    soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                    return new ChessCompStompWithHacksLibrary.SettingsMenuMobileFrame(this.globalState, this.sessionState, this, true, displayProcessing, true);
+                }
+
+                if (this.delayBeforeShowingPanel == null) {
+                    var hasClickedResignButton = this.resignButton.ProcessFrame(mouseInput, previousMouseInput);
+
+                    if (hasClickedResignButton) {
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        return new ChessCompStompWithHacksLibrary.ResignConfirmationMobileFrame(this.globalState, this.sessionState, this, displayProcessing, true);
+                    }
+
+                    var hasClickedViewObjectivesButton = this.viewObjectivesButton.ProcessFrame(mouseInput, previousMouseInput);
+                    if (hasClickedViewObjectivesButton) {
+                        this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        return new ChessCompStompWithHacksLibrary.ViewObjectivesMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                    }
+
+                    var hasClickedViewHacksButton = this.viewHacksButton.ProcessFrame(mouseInput, previousMouseInput);
+                    if (hasClickedViewHacksButton) {
+                        this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                        soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                        return new ChessCompStompWithHacksLibrary.ViewHacksMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                    }
+                }
+
+                var hasClicked = this.settingsIcon.ProcessFrame(mouseInput, previousMouseInput, isHoverOverPanel, displayProcessing).HasClicked;
+
+                if (hasClicked && !isWaitingForFinalBattleVictoryPanel) {
+                    this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
+                    soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
+                    return new ChessCompStompWithHacksLibrary.SettingsMenuMobileFrame(this.globalState, this.sessionState, this, true, displayProcessing, true);
+                }
+
+                if (this.globalState.DebugMode) {
+                    if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.One) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.One)) {
+                        this.globalState.UseDebugAI = !this.globalState.UseDebugAI;
+                    }
+                }
+
+                return this;
+            },
+            ProcessMusic: function () {
+                this.globalState.ProcessMusic();
+            },
+            Render: function (displayOutput) {
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight(), new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
+                var gameLogic = this.sessionState.GetGameLogic();
+                if (gameLogic == null) {
+                    gameLogic = this.sessionState.GetMostRecentGameLogic();
+                }
+                gameLogic.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, this.gameLogicXOffset, this.gameLogicYOffset), true);
 
                 if (this.delayBeforeShowingPanel == null) {
                     this.resignButton.Render(displayOutput);
@@ -20833,7 +21175,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             Render: function (displayOutput) {
                 this.underlyingFrame.DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render(displayOutput);
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.WINDOW_HEIGHT, new DTLibrary.DTColor.$ctor1(0, 0, 0, 64), true);
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH, ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT, new DTLibrary.DTColor.$ctor1(0, 0, 0, 64), true);
 
                 displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(ChessCompStompWithHacksLibrary.HackExplanationDesktopFrame.HACK_EXPLANATION_PANEL_X, ChessCompStompWithHacksLibrary.HackExplanationDesktopFrame.HACK_EXPLANATION_PANEL_Y, 899, 599, new DTLibrary.DTColor.ctor(223, 220, 217), true);
 
@@ -22408,8 +22750,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ],
         ctors: {
             ctor: function (globalState, sessionState, underlyingFrame, showPausedText, shouldRenderUnderlyingFrame) {
-                if (shouldRenderUnderlyingFrame === void 0) { shouldRenderUnderlyingFrame = true; }
-
                 this.$initialize();
                 this.globalState = globalState;
                 this.sessionState = sessionState;
@@ -23396,7 +23736,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         if (this.sessionState.GetGameLogic() == null) {
                             return new ChessCompStompWithHacksLibrary.HackSelectionScreenDesktopFrame(this.globalState, this.sessionState);
                         } else {
-                            return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                            return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(this.globalState, this.sessionState);
                         }
                     }
                 } else {
@@ -23557,7 +23897,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         if (this.sessionState.GetGameLogic() == null) {
                             return new ChessCompStompWithHacksLibrary.HackSelectionScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
                         } else {
-                            return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                            return new ChessCompStompWithHacksLibrary.ChessMobileFrame(this.globalState, this.sessionState, displayProcessing);
                         }
                     }
                 } else {
@@ -23686,7 +24026,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var clickedBackToGameButton = this.backToGameButton.ProcessFrame(mouseInput, previousMouseInput);
                 if (clickedBackToGameButton) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(this.globalState, this.sessionState);
                 }
 
                 var settingsIconStatus = this.settingsIcon.ProcessFrame(mouseInput, previousMouseInput, false, displayProcessing);
@@ -23698,7 +24038,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc)) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(this.globalState, this.sessionState);
                 }
 
                 return this;
@@ -23796,7 +24136,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 var clickedBackToGameButton = this.backToGameButton.ProcessFrame(mouseInput, previousMouseInput);
                 if (clickedBackToGameButton) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessMobileFrame(this.globalState, this.sessionState, displayProcessing);
                 }
 
                 var settingsIconStatus = this.settingsIcon.ProcessFrame(mouseInput, previousMouseInput, false, displayProcessing);
@@ -23808,7 +24148,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc)) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessMobileFrame(this.globalState, this.sessionState, displayProcessing);
                 }
 
                 if (this.sessionState.GetHackSelectionScreenMobileTab() !== this.hackSelectionScreenMobileTabInPreviousFrame) {
@@ -23987,13 +24327,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc)) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(this.globalState, this.sessionState);
                 }
 
                 var clickedBackToGameButton = this.backToGameButton.ProcessFrame(mouseInput, previousMouseInput);
                 if (clickedBackToGameButton) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessDesktopFrame(this.globalState, this.sessionState);
                 }
 
                 return this;
@@ -24085,13 +24425,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc)) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessMobileFrame(this.globalState, this.sessionState, displayProcessing);
                 }
 
                 var clickedBackToGameButton = this.backToGameButton.ProcessFrame(mouseInput, previousMouseInput);
                 if (clickedBackToGameButton) {
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
-                    return new ChessCompStompWithHacksLibrary.ChessFrame(this.globalState, this.sessionState);
+                    return new ChessCompStompWithHacksLibrary.ChessMobileFrame(this.globalState, this.sessionState, displayProcessing);
                 }
 
                 return this;
