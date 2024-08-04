@@ -4053,6 +4053,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
+                if (this.isMobileDisplayType) {
+                    if (mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && System.Nullable.hasValue(this.hoveredHackLevel)) {
+                        this.clickedHackLevel = System.Nullable.getValue(this.hoveredHackLevel);
+                    }
+                }
+
                 if (System.Nullable.hasValue(this.clickedHackLevel) && !mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed() && previousMouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
                     if (System.Nullable.hasValue(hoveredAIHackLevel) && System.Nullable.getValue(hoveredAIHackLevel) === System.Nullable.getValue(this.clickedHackLevel)) {
                         this.clickedHackLevel = null;
@@ -6111,7 +6117,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     Bridge.define("ChessCompStompWithHacksLibrary.GameLogic", {
         statics: {
             methods: {
-                GetPlayerMove: function (mouseInput, previousMouseInput, isPromotionPanelOpen, clickedPromotionPiece, possibleMoves, promotionMoves, isPlayerWhite, isNukeInFlight, promotionPanelX, promotionPanelY, clickedSquare, clickedAndHeldSquare, hasClickedOnNuke, hasClickedAndHeldOnNuke, displayProcessing, coordinates) {
+                GetPlayerMove: function (mouseInput, previousMouseInput, isPromotionPanelOpen, clickedPromotionPiece, possibleMoves, promotionMoves, isPlayerWhite, isNukeInFlight, promotionPanelX, promotionPanelY, clickedSquare, clickedAndHeldSquare, hasClickedOnNuke, hasClickedAndHeldOnNuke, displayProcessing, isMobileDisplayType, coordinates) {
                     var hoverSquare = ChessCompStompWithHacksLibrary.ChessPiecesRenderer.GetHoverSquare$1(new ChessCompStompWithHacksLibrary.GameLogic.ChessPiecesRendererMouse(mouseInput, coordinates), isPlayerWhite, coordinates.ChessPieceScalingFactor, displayProcessing);
 
                     if (isNukeInFlight) {
@@ -6164,7 +6170,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                             }
                         }
 
-                        if (hasClickedOnNuke && clickedAndHeldSquare != null && hoverSquare != null && hoverSquare.equalsT(clickedAndHeldSquare)) {
+                        if (hasClickedOnNuke && clickedAndHeldSquare != null && hoverSquare != null && (hoverSquare.equalsT(clickedAndHeldSquare) || isMobileDisplayType)) {
                             var moves3 = System.Linq.Enumerable.from(possibleMoves).where(function (x) {
                                     return x.IsNuke && x.EndingFile === hoverSquare.File && x.EndingRank === hoverSquare.Rank;
                                 }).toList(ChessCompStompWithHacksEngine.DisplayMove);
@@ -6602,12 +6608,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     var originalMoveTrackerRendererPositionIndex = this.moveTrackerRendererPositionIndex;
 
-                    this.moveTrackerRendererPositionIndex = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput, coordinates));
+                    this.moveTrackerRendererPositionIndex = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput, coordinates), isMobileDisplayType);
                     this.moveTrackerRenderer = this.moveTrackerRenderer.ProcessFrame(this.moveTracker, this.moveTrackerRendererPositionIndex, elapsedMicrosPerFrame);
 
                     if (System.Nullable.hasValue(this.moveTrackerRendererPositionIndex)) {
                         if (originalMoveTrackerRendererPositionIndex == null || System.Nullable.getValue(this.moveTrackerRendererPositionIndex) !== System.Nullable.getValue(originalMoveTrackerRendererPositionIndex)) {
-                            var moveTrackerMoveInfo = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveInfoForHover(System.Nullable.getValue(this.moveTrackerRendererPositionIndex), this.moveTracker);
+                            var moveTrackerMoveInfo = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveInfoForHover(System.Nullable.getValue(this.moveTrackerRendererPositionIndex), this.moveTracker, isMobileDisplayType);
                             if (moveTrackerMoveInfo != null) {
                                 soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Woosh);
                             }
@@ -6744,7 +6750,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
                 } else {
-                    var playerMoveInfo = ChessCompStompWithHacksLibrary.GameLogic.GetPlayerMove(mouseInput, previousMouseInput, this.isPromotionPanelOpen, this.clickedPromotionPiece, this.possibleMoves, this.promotionMoves, this.gameState.IsPlayerWhite, this.isNukeInFlight, this.promotionPanelX, this.promotionPanelY, this.clickedSquare, this.clickedAndHeldSquare, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, displayProcessing, coordinates);
+                    var playerMoveInfo = ChessCompStompWithHacksLibrary.GameLogic.GetPlayerMove(mouseInput, previousMouseInput, this.isPromotionPanelOpen, this.clickedPromotionPiece, this.possibleMoves, this.promotionMoves, this.gameState.IsPlayerWhite, this.isNukeInFlight, this.promotionPanelX, this.promotionPanelY, this.clickedSquare, this.clickedAndHeldSquare, this.hasClickedOnNuke, this.hasClickedAndHeldOnNuke, displayProcessing, isMobileDisplayType, coordinates);
 
                     var playerMove = playerMoveInfo.DisplayMove;
 
@@ -6830,12 +6836,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 var oldMoveTrackerRendererPositionIndex = this.moveTrackerRendererPositionIndex;
 
-                this.moveTrackerRendererPositionIndex = isHoverOverPromotionPanel ? null : ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput, coordinates));
+                this.moveTrackerRendererPositionIndex = isHoverOverPromotionPanel ? null : ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetHoverOverMove(new ChessCompStompWithHacksLibrary.GameLogic.MoveTrackerRendererMouse(mouseInput, coordinates), isMobileDisplayType);
                 this.moveTrackerRenderer = this.moveTrackerRenderer.ProcessFrame(this.moveTracker, this.moveTrackerRendererPositionIndex, elapsedMicrosPerFrame);
 
                 if (System.Nullable.hasValue(this.moveTrackerRendererPositionIndex)) {
                     if (oldMoveTrackerRendererPositionIndex == null || System.Nullable.getValue(this.moveTrackerRendererPositionIndex) !== System.Nullable.getValue(oldMoveTrackerRendererPositionIndex)) {
-                        var moveTrackerMoveInfo1 = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveInfoForHover(System.Nullable.getValue(this.moveTrackerRendererPositionIndex), this.moveTracker);
+                        var moveTrackerMoveInfo1 = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveInfoForHover(System.Nullable.getValue(this.moveTrackerRendererPositionIndex), this.moveTracker, isMobileDisplayType);
                         if (moveTrackerMoveInfo1 != null) {
                             soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Woosh);
                         }
@@ -6859,12 +6865,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 var coordinates = new ChessCompStompWithHacksLibrary.GameLogic.Coordinates(displayType);
 
-                this.moveTrackerRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.MoveTrackerRendererX, coordinates.MoveTrackerRendererY));
+                this.moveTrackerRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, coordinates.MoveTrackerRendererX, coordinates.MoveTrackerRendererY), isMobileDisplayType);
 
                 var moveInfo;
 
                 if (System.Nullable.hasValue(this.moveTrackerRendererPositionIndex)) {
-                    moveInfo = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveInfoForHover(System.Nullable.getValue(this.moveTrackerRendererPositionIndex), this.moveTracker);
+                    moveInfo = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveInfoForHover(System.Nullable.getValue(this.moveTrackerRendererPositionIndex), this.moveTracker, isMobileDisplayType);
                 } else {
                     moveInfo = null;
                 }
@@ -6934,16 +6940,16 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         this.NukeRendererX = 10;
                         this.NukeRendererY = 10;
                         this.MoveTrackerRendererX = 850;
-                        this.MoveTrackerRendererY = 208;
+                        this.MoveTrackerRendererY = 383;
                         this.NukeRendererScalingFactorScaled = 128;
                         break;
                     case DTLibrary.DisplayType.MobilePortrait: 
                         this.ChessPiecesRendererX = 10;
                         this.ChessPiecesRendererY = 210;
                         this.ChessPieceScalingFactor = 22;
-                        this.NukeRendererX = 10;
+                        this.NukeRendererX = 160;
                         this.NukeRendererY = 10;
-                        this.MoveTrackerRendererX = 350;
+                        this.MoveTrackerRendererX = 10;
                         this.MoveTrackerRendererY = 10;
                         this.NukeRendererScalingFactorScaled = 64;
                         break;
@@ -8843,21 +8849,28 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                  * @public
                  * @this ChessCompStompWithHacksLibrary.MoveTrackerRenderer
                  * @memberof ChessCompStompWithHacksLibrary.MoveTrackerRenderer
-                 * @param   {DTLibrary.IMouse}    mouseInput
+                 * @param   {DTLibrary.IMouse}    mouseInput             
+                 * @param   {boolean}             isMobileDisplayType
                  * @return  {?number}
                  */
-                GetHoverOverMove: function (mouseInput) {
+                GetHoverOverMove: function (mouseInput, isMobileDisplayType) {
                     var $t;
-                    var moveDisplays = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplays();
+                    if (isMobileDisplayType && !mouseInput.DTLibrary$IMouse$IsLeftMouseButtonPressed()) {
+                        return null;
+                    }
+
+                    var moveDisplays = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplays(isMobileDisplayType);
 
                     var mouseX = mouseInput.DTLibrary$IMouse$GetX();
                     var mouseY = mouseInput.DTLibrary$IMouse$GetY();
+
+                    var width = isMobileDisplayType ? ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.MOBILE_WIDTH : ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.DESKTOP_WIDTH;
 
                     $t = Bridge.getEnumerator(moveDisplays);
                     try {
                         while ($t.moveNext()) {
                             var moveDisplay = $t.Current;
-                            if (moveDisplay.X <= mouseX && mouseX <= ((moveDisplay.X + ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.WIDTH) | 0) && moveDisplay.Y <= mouseY && mouseY <= ((moveDisplay.Y + ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT) | 0)) {
+                            if (moveDisplay.X <= mouseX && mouseX <= ((moveDisplay.X + width) | 0) && moveDisplay.Y <= mouseY && mouseY <= ((moveDisplay.Y + ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT) | 0)) {
                                 return moveDisplay.PositionIndex;
                             }
                         }
@@ -8869,9 +8882,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return null;
                 },
-                GetMoveInfoForHover: function (positionIndex, moveTracker) {
+                GetMoveInfoForHover: function (positionIndex, moveTracker, isMobileDisplayType) {
                     var $t;
-                    var moveDisplayMapping = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplayMapping(moveTracker);
+                    var moveDisplayMapping = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplayMapping(moveTracker, isMobileDisplayType);
 
                     $t = Bridge.getEnumerator(moveDisplayMapping);
                     try {
@@ -8892,53 +8905,69 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     return null;
                 },
-                GetMoveDisplays: function () {
+                GetMoveDisplays: function (isMobileDisplayType) {
                     var list = new (System.Collections.Generic.List$1(ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay)).ctor();
 
-                    var isWhite = true;
-                    var y = 306;
-
-                    for (var i = 0; i < 20; i = (i + 1) | 0) {
-                        if (isWhite) {
-                            list.add(new ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay(i, 0, y));
-                        } else {
-                            list.add(new ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay(i, 124, y));
-                            y = (y - (34)) | 0;
+                    if (isMobileDisplayType) {
+                        for (var i = 0; i < 5; i = (i + 1) | 0) {
+                            list.add(new ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay(i, 0, Bridge.Int.mul((((4 - i) | 0)), ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT)));
                         }
+                    } else {
+                        var isWhite = true;
+                        var y = 306;
 
-                        isWhite = !isWhite;
+                        for (var i1 = 0; i1 < 20; i1 = (i1 + 1) | 0) {
+                            if (isWhite) {
+                                list.add(new ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay(i1, 0, y));
+                            } else {
+                                list.add(new ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay(i1, 124, y));
+                                y = (y - (34)) | 0;
+                            }
+
+                            isWhite = !isWhite;
+                        }
                     }
 
                     return list;
                 },
-                GetMoveDisplayMapping: function (moveTracker) {
+                GetMoveDisplayMapping: function (moveTracker, isMobileDisplayType) {
                     var moveInfos = moveTracker.GetRecentMoves();
 
                     if (moveInfos.Count === 0) {
                         return new (System.Collections.Generic.List$1(System.Tuple$2(ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay,ChessCompStompWithHacksLibrary.MoveTracker.MoveInfo))).ctor();
                     }
 
-                    var index = moveInfos.Count;
-                    index = (index - 20) | 0;
-                    if (index < 0) {
-                        index = 0;
-                    }
+                    var index;
 
-                    if (!moveInfos.getItem(index).OriginalGameState.IsWhiteTurn) {
-                        index = (index + 1) | 0;
-                        if (index === moveInfos.Count) {
-                            return new (System.Collections.Generic.List$1(System.Tuple$2(ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay,ChessCompStompWithHacksLibrary.MoveTracker.MoveInfo))).ctor();
+                    if (isMobileDisplayType) {
+                        index = moveInfos.Count;
+                        index = (index - 5) | 0;
+                        if (index < 0) {
+                            index = 0;
+                        }
+                    } else {
+                        index = moveInfos.Count;
+                        index = (index - 20) | 0;
+                        if (index < 0) {
+                            index = 0;
+                        }
+
+                        if (!moveInfos.getItem(index).OriginalGameState.IsWhiteTurn) {
+                            index = (index + 1) | 0;
+                            if (index === moveInfos.Count) {
+                                return new (System.Collections.Generic.List$1(System.Tuple$2(ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay,ChessCompStompWithHacksLibrary.MoveTracker.MoveInfo))).ctor();
+                            }
                         }
                     }
 
-                    var moveDisplays = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplays();
+                    var moveDisplays = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplays(isMobileDisplayType);
                     var moveDisplayIndex = 0;
 
                     var returnValue = new (System.Collections.Generic.List$1(System.Tuple$2(ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay,ChessCompStompWithHacksLibrary.MoveTracker.MoveInfo))).ctor();
 
                     while (true) {
                         if (index === moveInfos.Count) {
-                            if (moveInfos.getItem(((moveInfos.Count - 1) | 0)).OriginalGameState.IsWhiteTurn) {
+                            if (!isMobileDisplayType && moveInfos.getItem(((moveInfos.Count - 1) | 0)).OriginalGameState.IsWhiteTurn) {
                                 returnValue.add({ Item1: moveDisplays.getItem(moveDisplayIndex), Item2: null });
                             }
                             return returnValue;
@@ -8996,9 +9025,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                 return new ChessCompStompWithHacksLibrary.MoveTrackerRenderer(moveTracker, newHoverInfos, this.colorTheme);
             },
-            Render: function (displayOutput) {
+            Render: function (displayOutput, isMobileDisplayType) {
                 var $t, $t1;
-                var moveDisplayMapping = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplayMapping(this.moveTracker);
+                var moveDisplayMapping = ChessCompStompWithHacksLibrary.MoveTrackerRenderer.GetMoveDisplayMapping(this.moveTracker, isMobileDisplayType);
 
                 var hoverInfoMapping = new (System.Collections.Generic.Dictionary$2(System.Int32,System.Int32))();
                 $t = Bridge.getEnumerator(this.hoverInfos);
@@ -9013,14 +9042,16 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     }
                 }
 
+                var width = isMobileDisplayType ? ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.MOBILE_WIDTH : ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.DESKTOP_WIDTH;
+
                 $t1 = Bridge.getEnumerator(moveDisplayMapping);
                 try {
                     while ($t1.moveNext()) {
                         var entry = $t1.Current;
                         var moveDisplay = entry.Item1;
                         var moveInfo = entry.Item2;
-                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(moveDisplay.X, moveDisplay.Y, 124, 34, ChessCompStompWithHacksLibrary.ColorThemeUtil.GetTextBackgroundColor(this.colorTheme), true);
-                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(moveDisplay.X, moveDisplay.Y, ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.WIDTH, ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT, DTLibrary.DTColor.Black(), false);
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(moveDisplay.X, moveDisplay.Y, width, ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT, ChessCompStompWithHacksLibrary.ColorThemeUtil.GetTextBackgroundColor(this.colorTheme), true);
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(moveDisplay.X, moveDisplay.Y, width, ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT, DTLibrary.DTColor.Black(), false);
 
                         if (hoverInfoMapping.containsKey(moveDisplay.PositionIndex)) {
                             var elapsedMicros = hoverInfoMapping.get(moveDisplay.PositionIndex);
@@ -9033,7 +9064,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                             }
                             var fadeColor = new DTLibrary.DTColor.$ctor1(255, 255, 255, alpha);
 
-                            displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(moveDisplay.X, moveDisplay.Y, 124, 34, fadeColor, true);
+                            displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(moveDisplay.X, moveDisplay.Y, width, ChessCompStompWithHacksLibrary.MoveTrackerRenderer.MoveDisplay.HEIGHT, fadeColor, true);
                         }
 
                         if (moveInfo != null) {
@@ -9068,12 +9099,14 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         $kind: "nested class",
         statics: {
             fields: {
-                WIDTH: 0,
+                DESKTOP_WIDTH: 0,
+                MOBILE_WIDTH: 0,
                 HEIGHT: 0
             },
             ctors: {
                 init: function () {
-                    this.WIDTH = 125;
+                    this.DESKTOP_WIDTH = 125;
+                    this.MOBILE_WIDTH = 140;
                     this.HEIGHT = 35;
                 }
             }
