@@ -7,6 +7,7 @@
 	<content_rating type="oars-1.1" />
 	<name>Chess Comp Stomp with Hacks</name>
 	<summary>Defeat the chess AI using hacks!</summary>
+	<launchable type="desktop-id">io.github.dtsudo.ChessCompStompWithHacks.desktop</launchable>
 	<description>
 		<p>
 			You're playing against the AI in a chess match. 
