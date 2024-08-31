@@ -673,7 +673,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 					// TODO: maybe we should use 30 fps on Librem 5, even when using electron
 					var defaultFps;
 					if (isLibrem5)
-						defaultFps = 30;
+						defaultFps = 20;
 					else if (window.navigator.userAgent.indexOf('Gecko/') >= 0)
 						defaultFps = 30;
 					else
