@@ -421,7 +421,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             methods: {
                 InitializeDisplayTypeHandlingJavascript: function (isWebStandAlone, canvasScalingFactor, debugMode) {
-                    eval("\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet debugMode = " + ((debugMode ? "true" : "false") || "") + ";\r\n\r\n\t\t\t\t\tlet displayTypeOverride = null;\r\n\t\t\t\t\tlet useUnscaledCanvas = false;\r\n\r\n\t\t\t\t\tif (debugMode) {\r\n\t\t\t\t\t\tdocument.addEventListener('keydown', function (e) {\r\n\t\t\t\t\t\t\tif (e.key === '0') {\r\n\t\t\t\t\t\t\t\tif (displayTypeOverride === null)\r\n\t\t\t\t\t\t\t\t\tdisplayTypeOverride = 'mobile';\r\n\t\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\t\tdisplayTypeOverride = (displayTypeOverride === 'mobile') ? 'desktop' : 'mobile';\r\n\t\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\t\tif (e.key === '9') {\r\n\t\t\t\t\t\t\t\tuseUnscaledCanvas = !useUnscaledCanvas;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}, false);\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet context = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\r\n\t\t\t\t\tlet isWebStandAlone = " + ((isWebStandAlone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\t// TODO: The window.screen.width/height detection doesn't work\r\n\t\t\t\t\t\t// (on Librem 5, it's not always 1200 / 2400)\r\n\t\t\t\t\t\tlet isLibrem5Mobile = window.navigator.userAgent.toLowerCase().includes('aarch64')\r\n\t\t\t\t\t\t\t&& window.navigator.userAgent.toLowerCase().includes('linux')\r\n\t\t\t\t\t\t\t&& !window.navigator.userAgent.toLowerCase().includes('android')\r\n\t\t\t\t\t\t\t&& (window.screen.height / window.screen.width === 2 || window.screen.width / window.screen.height === 2);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches\r\n\t\t\t\t\t\t\t&& !isLibrem5Mobile;\r\n\r\n\t\t\t\t\t\tif (displayTypeOverride === 'desktop')\r\n\t\t\t\t\t\t\tisDesktop = true;\r\n\t\t\t\t\t\tif (displayTypeOverride === 'mobile')\r\n\t\t\t\t\t\t\tisDesktop = false;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandAlone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(defaultWidth, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight;\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(defaultWidth, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif ((isDesktop && !isWebStandAlone || !isDesktop) && !useUnscaledCanvas) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = Math.floor(canvas.width / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = Math.floor(canvas.height / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandAlone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\t\t\t\t\thandleDisplayTypeChanges();\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return Math.floor(currentCanvasWidth / canvasScalingFactor); },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return Math.floor(currentCanvasHeight / canvasScalingFactor); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                    eval("\r\n\t\t\t\twindow.BridgeDisplayTypeHandlingJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\r\n\t\t\t\t\tlet debugMode = " + ((debugMode ? "true" : "false") || "") + ";\r\n\r\n\t\t\t\t\tlet displayTypeOverride = null;\r\n\t\t\t\t\tlet useUnscaledCanvas = false;\r\n\r\n\t\t\t\t\tif (debugMode) {\r\n\t\t\t\t\t\tdocument.addEventListener('keydown', function (e) {\r\n\t\t\t\t\t\t\tif (e.key === '0') {\r\n\t\t\t\t\t\t\t\tif (displayTypeOverride === null)\r\n\t\t\t\t\t\t\t\t\tdisplayTypeOverride = 'mobile';\r\n\t\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\t\tdisplayTypeOverride = (displayTypeOverride === 'mobile') ? 'desktop' : 'mobile';\r\n\t\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\t\tif (e.key === '9') {\r\n\t\t\t\t\t\t\t\tuseUnscaledCanvas = !useUnscaledCanvas;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}, false);\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tlet canvas = null;\r\n\t\t\t\t\tlet context = null;\r\n\t\t\t\t\tlet bodyElement = null;\r\n\r\n\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\r\n\t\t\t\t\tlet isWebStandAlone = " + ((isWebStandAlone ? "true" : "false") || "") + ";\r\n\t\t\t\t\tlet defaultWidth = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH) || "") + ";\r\n\t\t\t\t\tlet defaultHeight = canvasScalingFactor * " + (DTLibrary.StringUtil.ToStringCultureInvariant(ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT) || "") + ";\r\n\r\n\t\t\t\t\tlet isDesktop = true;\r\n\t\t\t\t\tlet isMobileLandscape = false;\r\n\t\t\t\t\tlet isMobilePortrait = false;\r\n\r\n\t\t\t\t\tlet currentCanvasWidth = defaultWidth;\r\n\t\t\t\t\tlet currentCanvasHeight = defaultHeight;\r\n\r\n\t\t\t\t\tlet handleDisplayTypeChanges = function () {\r\n\r\n\t\t\t\t\t\tif (!window)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (!document)\r\n\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (!bodyElement) {\r\n\t\t\t\t\t\t\tbodyElement = document.body;\r\n\t\t\t\t\t\t\tif (!bodyElement)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (!canvas) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (!canvas)\r\n\t\t\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tlet innerWidth = window.innerWidth;\r\n\t\t\t\t\t\tlet innerHeight = window.innerHeight;\r\n\r\n\t\t\t\t\t\tif (innerWidth < 5)\r\n\t\t\t\t\t\t\tinnerWidth = 5;\r\n\t\t\t\t\t\tif (innerHeight < 5)\r\n\t\t\t\t\t\t\tinnerHeight = 5;\r\n\r\n\t\t\t\t\t\tlet isLibrem5Mobile = window.navigator.userAgent.toLowerCase().includes('aarch64')\r\n\t\t\t\t\t\t\t&& window.navigator.userAgent.toLowerCase().includes('linux')\r\n\t\t\t\t\t\t\t&& !window.navigator.userAgent.toLowerCase().includes('android')\r\n\t\t\t\t\t\t\t&& (window.screen.height / window.screen.width === 2 || window.screen.width / window.screen.height === 2);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tisDesktop = window.matchMedia('(pointer:fine)').matches\r\n\t\t\t\t\t\t\t&& !isLibrem5Mobile;\r\n\r\n\t\t\t\t\t\tif (displayTypeOverride === 'desktop')\r\n\t\t\t\t\t\t\tisDesktop = true;\r\n\t\t\t\t\t\tif (displayTypeOverride === 'mobile')\r\n\t\t\t\t\t\t\tisDesktop = false;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tisMobileLandscape = false;\r\n\t\t\t\t\t\t\tisMobilePortrait = false;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisMobileLandscape = innerWidth > innerHeight;\r\n\t\t\t\t\t\t\tisMobilePortrait = !isMobileLandscape;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandAlone)\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '8px';\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tbodyElement.style.margin = '0px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet newCanvasWidth;\r\n\t\t\t\t\t\tlet newCanvasHeight;\r\n\r\n\t\t\t\t\t\tif (isDesktop) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultWidth;\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else if (isMobileLandscape) {\r\n\t\t\t\t\t\t\tnewCanvasWidth = Math.max(defaultWidth, Math.round((innerWidth / innerHeight) * defaultHeight));\r\n\t\t\t\t\t\t\tnewCanvasHeight = defaultHeight;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tnewCanvasWidth = defaultHeight;\r\n\t\t\t\t\t\t\tnewCanvasHeight = Math.max(defaultWidth, Math.round((innerHeight / innerWidth) * defaultHeight));\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (newCanvasWidth !== canvas.width)\r\n\t\t\t\t\t\t\tcanvas.width = newCanvasWidth;\r\n\t\t\t\t\t\tif (newCanvasHeight !== canvas.height)\r\n\t\t\t\t\t\t\tcanvas.height = newCanvasHeight;\r\n\r\n\t\t\t\t\t\tcurrentCanvasWidth = canvas.width;\r\n\t\t\t\t\t\tcurrentCanvasHeight = canvas.height;\r\n\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\r\n\t\t\t\t\t\tlet canvasMarginTop;\r\n\t\t\t\t\t\tif ((isDesktop && !isWebStandAlone || !isDesktop) && !useUnscaledCanvas) {\r\n\t\t\t\t\t\t\tlet canvasScalingX = innerWidth / canvas.width;\r\n\t\t\t\t\t\t\tlet canvasScalingY = innerHeight / canvas.height;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet canvasScaling = Math.min(canvasScalingX, canvasScalingY);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tlet newCanvasCssWidth = Math.floor(canvas.width * canvasScaling);\r\n\t\t\t\t\t\t\tlet newCanvasCssHeight = Math.floor(canvas.height * canvasScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tcanvas.style.width = newCanvasCssWidth + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = newCanvasCssHeight + 'px';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (innerHeight > newCanvasCssHeight) {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = Math.floor((innerHeight - newCanvasCssHeight) / 2);\r\n\t\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tcanvas.style.width = Math.floor(canvas.width / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvas.style.height = Math.floor(canvas.height / canvasScalingFactor) + 'px';\r\n\t\t\t\t\t\t\tcanvasMarginTop = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.style.marginTop = canvasMarginTop + 'px';\r\n\r\n\t\t\t\t\t\tif (isDesktop && isWebStandAlone) {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#ebebeb';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tbodyElement.style.backgroundColor = '#c7c2bc';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tsetInterval(handleDisplayTypeChanges, 250);\r\n\t\t\t\t\thandleDisplayTypeChanges();\r\n\r\n\t\t\t\t\tlet isDesktopDisplayType = function () {\r\n\t\t\t\t\t\treturn isDesktop;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobileLandscapeDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobileLandscape;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tlet isMobilePortraitDisplayType = function () {\r\n\t\t\t\t\t\treturn isMobilePortrait;\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisDesktopDisplayType: isDesktopDisplayType,\r\n\t\t\t\t\t\tisMobileLandscapeDisplayType: isMobileLandscapeDisplayType,\r\n\t\t\t\t\t\tisMobilePortraitDisplayType: isMobilePortraitDisplayType,\r\n\t\t\t\t\t\tgetCurrentCanvasWidth: function () { return Math.floor(currentCanvasWidth / canvasScalingFactor); },\r\n\t\t\t\t\t\tgetCurrentCanvasHeight: function () { return Math.floor(currentCanvasHeight / canvasScalingFactor); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
                 },
                 InitializeClearCanvasJavascript: function (canvasScalingFactor) {
                     eval("\r\n\t\t\t\twindow.BridgeClearCanvasJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\tvar context = null;\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar clearCanvas = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\t\r\n\t\t\t\t\t\t\tcontext = canvas.getContext('2d', { alpha: false });\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcontext.clearRect(0, 0, canvas.width, canvas.height);\r\n\t\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\t\t\t\t\t\tcontext.setTransform(canvasScalingFactor, 0, 0, canvasScalingFactor, 0, 0);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tclearCanvas: clearCanvas\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
@@ -670,7 +670,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 						&& window.navigator.userAgent.toLowerCase().includes('linux')
 						&& !window.navigator.userAgent.toLowerCase().includes('android');
 					
-					// TODO: maybe we should use 30 fps on Librem 5, even when using electron
 					var defaultFps;
 					if (isLibrem5)
 						defaultFps = 20;
@@ -7822,17 +7821,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
     Bridge.define("ChessCompStompWithHacksLibrary.HackExplanationFrameUtil", {
         statics: {
             fields: {
-                CHESS_PIECES_RENDERER_X_OFFSET: 0,
-                CHESS_PIECES_RENDERER_Y_OFFSET: 0,
                 CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE: 0,
                 CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE: 0,
                 CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT: 0,
                 CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT: 0,
-                TITLE_TEXT_Y_OFFSET: 0,
                 TITLE_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE: 0,
                 TITLE_TEXT_Y_OFFSET_MOBILE_PORTRAIT: 0,
-                EXPLANATION_TEXT_X_OFFSET: 0,
-                EXPLANATION_TEXT_Y_OFFSET: 0,
                 EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE: 0,
                 EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE: 0,
                 EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT: 0,
@@ -7841,17 +7835,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             ctors: {
                 init: function () {
-                    this.CHESS_PIECES_RENDERER_X_OFFSET = 350;
-                    this.CHESS_PIECES_RENDERER_Y_OFFSET = 25;
                     this.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE = 350;
                     this.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE = 25;
                     this.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT = 52;
                     this.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT = 325;
-                    this.TITLE_TEXT_Y_OFFSET = 580;
                     this.TITLE_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE = 580;
                     this.TITLE_TEXT_Y_OFFSET_MOBILE_PORTRAIT = 880;
-                    this.EXPLANATION_TEXT_X_OFFSET = 15;
-                    this.EXPLANATION_TEXT_Y_OFFSET = 519;
                     this.EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE = 15;
                     this.EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE = 519;
                     this.EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT = 52;
@@ -10802,7 +10791,6 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.MigrateSoundAndMusicVolumeDataFromOlderVersionsToV1_03IfNeeded(fileIO);
                 },
                 MigrateSessionStateDataFromOlderVersionsToV1_03IfNeeded: function (fileIO) {
-
                     var versionHistory = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionHistory();
 
                     var version1_02 = System.Linq.Enumerable.from(versionHistory).single(function (x) {
@@ -10824,18 +10812,24 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
 
                     if (data1_02 != null) {
                         try {
-                            var sessionState1_02 = new ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02();
-
                             var iterator = data1_02.GetIterator();
-                            sessionState1_02.TryDeserializeEverythingExceptGameLogic(iterator);
+
+                            var listBuilder = new DTLibrary.ByteList.Builder();
+
+                            listBuilder.AddNullableLong(iterator.TryPopNullableLong());
+                            listBuilder.AddInt(iterator.TryPopInt());
+                            listBuilder.AddNullableBool(iterator.TryPopNullableBool());
+                            listBuilder.AddBool(iterator.TryPopBool());
+                            listBuilder.AddBool(iterator.TryPopBool());
+                            listBuilder.AddBool(iterator.TryPopBool());
+                            listBuilder.AddIntSet(iterator.TryPopIntSet());
+                            listBuilder.AddIntSet(iterator.TryPopIntSet());
+                            listBuilder.AddInt(iterator.TryPopInt());
+                            listBuilder.AddInt(ChessCompStompWithHacksLibrary.HackSelectionScreenMobileTabUtil.GetTabId(ChessCompStompWithHacksLibrary.HackSelectionScreenMobileTab.Tactics));
 
                             if (iterator.HasNextByte()) {
                                 throw new DTLibrary.DTDeserializationException();
                             }
-
-                            var listBuilder = new DTLibrary.ByteList.Builder();
-
-                            sessionState1_02.SerializeEverythingExceptGameLogicUsingV1_03Logic(listBuilder);
 
                             var byteList = listBuilder.ToByteList();
 
@@ -10849,240 +10843,29 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                         }
                     }
                 },
-                MigrateSoundAndMusicVolumeDataFromOlderVersionsToV1_03IfNeeded: function (fileIO) { }
-            }
-        }
-    });
+                MigrateSoundAndMusicVolumeDataFromOlderVersionsToV1_03IfNeeded: function (fileIO) {
+                    var versionHistory = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionHistory();
 
-    Bridge.define("ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02", {
-        $kind: "nested class",
-        fields: {
-            data: null
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                this.data = new ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data();
-            }
-        },
-        methods: {
-            GetData: function () {
-                return this.data;
-            },
-            SerializeEverythingExceptGameLogicUsingV1_03Logic: function (list) {
-                this.data.SerializeEverythingExceptGameLogicUsingV1_03Logic(list);
-            },
-            /**
-             * Can possibly throw DTDeserializationException
-             *
-             * @instance
-             * @public
-             * @this ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02
-             * @memberof ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02
-             * @param   {DTLibrary.ByteList.Iterator}    iterator
-             * @return  {void}
-             */
-            TryDeserializeEverythingExceptGameLogic: function (iterator) {
-                var data = ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data.TryDeserializeEverythingExceptGameLogic(iterator);
-                this.data = data;
-            }
-        }
-    });
+                    var version1_02 = System.Linq.Enumerable.from(versionHistory).single(function (x) {
+                            return Bridge.referenceEquals(x.Version, "1.02");
+                        });
+                    var version1_03 = System.Linq.Enumerable.from(versionHistory).single(function (x) {
+                            return Bridge.referenceEquals(x.Version, "1.03");
+                        });
 
-    Bridge.define("ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data", {
-        $kind: "nested class",
-        statics: {
-            fields: {
-                MAX_NUMBER_OF_WINS: 0
-            },
-            ctors: {
-                init: function () {
-                    this.MAX_NUMBER_OF_WINS = 50000;
-                }
-            },
-            methods: {
-                /**
-                 * Can possibly throw DTDeserializationException
-                 *
-                 * @static
-                 * @public
-                 * @this ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data
-                 * @memberof ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data
-                 * @param   {DTLibrary.ByteList.Iterator}                                                          iterator
-                 * @return  {ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data}
-                 */
-                TryDeserializeEverythingExceptGameLogic: function (iterator) {
-                    var $t, $t1;
-                    var data = new ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data();
-
-                    data.StartTime = iterator.TryPopNullableLong();
-
-                    data.NumberOfWins = iterator.TryPopInt();
-
-                    if (data.NumberOfWins < 0 || data.NumberOfWins > ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data.MAX_NUMBER_OF_WINS) {
-                        throw new DTLibrary.DTDeserializationException();
+                    var data1_03 = fileIO.DTLibrary$IFileIO$FetchData(ChessCompStompWithHacksLibrary.GlobalConstants.FILE_ID_FOR_SOUND_AND_MUSIC_VOLUME, version1_03);
+                    if (data1_03 != null) {
+                        return;
                     }
 
-                    data.WasPlayerWhiteInPreviousGame = iterator.TryPopNullableBool();
+                    ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_02.MigrateSoundAndMusicVolumeDataFromOlderVersionsToV1_02IfNeeded(fileIO);
 
-                    data.HasShownAIHackMessage = iterator.TryPopBool();
+                    var data1_02 = fileIO.DTLibrary$IFileIO$FetchData(ChessCompStompWithHacksLibrary.GlobalConstants.FILE_ID_FOR_SOUND_AND_MUSIC_VOLUME, version1_02);
 
-                    data.HasShownFinalBattleMessage = iterator.TryPopBool();
-
-                    data.HasShownFinalBattleVictoryPanel = iterator.TryPopBool();
-
-                    var researchedHackIds = iterator.TryPopIntSet();
-
-                    if (researchedHackIds == null) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor();
-                    $t = Bridge.getEnumerator(researchedHackIds);
-                    try {
-                        while ($t.moveNext()) {
-                            var researchedHackId = $t.Current;
-                            var hack = ChessCompStompWithHacksLibrary.HackUtil.GetHackFromHackId(researchedHackId);
-
-                            if (hack == null) {
-                                throw new DTLibrary.DTDeserializationException();
-                            }
-
-                            data.ResearchedHacks.add(System.Nullable.getValue(hack));
-                        }
-                    } finally {
-                        if (Bridge.is($t, System.IDisposable)) {
-                            $t.System$IDisposable$Dispose();
-                        }
-                    }
-
-                    var completedObjectiveIds = iterator.TryPopIntSet();
-
-                    if (completedObjectiveIds == null) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
-                    $t1 = Bridge.getEnumerator(completedObjectiveIds);
-                    try {
-                        while ($t1.moveNext()) {
-                            var completedObjectiveId = $t1.Current;
-                            var objective = ChessCompStompWithHacksLibrary.ObjectiveUtil.GetObjectiveFromObjectiveId(completedObjectiveId);
-
-                            if (objective == null) {
-                                throw new DTLibrary.DTDeserializationException();
-                            }
-
-                            data.CompletedObjectives.add(System.Nullable.getValue(objective));
-                        }
-                    } finally {
-                        if (Bridge.is($t1, System.IDisposable)) {
-                            $t1.System$IDisposable$Dispose();
-                        }
-                    }
-
-                    data.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).$ctor1(data.CompletedObjectives);
-
-                    var colorTheme = ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeFromColorThemeId(iterator.TryPopInt());
-                    if (colorTheme == null) {
-                        throw new DTLibrary.DTDeserializationException();
-                    }
-
-                    data.ColorTheme = System.Nullable.getValue(colorTheme);
-
-                    return data;
-                }
-            }
-        },
-        fields: {
-            /**
-             * Null if player hasn't started playing yet
-             or if player chose to "clear saved data".
-             *
-             * @instance
-             * @public
-             * @memberof ChessCompStompWithHacksLibrary.SavedDataMigration_ToV1_03.SessionState_v1_02.Data
-             * @type ?System.Int64
-             */
-            StartTime: null,
-            NumberOfWins: 0,
-            WasPlayerWhiteInPreviousGame: null,
-            HasShownAIHackMessage: false,
-            HasShownFinalBattleMessage: false,
-            HasShownFinalBattleVictoryPanel: false,
-            ResearchedHacks: null,
-            CompletedObjectives: null,
-            ObjectivesThatWereAlreadyCompletedPriorToCurrentGame: null,
-            ColorTheme: 0,
-            GameLogic: null,
-            MostRecentGameLogic: null
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                this.ResearchedHacks = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Hack)).ctor();
-                this.CompletedObjectives = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
-                this.WasPlayerWhiteInPreviousGame = null;
-                this.HasShownAIHackMessage = false;
-                this.HasShownFinalBattleMessage = false;
-                this.HasShownFinalBattleVictoryPanel = false;
-                this.NumberOfWins = 0;
-                this.StartTime = System.Int64.lift(null);
-
-                this.GameLogic = null;
-                this.MostRecentGameLogic = null;
-
-                this.ObjectivesThatWereAlreadyCompletedPriorToCurrentGame = new (System.Collections.Generic.HashSet$1(ChessCompStompWithHacksEngine.Objective)).ctor();
-
-                this.ColorTheme = ChessCompStompWithHacksLibrary.ColorTheme.Initial;
-            }
-        },
-        methods: {
-            SerializeEverythingExceptGameLogicUsingV1_03Logic: function (list) {
-                var $t, $t1;
-                list.AddNullableLong(this.StartTime);
-
-                list.AddInt(this.NumberOfWins);
-
-                list.AddNullableBool(this.WasPlayerWhiteInPreviousGame);
-
-                list.AddBool(this.HasShownAIHackMessage);
-
-                list.AddBool(this.HasShownFinalBattleMessage);
-
-                list.AddBool(this.HasShownFinalBattleVictoryPanel);
-
-                var researchedHackIds = new (System.Collections.Generic.HashSet$1(System.Int32)).ctor();
-                $t = Bridge.getEnumerator(this.ResearchedHacks);
-                try {
-                    while ($t.moveNext()) {
-                        var researchedHack = $t.Current;
-                        researchedHackIds.add(ChessCompStompWithHacksLibrary.HackUtil.GetHackId(researchedHack));
-                    }
-                } finally {
-                    if (Bridge.is($t, System.IDisposable)) {
-                        $t.System$IDisposable$Dispose();
+                    if (data1_02 != null) {
+                        fileIO.DTLibrary$IFileIO$PersistData(ChessCompStompWithHacksLibrary.GlobalConstants.FILE_ID_FOR_SOUND_AND_MUSIC_VOLUME, version1_03, data1_02);
                     }
                 }
-                list.AddIntSet(researchedHackIds);
-
-                var completedObjectiveIds = new (System.Collections.Generic.HashSet$1(System.Int32)).ctor();
-                $t1 = Bridge.getEnumerator(this.CompletedObjectives);
-                try {
-                    while ($t1.moveNext()) {
-                        var completedObjective = $t1.Current;
-                        completedObjectiveIds.add(ChessCompStompWithHacksLibrary.ObjectiveUtil.GetObjectiveId(completedObjective));
-                    }
-                } finally {
-                    if (Bridge.is($t1, System.IDisposable)) {
-                        $t1.System$IDisposable$Dispose();
-                    }
-                }
-                list.AddIntSet(completedObjectiveIds);
-
-                list.AddInt(ChessCompStompWithHacksLibrary.ColorThemeUtil.GetColorThemeId(this.ColorTheme));
-
-                list.AddInt(ChessCompStompWithHacksLibrary.HackSelectionScreenMobileTabUtil.GetTabId(ChessCompStompWithHacksLibrary.HackSelectionScreenMobileTab.Tactics));
             }
         }
     });
@@ -17883,24 +17666,35 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
             Render: function (displayOutput, isMobileDisplayType) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(349, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.TITLE_TEXT_Y_OFFSET, ChessCompStompWithHacksLibrary.HackUtil.GetHackNameForHackExplanationPanel(ChessCompStompWithHacksEngine.Hack.StalemateIsVictory), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                var isMobilePortrait = isMobileDisplayType && !DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput);
 
-                var explanation = "If it is your turn and you have\nno legal moves, you win the\ngame.\n\nIf it is your opponent's turn\nand your opponent has no\nlegal moves, you win the\ngame.";
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? 199 : 349, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.TITLE_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.TITLE_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, ChessCompStompWithHacksLibrary.HackUtil.GetHackNameForHackExplanationPanel(ChessCompStompWithHacksEngine.Hack.StalemateIsVictory), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
+                var explanation;
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor, isMobileDisplayType);
+                if (isMobilePortrait) {
+                    explanation = "If it is your turn and you have no legal moves,\nyou win the game.\n\nIf it is your opponent's turn and your\nopponent has no legal moves, you win the\ngame.";
+                } else {
+                    explanation = "If it is your turn and you have\nno legal moves, you win the\ngame.\n\nIf it is your opponent's turn\nand your opponent has no\nlegal moves, you win the\ngame.";
+                }
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
+
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor, isMobileDisplayType);
 
                 if (this.status === ChessCompStompWithHacksLibrary.HackExplanation_StalemateIsVictory.Status.Finished) {
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(449, 265, 299, 119, DTLibrary.DTColor.White(), true);
+                    var chessPiecesRendererXOffset = isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE;
+                    var chessPiecesRendererYOffset = isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE;
 
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(449, 265, 300, 120, DTLibrary.DTColor.Black(), false);
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((chessPiecesRendererXOffset + 99) | 0), ((chessPiecesRendererYOffset + 240) | 0), 299, 119, DTLibrary.DTColor.White(), true);
 
-                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(514, 350, "Victory!", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(((chessPiecesRendererXOffset + 99) | 0), ((chessPiecesRendererYOffset + 240) | 0), 300, 120, DTLibrary.DTColor.Black(), false);
+
+                    displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText((((((chessPiecesRendererXOffset + 99) | 0)) + 65) | 0), (((((chessPiecesRendererYOffset + 240) | 0)) + 85) | 0), "Victory!", ChessCompStompWithHacksLibrary.GameFont.GameFont32Pt, DTLibrary.DTColor.Black());
                 }
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
-                    this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
+                    this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
                 }
             }
         }
@@ -18315,16 +18109,24 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 this.chessPiecesRendererPieceAnimation = this.chessPiecesRendererPieceAnimation.ProcessFrame(elapsedMicrosPerFrame);
             },
             Render: function (displayOutput, isMobileDisplayType) {
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(333, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.TITLE_TEXT_Y_OFFSET, ChessCompStompWithHacksLibrary.HackUtil.GetHackNameForHackExplanationPanel(ChessCompStompWithHacksEngine.Hack.SuperEnPassant), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
+                var isMobilePortrait = isMobileDisplayType && !DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation$1(ChessCompStompWithHacksLibrary.GameImage, ChessCompStompWithHacksLibrary.GameFont, displayOutput);
 
-                var explanation = "Your pawns may capture\nenemy pieces that are\nhorizontally adjacent to the\npawn.\n\nSuper en passant is allowed\nregardless of when or how\nthe enemy piece moved.\n\nThe pawn may capture super\nen passant regardless of\nwhich rank the pawn is on.";
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? 183 : 333, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.TITLE_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.TITLE_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, ChessCompStompWithHacksLibrary.HackUtil.GetHackNameForHackExplanationPanel(ChessCompStompWithHacksEngine.Hack.SuperEnPassant), ChessCompStompWithHacksLibrary.GameFont.GameFont20Pt, DTLibrary.DTColor.Black());
 
-                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
+                var explanation;
 
-                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor, isMobileDisplayType);
+                if (isMobilePortrait) {
+                    explanation = "Your pawns may capture enemy pieces that\nare horizontally adjacent to the pawn.\n\nSuper en passant is allowed regardless of\nwhen or how the enemy piece moved.\n\nThe pawn may capture super en passant\nregardless of which rank the pawn is on.";
+                } else {
+                    explanation = "Your pawns may capture\nenemy pieces that are\nhorizontally adjacent to the\npawn.\n\nSuper en passant is allowed\nregardless of when or how\nthe enemy piece moved.\n\nThe pawn may capture super\nen passant regardless of\nwhich rank the pawn is on.";
+                }
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.EXPLANATION_TEXT_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, explanation, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
+
+                this.chessPiecesRenderer.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), this.chessPiecesRendererPieceAnimation, ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor, isMobileDisplayType);
 
                 if (this.chessPiecesRendererFadeOutFadeIn != null) {
-                    this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET, ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET), ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
+                    this.chessPiecesRendererFadeOutFadeIn.Render(new (DTLibrary.TranslatedDisplayOutput$2(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont))(displayOutput, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_X_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE, isMobilePortrait ? ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_MOBILE_PORTRAIT : ChessCompStompWithHacksLibrary.HackExplanationFrameUtil.CHESS_PIECES_RENDERER_Y_OFFSET_DESKTOP_AND_MOBILE_LANDSCAPE), ChessCompStompWithHacksLibrary.GameImageUtil.HackExplanationChessPieceScalingFactor);
                 }
             }
         }

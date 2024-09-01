@@ -9,11 +9,9 @@
 	<summary>Defeat the chess AI using hacks!</summary>
 	<launchable type="desktop-id">io.github.dtsudo.ChessCompStompWithHacks.desktop</launchable>
 	<description>
-		<p>
-			You're playing against the AI in a chess match. 
-			The AI has vast computational resources, but you have hacks. 
-			Use your hacks to win!
-		</p>
+		<p>You're playing against the AI in a chess match. 
+The AI has vast computational resources, but you have hacks. 
+Use your hacks to win!</p>
 	</description>
 	<developer_name>dtsudo</developer_name>
 	<url type="homepage">https://github.com/dtsudo/Chess-Comp-Stomp-with-Hacks-Electron-Version</url>
