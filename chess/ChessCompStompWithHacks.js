@@ -524,6 +524,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     var $t;
                     var currentKeyboard = new DTLibrary.CopiedKeyboard(ChessCompStompWithHacks.GameInitializer.bridgeKeyboard);
                     var currentMouse = new DTLibrary.CopiedMouse(ChessCompStompWithHacks.GameInitializer.bridgeMouse);
+                    ChessCompStompWithHacks.GameInitializer.bridgeKeyboard.ProcessedInputs();
+                    ChessCompStompWithHacks.GameInitializer.bridgeMouse.ProcessedInputs();
 
                     var displayType = new DTLibrary.DisplayType();
                     var isDesktopDisplayType = window.BridgeDisplayTypeHandlingJavascript.isDesktopDisplayType();
@@ -13693,10 +13695,13 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function (disableArrowKeyScrolling) {
                 this.$initialize();
-                eval("\r\n\t\t\t\twindow.BridgeKeyboardJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar keysBeingPressed = [];\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar disableArrowKeyScrolling = " + ((disableArrowKeyScrolling ? "true" : "false") || "") + ";\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mapKeyToCanonicalKey = function (key) {\r\n\t\t\t\t\t\tif (key === 'A')\r\n\t\t\t\t\t\t\treturn 'a';\r\n\t\t\t\t\t\tif (key === 'B')\r\n\t\t\t\t\t\t\treturn 'b';\r\n\t\t\t\t\t\tif (key === 'C')\r\n\t\t\t\t\t\t\treturn 'c';\r\n\t\t\t\t\t\tif (key === 'D')\r\n\t\t\t\t\t\t\treturn 'd';\r\n\t\t\t\t\t\tif (key === 'E')\r\n\t\t\t\t\t\t\treturn 'e';\r\n\t\t\t\t\t\tif (key === 'F')\r\n\t\t\t\t\t\t\treturn 'f';\r\n\t\t\t\t\t\tif (key === 'G')\r\n\t\t\t\t\t\t\treturn 'g';\r\n\t\t\t\t\t\tif (key === 'H')\r\n\t\t\t\t\t\t\treturn 'h';\r\n\t\t\t\t\t\tif (key === 'I')\r\n\t\t\t\t\t\t\treturn 'i';\r\n\t\t\t\t\t\tif (key === 'J')\r\n\t\t\t\t\t\t\treturn 'j';\r\n\t\t\t\t\t\tif (key === 'K')\r\n\t\t\t\t\t\t\treturn 'k';\r\n\t\t\t\t\t\tif (key === 'L')\r\n\t\t\t\t\t\t\treturn 'l';\r\n\t\t\t\t\t\tif (key === 'M')\r\n\t\t\t\t\t\t\treturn 'm';\r\n\t\t\t\t\t\tif (key === 'N')\r\n\t\t\t\t\t\t\treturn 'n';\r\n\t\t\t\t\t\tif (key === 'O')\r\n\t\t\t\t\t\t\treturn 'o';\r\n\t\t\t\t\t\tif (key === 'P')\r\n\t\t\t\t\t\t\treturn 'p';\r\n\t\t\t\t\t\tif (key === 'Q')\r\n\t\t\t\t\t\t\treturn 'q';\r\n\t\t\t\t\t\tif (key === 'R')\r\n\t\t\t\t\t\t\treturn 'r';\r\n\t\t\t\t\t\tif (key === 'S')\r\n\t\t\t\t\t\t\treturn 's';\r\n\t\t\t\t\t\tif (key === 'T')\r\n\t\t\t\t\t\t\treturn 't';\r\n\t\t\t\t\t\tif (key === 'U')\r\n\t\t\t\t\t\t\treturn 'u';\r\n\t\t\t\t\t\tif (key === 'V')\r\n\t\t\t\t\t\t\treturn 'v';\r\n\t\t\t\t\t\tif (key === 'W')\r\n\t\t\t\t\t\t\treturn 'w';\r\n\t\t\t\t\t\tif (key === 'X')\r\n\t\t\t\t\t\t\treturn 'x';\r\n\t\t\t\t\t\tif (key === 'Y')\r\n\t\t\t\t\t\t\treturn 'y';\r\n\t\t\t\t\t\tif (key === 'Z')\r\n\t\t\t\t\t\t\treturn 'z';\r\n\t\t\t\t\t\tif (key === '!')\r\n\t\t\t\t\t\t\treturn '1';\r\n\t\t\t\t\t\tif (key === '@')\r\n\t\t\t\t\t\t\treturn '2';\r\n\t\t\t\t\t\tif (key === '#')\r\n\t\t\t\t\t\t\treturn '3';\r\n\t\t\t\t\t\tif (key === '$')\r\n\t\t\t\t\t\t\treturn '4';\r\n\t\t\t\t\t\tif (key === '%')\r\n\t\t\t\t\t\t\treturn '5';\r\n\t\t\t\t\t\tif (key === '^')\r\n\t\t\t\t\t\t\treturn '6';\r\n\t\t\t\t\t\tif (key === '&')\r\n\t\t\t\t\t\t\treturn '7';\r\n\t\t\t\t\t\tif (key === '*')\r\n\t\t\t\t\t\t\treturn '8';\r\n\t\t\t\t\t\tif (key === '(')\r\n\t\t\t\t\t\t\treturn '9';\r\n\t\t\t\t\t\tif (key === ')')\r\n\t\t\t\t\t\t\treturn '0';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn key;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar keyDownHandler = function (e) {\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (disableArrowKeyScrolling) {\r\n\t\t\t\t\t\t\tif (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === ' ')\r\n\t\t\t\t\t\t\t\te.preventDefault();\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar key = mapKeyToCanonicalKey(e.key);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < keysBeingPressed.length; i++) {\r\n\t\t\t\t\t\t\tif (keysBeingPressed[i] === key)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tkeysBeingPressed.push(key);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar keyUpHandler = function (e) {\r\n\t\t\t\t\t\tvar key = mapKeyToCanonicalKey(e.key);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar newArray = [];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < keysBeingPressed.length; i++) {\r\n\t\t\t\t\t\t\tif (keysBeingPressed[i] !== key)\r\n\t\t\t\t\t\t\t\tnewArray.push(keysBeingPressed[i]);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tkeysBeingPressed = newArray;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tdocument.addEventListener('keydown', function (e) { keyDownHandler(e); }, false);\r\n\t\t\t\t\tdocument.addEventListener('keyup', function (e) { keyUpHandler(e); }, false);\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar isKeyPressed = function (k) {\r\n\t\t\t\t\t\tfor (var i = 0; i < keysBeingPressed.length; i++) {\r\n\t\t\t\t\t\t\tif (keysBeingPressed[i] === k)\r\n\t\t\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisKeyPressed: isKeyPressed\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                eval("\r\n\t\t\t\twindow.BridgeKeyboardJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar keysBeingPressed = [];\r\n\t\t\t\t\tvar keyPressesThatNeedToBeProcessed = [];\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar disableArrowKeyScrolling = " + ((disableArrowKeyScrolling ? "true" : "false") || "") + ";\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mapKeyToCanonicalKey = function (key) {\r\n\t\t\t\t\t\tif (key === 'A')\r\n\t\t\t\t\t\t\treturn 'a';\r\n\t\t\t\t\t\tif (key === 'B')\r\n\t\t\t\t\t\t\treturn 'b';\r\n\t\t\t\t\t\tif (key === 'C')\r\n\t\t\t\t\t\t\treturn 'c';\r\n\t\t\t\t\t\tif (key === 'D')\r\n\t\t\t\t\t\t\treturn 'd';\r\n\t\t\t\t\t\tif (key === 'E')\r\n\t\t\t\t\t\t\treturn 'e';\r\n\t\t\t\t\t\tif (key === 'F')\r\n\t\t\t\t\t\t\treturn 'f';\r\n\t\t\t\t\t\tif (key === 'G')\r\n\t\t\t\t\t\t\treturn 'g';\r\n\t\t\t\t\t\tif (key === 'H')\r\n\t\t\t\t\t\t\treturn 'h';\r\n\t\t\t\t\t\tif (key === 'I')\r\n\t\t\t\t\t\t\treturn 'i';\r\n\t\t\t\t\t\tif (key === 'J')\r\n\t\t\t\t\t\t\treturn 'j';\r\n\t\t\t\t\t\tif (key === 'K')\r\n\t\t\t\t\t\t\treturn 'k';\r\n\t\t\t\t\t\tif (key === 'L')\r\n\t\t\t\t\t\t\treturn 'l';\r\n\t\t\t\t\t\tif (key === 'M')\r\n\t\t\t\t\t\t\treturn 'm';\r\n\t\t\t\t\t\tif (key === 'N')\r\n\t\t\t\t\t\t\treturn 'n';\r\n\t\t\t\t\t\tif (key === 'O')\r\n\t\t\t\t\t\t\treturn 'o';\r\n\t\t\t\t\t\tif (key === 'P')\r\n\t\t\t\t\t\t\treturn 'p';\r\n\t\t\t\t\t\tif (key === 'Q')\r\n\t\t\t\t\t\t\treturn 'q';\r\n\t\t\t\t\t\tif (key === 'R')\r\n\t\t\t\t\t\t\treturn 'r';\r\n\t\t\t\t\t\tif (key === 'S')\r\n\t\t\t\t\t\t\treturn 's';\r\n\t\t\t\t\t\tif (key === 'T')\r\n\t\t\t\t\t\t\treturn 't';\r\n\t\t\t\t\t\tif (key === 'U')\r\n\t\t\t\t\t\t\treturn 'u';\r\n\t\t\t\t\t\tif (key === 'V')\r\n\t\t\t\t\t\t\treturn 'v';\r\n\t\t\t\t\t\tif (key === 'W')\r\n\t\t\t\t\t\t\treturn 'w';\r\n\t\t\t\t\t\tif (key === 'X')\r\n\t\t\t\t\t\t\treturn 'x';\r\n\t\t\t\t\t\tif (key === 'Y')\r\n\t\t\t\t\t\t\treturn 'y';\r\n\t\t\t\t\t\tif (key === 'Z')\r\n\t\t\t\t\t\t\treturn 'z';\r\n\t\t\t\t\t\tif (key === '!')\r\n\t\t\t\t\t\t\treturn '1';\r\n\t\t\t\t\t\tif (key === '@')\r\n\t\t\t\t\t\t\treturn '2';\r\n\t\t\t\t\t\tif (key === '#')\r\n\t\t\t\t\t\t\treturn '3';\r\n\t\t\t\t\t\tif (key === '$')\r\n\t\t\t\t\t\t\treturn '4';\r\n\t\t\t\t\t\tif (key === '%')\r\n\t\t\t\t\t\t\treturn '5';\r\n\t\t\t\t\t\tif (key === '^')\r\n\t\t\t\t\t\t\treturn '6';\r\n\t\t\t\t\t\tif (key === '&')\r\n\t\t\t\t\t\t\treturn '7';\r\n\t\t\t\t\t\tif (key === '*')\r\n\t\t\t\t\t\t\treturn '8';\r\n\t\t\t\t\t\tif (key === '(')\r\n\t\t\t\t\t\t\treturn '9';\r\n\t\t\t\t\t\tif (key === ')')\r\n\t\t\t\t\t\t\treturn '0';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn key;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar keyDownHandler = function (e) {\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (disableArrowKeyScrolling) {\r\n\t\t\t\t\t\t\tif (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === ' ')\r\n\t\t\t\t\t\t\t\te.preventDefault();\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar key = mapKeyToCanonicalKey(e.key);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar shouldAdd = true;\r\n\t\t\t\t\t\tfor (let i = 0; i < keysBeingPressed.length; i++) {\r\n\t\t\t\t\t\t\tif (keysBeingPressed[i] === key) {\r\n\t\t\t\t\t\t\t\tshouldAdd = false;\r\n\t\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (shouldAdd)\r\n\t\t\t\t\t\t\tkeysBeingPressed.push(key);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (let i = 0; i < keyPressesThatNeedToBeProcessed.length; i++) {\r\n\t\t\t\t\t\t\tif (keyPressesThatNeedToBeProcessed[i] === key)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tkeyPressesThatNeedToBeProcessed.push(key);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar keyUpHandler = function (e) {\r\n\t\t\t\t\t\tvar key = mapKeyToCanonicalKey(e.key);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar newArray = [];\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tfor (var i = 0; i < keysBeingPressed.length; i++) {\r\n\t\t\t\t\t\t\tif (keysBeingPressed[i] !== key)\r\n\t\t\t\t\t\t\t\tnewArray.push(keysBeingPressed[i]);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tkeysBeingPressed = newArray;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar processedInputs = function () {\r\n\t\t\t\t\t\tkeyPressesThatNeedToBeProcessed = [];\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tdocument.addEventListener('keydown', function (e) { keyDownHandler(e); }, false);\r\n\t\t\t\t\tdocument.addEventListener('keyup', function (e) { keyUpHandler(e); }, false);\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar isKeyPressed = function (k) {\r\n\t\t\t\t\t\tfor (let i = 0; i < keysBeingPressed.length; i++) {\r\n\t\t\t\t\t\t\tif (keysBeingPressed[i] === k)\r\n\t\t\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tfor (let i = 0; i < keyPressesThatNeedToBeProcessed.length; i++) {\r\n\t\t\t\t\t\t\tif (keyPressesThatNeedToBeProcessed[i] === k)\r\n\t\t\t\t\t\t\t\treturn true;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisKeyPressed: isKeyPressed,\r\n\t\t\t\t\t\tprocessedInputs: processedInputs\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
             }
         },
         methods: {
+            ProcessedInputs: function () {
+                window.BridgeKeyboardJavascript.processedInputs();
+            },
             IsPressed: function (key) {
                 var correspondingKeyCode;
 
@@ -13866,7 +13871,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
         ctors: {
             ctor: function (canvasScalingFactor) {
                 this.$initialize();
-                eval("\r\n\t\t\t\twindow.BridgeMouseJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseXPosition = -50;\r\n\t\t\t\t\tvar mouseYPosition = -50;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseMoveHandler = function (e) {\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasCssWidth = canvas.offsetWidth;\r\n\t\t\t\t\t\tvar canvasCssHeight = canvas.offsetHeight;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar xPosition = (e.pageX !== null && e.pageX !== undefined ? e.pageX : e.clientX) - canvas.offsetLeft;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasXScaling = canvasCssWidth / canvas.width;\r\n\t\t\t\t\t\tif (canvasXScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasXScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\txPosition = Math.round(xPosition / canvasXScaling);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition < -5)\r\n\t\t\t\t\t\t\txPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition > canvas.width + 5)\r\n\t\t\t\t\t\t\txPosition = canvas.width + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar yPosition = (e.pageY !== null && e.pageY !== undefined ? e.pageY : e.clientY) - canvas.offsetTop;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasYScaling = canvasCssHeight / canvas.height;\r\n\t\t\t\t\t\tif (canvasYScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasYScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tyPosition = Math.round(yPosition / canvasYScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition < -5)\r\n\t\t\t\t\t\t\tyPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition > canvas.height + 5)\r\n\t\t\t\t\t\t\tyPosition = canvas.height + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\t\t\t\t\t\tmouseXPosition = Math.floor(xPosition / canvasScalingFactor);\r\n\t\t\t\t\t\tmouseYPosition = Math.floor((canvas.height - yPosition - 1) / canvasScalingFactor);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar isLeftMouseButtonPressed = false;\r\n\t\t\t\t\tvar isRightMouseButtonPressed = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar checkMouseButtonHandler = function (e) {\r\n\t\t\t\t\t\tif ((e.buttons & 1) === 1)\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = false;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif ((e.buttons & 2) === 2)\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = true;\r\n\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = false;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar disableContextMenu;\r\n\t\t\t\t\tdisableContextMenu = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\t\tsetTimeout(disableContextMenu, 50);\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });\r\n\t\t\t\t\t};\r\n\t\t\t\t\tdisableContextMenu();\r\n\t\t\t\t\t\r\n\t\t\t\t\tdocument.addEventListener('pointermove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointerdown', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointerup', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointercancel', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed; },\r\n\t\t\t\t\t\tisRightMouseButtonPressed: function () { return isRightMouseButtonPressed; },\r\n\t\t\t\t\t\tgetMouseX: function () { return Math.round(mouseXPosition); },\r\n\t\t\t\t\t\tgetMouseY: function () { return Math.round(mouseYPosition); }\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
+                eval("\r\n\t\t\t\twindow.BridgeMouseJavascript = ((function () {\r\n\t\t\t\t\t'use strict';\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseXPosition = -50;\r\n\t\t\t\t\tvar mouseYPosition = -50;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar canvas = null;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar mouseMoveHandler = function (e) {\r\n\t\t\t\t\t\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null)\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasCssWidth = canvas.offsetWidth;\r\n\t\t\t\t\t\tvar canvasCssHeight = canvas.offsetHeight;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar xPosition = (e.pageX !== null && e.pageX !== undefined ? e.pageX : e.clientX) - canvas.offsetLeft;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasXScaling = canvasCssWidth / canvas.width;\r\n\t\t\t\t\t\tif (canvasXScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasXScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\txPosition = Math.round(xPosition / canvasXScaling);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition < -5)\r\n\t\t\t\t\t\t\txPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (xPosition > canvas.width + 5)\r\n\t\t\t\t\t\t\txPosition = canvas.width + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar yPosition = (e.pageY !== null && e.pageY !== undefined ? e.pageY : e.clientY) - canvas.offsetTop;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar canvasYScaling = canvasCssHeight / canvas.height;\r\n\t\t\t\t\t\tif (canvasYScaling < 0.001)\r\n\t\t\t\t\t\t\tcanvasYScaling = 0.001;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tyPosition = Math.round(yPosition / canvasYScaling);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition < -5)\r\n\t\t\t\t\t\t\tyPosition = -5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (yPosition > canvas.height + 5)\r\n\t\t\t\t\t\t\tyPosition = canvas.height + 5;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tlet canvasScalingFactor = " + (DTLibrary.StringUtil.ToStringCultureInvariant(canvasScalingFactor) || "") + ";\r\n\t\t\t\t\t\tmouseXPosition = Math.floor(xPosition / canvasScalingFactor);\r\n\t\t\t\t\t\tmouseYPosition = Math.floor((canvas.height - yPosition - 1) / canvasScalingFactor);\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar isLeftMouseButtonPressed = false;\r\n\t\t\t\t\tvar isRightMouseButtonPressed = false;\r\n\r\n\t\t\t\t\tvar shouldProcessLeftMouseButtonPress = false;\r\n\t\t\t\t\tvar shouldProcessRightMouseButtonPress = false;\r\n\t\t\t\t\t\r\n\t\t\t\t\tvar checkMouseButtonHandler = function (e) {\r\n\t\t\t\t\t\tif ((e.buttons & 1) === 1) {\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = true;\r\n\t\t\t\t\t\t\tshouldProcessLeftMouseButtonPress = true;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisLeftMouseButtonPressed = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif ((e.buttons & 2) === 2) {\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = true;\r\n\t\t\t\t\t\t\tshouldProcessRightMouseButtonPress = true;\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tisRightMouseButtonPressed = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t};\r\n\r\n\t\t\t\t\tvar processedInputs = function () {\r\n\t\t\t\t\t\tshouldProcessLeftMouseButtonPress = false;\r\n\t\t\t\t\t\tshouldProcessRightMouseButtonPress = false;\r\n\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\tvar disableContextMenu;\r\n\t\t\t\t\tdisableContextMenu = function () {\r\n\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\tcanvas = document.getElementById('bridgeCanvas');\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tif (canvas === null) {\r\n\t\t\t\t\t\t\t\tsetTimeout(disableContextMenu, 50);\r\n\t\t\t\t\t\t\t\treturn;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tcanvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });\r\n\t\t\t\t\t};\r\n\t\t\t\t\tdisableContextMenu();\r\n\t\t\t\t\t\r\n\t\t\t\t\tdocument.addEventListener('pointermove', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointerdown', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointerup', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\tdocument.addEventListener('pointercancel', function (e) { mouseMoveHandler(e); checkMouseButtonHandler(e); });\r\n\t\t\t\t\t\r\n\t\t\t\t\treturn {\r\n\t\t\t\t\t\tisLeftMouseButtonPressed: function () { return isLeftMouseButtonPressed || shouldProcessLeftMouseButtonPress; },\r\n\t\t\t\t\t\tisRightMouseButtonPressed: function () { return isRightMouseButtonPressed || shouldProcessRightMouseButtonPress; },\r\n\t\t\t\t\t\tgetMouseX: function () { return Math.round(mouseXPosition); },\r\n\t\t\t\t\t\tgetMouseY: function () { return Math.round(mouseYPosition); },\r\n\t\t\t\t\t\tprocessedInputs: processedInputs\r\n\t\t\t\t\t};\r\n\t\t\t\t})());\r\n\t\t\t");
             }
         },
         methods: {
@@ -13881,6 +13886,9 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             IsRightMouseButtonPressed: function () {
                 return window.BridgeMouseJavascript.isRightMouseButtonPressed();
+            },
+            ProcessedInputs: function () {
+                window.BridgeMouseJavascript.processedInputs();
             }
         }
     });
@@ -19316,7 +19324,8 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             "GetMobileScreenWidth", "DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth",
             "GetMobileScreenWidth", "DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenWidth",
             "GetMobileScreenHeight", "DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight",
-            "GetMobileScreenHeight", "DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight"
+            "GetMobileScreenHeight", "DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$GetMobileScreenHeight",
+            "Debug_GetBrowserInfo", "DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$Debug_GetBrowserInfo"
         ],
         ctors: {
             ctor: function (canvasWidthAndHeightInfo, canvasScalingFactor) {
@@ -19380,6 +19389,11 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
             },
             GetMobileScreenHeight: function () {
                 return this.canvasWidthAndHeightInfo.ChessCompStompWithHacks$BridgeDisplay$ICanvasWidthAndHeightInfo$GetCurrentCanvasHeight();
+            },
+            Debug_GetBrowserInfo: function (stringToEval) {
+                var result = eval(stringToEval);
+
+                return (result || "") + "";
             }
         }
     });
@@ -21232,6 +21246,122 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 }
 
                 this.backButton.Render(displayOutput);
+            },
+            RenderMusic: function (musicOutput) {
+                this.globalState.RenderMusic(musicOutput);
+            }
+        }
+    });
+
+    Bridge.define("ChessCompStompWithHacksLibrary.DebugInfoFrame", {
+        inherits: [DTLibrary.IFrame$4(ChessCompStompWithHacksLibrary.GameImage,ChessCompStompWithHacksLibrary.GameFont,ChessCompStompWithHacksLibrary.GameSound,ChessCompStompWithHacksLibrary.GameMusic)],
+        statics: {
+            methods: {
+                ProcessLine: function (str) {
+                    if (str.length <= 50) {
+                        return str;
+                    }
+
+                    return (str.substr(0, 50) || "") + "\n    " + (ChessCompStompWithHacksLibrary.DebugInfoFrame.ProcessLine(str.substr(50)) || "");
+                }
+            }
+        },
+        fields: {
+            globalState: null,
+            sessionState: null,
+            displayType: 0,
+            debugText: null
+        },
+        alias: [
+            "GetClickUrl", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetClickUrl",
+            "GetCompletedAchievements", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetCompletedAchievements",
+            "ProcessExtraTime", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessExtraTime",
+            "ProcessDisplayType", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessDisplayType",
+            "GetNextFrame", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$GetNextFrame",
+            "ProcessMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$ProcessMusic",
+            "Render", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$Render",
+            "RenderMusic", "DTLibrary$IFrame$4$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$ChessCompStompWithHacksLibrary$GameSound$ChessCompStompWithHacksLibrary$GameMusic$RenderMusic"
+        ],
+        ctors: {
+            ctor: function (globalState, sessionState, display, isMobileDisplayType) {
+                this.$initialize();
+                this.globalState = globalState;
+                this.sessionState = sessionState;
+
+                if (isMobileDisplayType) {
+                    this.displayType = DTLibrary.DisplayExtensions.IsMobileInLandscapeOrientation(ChessCompStompWithHacksLibrary.GameImage, display) ? DTLibrary.DisplayType.MobileLandscape : DTLibrary.DisplayType.MobilePortrait;
+                } else {
+                    this.displayType = DTLibrary.DisplayType.Desktop;
+                }
+
+                this.debugText = "";
+            }
+        },
+        methods: {
+            GetClickUrl: function () {
+                return null;
+            },
+            GetCompletedAchievements: function () {
+                return null;
+            },
+            ProcessExtraTime: function (milliseconds) { },
+            ProcessDisplayType: function (displayType, displayProcessing) {
+                this.displayType = displayType;
+
+                return this;
+            },
+            GetNextFrame: function (keyboardInput, mouseInput, previousKeyboardInput, previousMouseInput, displayProcessing, soundOutput, musicProcessing) {
+                var $t;
+                var versionInfo = ChessCompStompWithHacksLibrary.VersionHistory.GetVersionInfo();
+
+                this.debugText = "FPS: " + (DTLibrary.StringUtil.ToStringCultureInvariant(this.globalState.Fps) || "") + "\n";
+                this.debugText = (this.debugText || "") + (("Version: " + (versionInfo.Version || "") + "\n") || "");
+                this.debugText = (this.debugText || "") + (("Version guid: " + (versionInfo.AlphanumericVersionGuid || "") + "\n") || "");
+                this.debugText = (this.debugText || "") + (("User agent: \n    " + (ChessCompStompWithHacksLibrary.DebugInfoFrame.ProcessLine(displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$Debug_GetBrowserInfo("(window.navigator.userAgent + '')")) || "") + "\n") || "");
+                this.debugText = (this.debugText || "") + (("Screen width: " + (displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$Debug_GetBrowserInfo("(window.screen.width + '')") || "") + "\n") || "");
+                this.debugText = (this.debugText || "") + (("Screen height: " + (displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$Debug_GetBrowserInfo("(window.screen.height + '')") || "") + "\n") || "");
+                this.debugText = (this.debugText || "") + (("matchMedia('(pointer:fine)').matches: " + (displayProcessing.DTLibrary$IDisplayProcessing$1$ChessCompStompWithHacksLibrary$GameImage$Debug_GetBrowserInfo("(window.matchMedia('(pointer:fine)').matches ? 'true' : 'false')") || "") + "\n") || "");
+
+                var completedAchievements = "";
+                var isFirst = true;
+                $t = Bridge.getEnumerator(this.sessionState.GetCompletedAchievements());
+                try {
+                    while ($t.moveNext()) {
+                        var completedAchievement = $t.Current;
+                        if (isFirst) {
+                            isFirst = false;
+                        } else {
+                            completedAchievements = (completedAchievements || "") + ", ";
+                        }
+                        completedAchievements = (completedAchievements || "") + (completedAchievement || "");
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$Dispose();
+                    }
+                }
+
+                this.debugText = (this.debugText || "") + (("Completed achievements: \n    " + (ChessCompStompWithHacksLibrary.DebugInfoFrame.ProcessLine(completedAchievements) || "")) || "");
+
+                if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Esc)) {
+                    if (this.displayType === DTLibrary.DisplayType.Desktop) {
+                        return new ChessCompStompWithHacksLibrary.TitleScreenDesktopFrame(this.globalState, this.sessionState);
+                    } else {
+                        return new ChessCompStompWithHacksLibrary.TitleScreenMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                    }
+                }
+
+                return this;
+            },
+            ProcessMusic: function () {
+                this.globalState.ProcessMusic();
+            },
+            Render: function (displayOutput) {
+                var windowHeight = this.displayType === DTLibrary.DisplayType.Desktop ? ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_HEIGHT : displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenHeight();
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(0, 0, this.displayType === DTLibrary.DisplayType.Desktop ? ChessCompStompWithHacksLibrary.GlobalConstants.DESKTOP_WINDOW_WIDTH : displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$GetMobileScreenWidth(), windowHeight, new DTLibrary.DTColor.ctor(223, 220, 217), true);
+
+                displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(50, ((windowHeight - 50) | 0), this.debugText, ChessCompStompWithHacksLibrary.GameFont.GameFont16Pt, DTLibrary.DTColor.Black());
             },
             RenderMusic: function (musicOutput) {
                 this.globalState.RenderMusic(musicOutput);
@@ -23939,6 +24069,10 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.One) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.One)) {
                         return new ChessCompStompWithHacksLibrary.ChessTestingFrame(this.globalState, this.sessionState);
                     }
+
+                    if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Two) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Two)) {
+                        return new ChessCompStompWithHacksLibrary.DebugInfoFrame(this.globalState, this.sessionState, displayProcessing, false);
+                    }
                 }
 
                 return this;
@@ -24090,6 +24224,12 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     this.globalState.SaveData(this.sessionState, soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$GetSoundVolume());
                     soundOutput.DTLibrary$ISoundOutput$1$ChessCompStompWithHacksLibrary$GameSound$PlaySound(ChessCompStompWithHacksLibrary.GameSound.Click);
                     return new ChessCompStompWithHacksLibrary.CreditsMobileFrame(this.globalState, this.sessionState, displayProcessing);
+                }
+
+                if (this.globalState.DebugMode) {
+                    if (keyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Two) && !previousKeyboardInput.DTLibrary$IKeyboard$IsPressed(DTLibrary.Key.Two)) {
+                        return new ChessCompStompWithHacksLibrary.DebugInfoFrame(this.globalState, this.sessionState, displayProcessing, true);
+                    }
                 }
 
                 return this;
