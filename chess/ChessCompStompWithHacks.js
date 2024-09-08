@@ -9826,12 +9826,14 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                     displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawImageRotatedClockwise$1(nukeImage, 0, 0, 0, scalingFactorScaled);
 
                     if (this.isHoverOverNuke != null && !isNukeAvailable && (!isMobileDisplayType || this.isClickingOnNuke)) {
+                        var heightOffset = isMobileDisplayType ? 125 : 0;
+
                         var numTurnsUntilNukeAvailable = (11 - this.turnCount) | 0;
-                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.isHoverOverNuke.Item1, this.isHoverOverNuke.Item2, ((335 + (numTurnsUntilNukeAvailable >= 10 ? 8 : 0)) | 0), 21, ChessCompStompWithHacksLibrary.ColorThemeUtil.GetTextBackgroundColor(this.colorTheme), true);
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawRectangle(this.isHoverOverNuke.Item1, ((this.isHoverOverNuke.Item2 + heightOffset) | 0), ((335 + (numTurnsUntilNukeAvailable >= 10 ? 8 : 0)) | 0), 21, ChessCompStompWithHacksLibrary.ColorThemeUtil.GetTextBackgroundColor(this.colorTheme), true);
 
                         var text = numTurnsUntilNukeAvailable > 1 ? "Tactical nuke available in " + (DTLibrary.StringUtil.ToStringCultureInvariant(numTurnsUntilNukeAvailable) || "") + " turns" : "Tactical nuke available in 1 turn";
 
-                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((this.isHoverOverNuke.Item1 + 5) | 0), ((this.isHoverOverNuke.Item2 + 19) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
+                        displayOutput.DTLibrary$IDisplayOutput$2$ChessCompStompWithHacksLibrary$GameImage$ChessCompStompWithHacksLibrary$GameFont$DrawText(((this.isHoverOverNuke.Item1 + 5) | 0), ((((this.isHoverOverNuke.Item2 + heightOffset) | 0) + 19) | 0), text, ChessCompStompWithHacksLibrary.GameFont.GameFont14Pt, DTLibrary.DTColor.Black());
                     }
                 } else {
                     if (System.Nullable.getValue(this.nukeAnimationElapsedMicros) >= ChessCompStompWithHacksLibrary.NukeRenderer.ELAPSED_MICROS_TO_FLY_OFF_SCREEN) {
@@ -21302,7 +21304,7 @@ Bridge.assembly("ChessCompStompWithHacks", function ($asm, globals) {
                 return null;
             },
             GetCompletedAchievements: function () {
-                return null;
+                return new (System.Collections.Generic.HashSet$1(System.String)).ctor();
             },
             ProcessExtraTime: function (milliseconds) { },
             ProcessDisplayType: function (displayType, displayProcessing) {
