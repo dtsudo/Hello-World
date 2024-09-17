@@ -13,6 +13,10 @@
 The AI has vast computational resources, but you have hacks. 
 Use your hacks to win!</p>
 	</description>
+	<branding>
+		<color type="primary" scheme_preference="light">#fabc5f</color>
+		<color type="primary" scheme_preference="dark">#593807</color>
+	</branding>
 	<developer_name>dtsudo</developer_name>
 	<url type="homepage">https://github.com/dtsudo/Chess-Comp-Stomp-with-Hacks-Electron-Version</url>
 	<url type="bugtracker">https://github.com/dtsudo/Chess-Comp-Stomp-with-Hacks-Electron-Version/issues</url>
