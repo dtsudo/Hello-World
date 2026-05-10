@@ -12,7 +12,7 @@
 * (Customized - changed storage from 512 GB to 2 TB)
 
 2026 Kubuntu Laptop - Kubuntu Focus Ir14 GEN 2 ($1375)
-* i5-13500H
+* i5-13500H (https://www.cpubenchmark.net/cpu.php?cpu=Intel+Core+i5-13500H&id=5151)
 * 16 GB RAM
-* Iris Xe 80 EU
+* Iris Xe (https://www.videocardbenchmark.net/gpu.php?gpu=Intel+Iris+Xe&id=4265)
 * 2000 GB 7450 MBps Samsung SSD
