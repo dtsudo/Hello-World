@@ -10,3 +10,9 @@
 * Intel Arc 140V GPU (https://www.videocardbenchmark.net/gpu.php?gpu=Intel+Arc+140V+GPU&id=5176)
 * 2 TB PCIe NVMe M.2 SSD
 * (Customized - changed storage from 512 GB to 2 TB)
+
+2026 Kubuntu Laptop - Kubuntu Focus Ir14 GEN 2 ($1375)
+* i5-13500H
+* 16 GB RAM
+* Iris Xe 80 EU
+* 2000 GB 7450 MBps Samsung SSD
