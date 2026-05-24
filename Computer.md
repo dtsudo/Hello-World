@@ -16,3 +16,8 @@
 * 16 GB RAM
 * Iris Xe (https://www.videocardbenchmark.net/gpu.php?gpu=Intel+Iris+Xe&id=4265)
 * 2000 GB 7450 MBps Samsung SSD
+
+2026 Framework 12 Laptop ($1276.28)
+* i3-1315U
+* 16 GB RAM
+* 1 TB WD_BLACK SN770M NVMe - M.2 2230 SSD
